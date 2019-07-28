@@ -189,8 +189,7 @@ Now that we know how to run our coin flip experiment, we're interested in knowin
 
 **2.3**.  Write a function  called `run_trials` that takes as input a list, called `n_flips`, of integers representing different values for the number of coin flips in a trial.  For each element in the input list, `run_trials` should run the coin flip experiment with that number of flips and calculate the proportion of heads.  The output of `run_trials` should be the list of calculated proportions.  Store the output of calling `run_trials` in a list called `proportions`.
 
-**2.4**.  Using the results in 2.3, reproduce the plot below. 
-<!--of the proportion of observed heads to total coins flipped in the trial when `run_trials` is run for each of the sample sizes in `trials` -->  <img src="figs/HW0Plot1.png"/>
+**2.4**.  Plot the results in 2.3. 
 
 **2.5**.  What's the appropriate observation about the result of running the coin flip experiment with larger and larger numbers of coin flips?  Choose the appropriate one from the choices below. 
 
@@ -338,7 +337,7 @@ The coin flip experiment that we did above gave us some insight, but we don't ha
 
 **3.1**.  Write a function `make_throws` which takes as arguments the `n_replications` ($M$) and the `n_flips` ($n$), and returns a list (of size $M$) of proportions, with each proportion calculated by taking the ratio of heads to to total number of coin flips in each replication of $n$ coin tosses.  `n_flips` should be a python parameter whose value should default to 20 if unspecified when `make_throws` is called. 
 
-**3.2**.  Create the variables `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  Store in these variables the result of `make_throws` for `n_flips` equal to 100 and 1000 respectively while keeping `n_replications` at 200.  Create a plot with the histograms of `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  Make sure to title your plot, label the x-axis and provide a legend.(See below for an example of what the plot may look like) ![](figs/HW0Plot2.png) 
+**3.2**.  Create the variables `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  Store in these variables the result of `make_throws` for `n_flips` equal to 100 and 1000 respectively while keeping `n_replications` at 200.  Create a plot with the histograms of `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  Make sure to title your plot, label the x-axis and provide a legend.(See below for an example of what the plot may look like)
 
 **3.3**. Calculate the mean and variance of the results in the each of the variables `proportions_at_n_flips_100` and `proportions_at_n_flips_1000` generated in 3.2.
 
