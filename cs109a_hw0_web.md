@@ -1,5 +1,5 @@
 ---
-title: Hwk0
+title: H0
 notebook: cs109a_hw0_web.ipynb
 nav_include: 2
 ---
