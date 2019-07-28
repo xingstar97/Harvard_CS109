@@ -111,8 +111,9 @@ import matplotlib.pyplot as plt
 This can be answered using several different classical hypothesis tests: (i) $z$-test for 2 proportions, (ii) $\chi^2$ test for independence, (iii) Fisher's exact test, or (iv) logistic regression (other approaches are also reasonable).  All 4 test results are provided below:  
 
 The $z$-statistic is calculated for you here, the rest are left up to software:
-$$z = \frac{\hat{p}_1-\hat{p}_2}{\sqrt{\hat{p}_{pooled}(1-\hat{p}_{pooled})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}} = \frac{0.4868-0.3759}{\sqrt{0.4163(0.5873)(\frac{1}{76}+\frac{1}{133})}} = 1.565$$
-where $$\hat{p}_1 = 37/76 = 0.4868$$ $$\hat{p}_2 = 50/133 = 0.3759, $$ $$\text{ and } \hat{p}_{pooled} = (37+50)/(76+133) = 0.4163$$
+$$\hat{p}_1 = 37/76 = 0.4868$$ $$\hat{p}_2 = 50/133 = 0.3759$$ $$\hat{p}_{pooled} = (37+50)/(76+133) = 0.4163$$
+
+$$z = \frac{\hat{p}_1-\hat{p}_2}{\sqrt{\hat{p}_{pooled}(1-\hat{p}_{pooled})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}} = \frac{0.4868-0.3759}{\sqrt{0.4163(0.5873)(\frac{1}{76}+\frac{1}{133})}} = 1.565$$ 
 
 
 
@@ -124,39 +125,35 @@ x = np.array([37,50])
 n = np.array([76,133])
 
 zstat, pvalue = statsmodels.stats.proportion.proportions_ztest(x, n)    
-print("Two-sided z-test for proportions: \n","z =",zstat,", pvalue =",pvalue)
+print("Two-sided z-test for proportions: z =", zstat,", pvalue =",pvalue)
 ```
 
 
-    Two-sided z-test for proportions: 
-     z = 1.56461178592235 , pvalue = 0.11767396368458083
+    Two-sided z-test for proportions: z = 1.56461178592235 , pvalue = 0.11767396368458083
 
 
 
 
 ```python
 y = n - x
-
 cont_table = np.array([y,x])
 chi2stat, pvalue, df, exp = scipy.stats.chi2_contingency(cont_table)
-print("Chi-sq test for independence: \n","chi2 =",chi2stat,", pvalue =",pvalue)
+print("Chi-sq test for independence: chi2 =",chi2stat,", pvalue =",pvalue)
 ```
 
 
-    Chi-sq test for independence: 
-     chi2 = 2.0128746736116727 , pvalue = 0.15596953904839853
+    Chi-sq test for independence: chi2 = 2.0128746736116727 , pvalue = 0.15596953904839853
 
 
 
 
 ```python
 OR, pvalue = scipy.stats.fisher_exact(cont_table)
-print("Fisher's Exact Test: \n","estimated odds ratio =",OR,", pvalue =",pvalue)
+print("Fisher's Exact Test: estimated odds ratio =",OR,", pvalue =",pvalue)
 ```
 
 
-    Fisher's Exact Test: 
-     estimated odds ratio = 0.6349723217193096 , pvalue = 0.1447189385430398
+    Fisher's Exact Test: estimated odds ratio = 0.6349723217193096 , pvalue = 0.1447189385430398
 
 
 
@@ -202,7 +199,7 @@ model1.summary()
   <th>Date:</th>          <td>Sun, 28 Jul 2019</td> <th>  Pseudo R-squ.:     </th> <td>0.008588</td>
 </tr>
 <tr>
-  <th>Time:</th>              <td>14:27:20</td>     <th>  Log-Likelihood:    </th> <td> -140.70</td>
+  <th>Time:</th>              <td>15:53:32</td>     <th>  Log-Likelihood:    </th> <td> -140.70</td>
 </tr>
 <tr>
   <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -141.92</td>
@@ -241,7 +238,7 @@ def throw_a_coin(n_trials):
 
 `np.sum` is a function that returns the sum of items in an iterable (i.e. a list or an array).  Because python coerces `True` to 1 and `False` to 0, the effect of calling `np.sum` on the array of `True`s and `False`s will be to return the number of of `True`s in the array which is the same as the number of heads.
 
-### Question 2: The 12 Labors of Bernoullis
+**Question 2: The 12 Labors of Bernoullis**
 
 Now that we know how to run our coin flip experiment, we're interested in knowing what happens as we choose larger and larger number of coin flips.
 
@@ -264,7 +261,7 @@ Now that we know how to run our coin flip experiment, we're interested in knowin
 > C. The proportions **fluctuate** about their long-run value of 0.5 (what you might expect if you tossed the coin an infinite amount of times), in accordance with the notion of a fair coin (which we encoded in our simulation by having `np.random.choice` choose between two possibilities with equal probability), with the fluctuations constant regardless of the number of trials.
 
 
-#### Answers
+**Answers**
 
 **2.1**
 
@@ -397,7 +394,7 @@ B
 
 The coin flip experiment that we did above gave us some insight, but we don't have a good notion of how robust our results are under repetition as we've only run one experiment for each number of coin flips. Lets redo the coin flip experiment, but let's incorporate multiple repetitions of each number of coin flips. For each choice of the number of flips,  $n$, in an experiment, we'll do $M$ replications of the coin tossing experiment.
 
-### Question 3. So Many Replications
+**Question 3. So Many Replications**
 
 **3.1**.  Write a function `make_throws` which takes as arguments the `n_replications` ($M$) and the `n_flips` ($n$), and returns a list (of size $M$) of proportions, with each proportion calculated by taking the ratio of heads to to total number of coin flips in each replication of $n$ coin tosses.  `n_flips` should be a python parameter whose value should default to 20 if unspecified when `make_throws` is called. 
 
@@ -415,7 +412,7 @@ The coin flip experiment that we did above gave us some insight, but we don't ha
 **3.5**. Let's just assume for arguments sake that the answer to 3.4 is **C. Gaussian**.  Plot a **normed histogram** of your results `proportions_at_n_flips_1000` overlayed with your selection for the appropriate gaussian distribution to represent the experiment of flipping a coin 1000 times.   (**Hint:  What parameters should you use for your Gaussian?**)
 
 
-#### Answers
+**Answers**
 
 **3.1**
 
@@ -530,7 +527,7 @@ ax.legend();
 
 Earlier in this problem set we've been introduced to the Bernoulli "aka coin-flip" distribution and worked with it indirectly by using np.random.choice to make a random selection between two elements 'H' and 'T'.  Let's see if we can create comparable results by taking advantage of the machinery for working with other probability distributions in python using numpy and scipy.
 
-### Question 4: My Normal Binomial
+**Question 4: My Normal Binomial**
 
 Let's use our coin-flipping machinery to do some experimentation with the binomial distribution.  The binomial distribution, often represented by  $k \sim Binomial(n, p)$ is often described the number of successes in `n` Bernoulli trials with each trial having a probability of success `p`.  In other words,  if you flip a coin `n` times, and each coin-flip has a probability `p` of landing heads, then the number of heads you observe is a sample from a bernoulli distribution.
 
@@ -544,7 +541,7 @@ Let's use our coin-flipping machinery to do some experimentation with the binomi
 
 **4.5**. Find the mean and variance of `binomial_trials1`.  How do they compare to the mean and variance of $Binomial(n=25, p=0.5)$
 
-#### Answers
+**Answers**
 
 **4.1**
 
@@ -645,15 +642,11 @@ print("Variance of Binomial(n=25, p=0.5): {}".format(scipy.stats.binom.var(25, 0
     Variance of Binomial(n=25, p=0.5): 6.25
 
 
-** Your explanation here **
-
 The means are very similar.  The variance of the sample differs somewhat from the true variance, but that difference can be explained by random chance.
 
-## Testing Your Python Code
+## Unit Testing 
 
 In the following section we're going to do a brief introduction to unit testing.  We do so not only because unit testing has become an increasingly important part of of the methodology of good software practices, but also because we plan on using unit tests as part of our own CS109 grading practices as a way of increasing rigor and repeatability decreasing complexity and manual workload in our evaluations of your code.  We'll provide an example unit test at the end of this section.
-
-### Introduction to unit testing 
 
 
 
@@ -887,7 +880,7 @@ ipytest.run_tests()
 
 As you see, we were able to use pytest (and ipytest which allows us to run pytest tests in our ipython notebooks) to automate the tests that we constructed manually before and get the same errors and successes.  Now time to fix our code and write our own test!
 
-### Question 5: You Better Test Yourself before You Wreck Yourself!
+**Question 5: You Better Test Yourself before You Wreck Yourself!**
 
 Now it's time to fix `throw_a_coin` so that it passes the tests we've written above as well as add our own test to the mix!
 
@@ -895,7 +888,7 @@ Now it's time to fix `throw_a_coin` so that it passes the tests we've written ab
 
 **5.2**. Write a new test for `throw_a_coin_properly` that verifies that all the elements of the resultant arrays are 'H' or 'T'.
 
-#### Answers
+**Answers**
 
 **5.1**
 
