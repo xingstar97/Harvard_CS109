@@ -220,48 +220,6 @@ L_y(x,y) & = 0 \Leftrightarrow 3x^2 - 3y^2 - 6y = 0 \Leftrightarrow x^2 - y^2 - 
 Solving the above two equations, there are 4 critical solutions: 
 $(0, 0) \,\, (0, -2) \,\, (\sqrt{3}, 1) \,\, (-\sqrt{3}, 1)$
 
-**1.4**. A central aspect of call center operations is the per minute statistics of caller demographics.  Because of the massive call volumes call centers achieve, these per minute statistics can often take on well-known distributions.  In the CS109 Homework Helpdesk, X and Y are discrete random variables with X measuring the number of female callers per minute and Y the total number of callers per minute.  We've determined historically the joint pmf of (X, Y) and found it to be $$p_{X,Y}(x,y) = e^{-4}\frac{2^y}{x!(y-x)!}$$ where $y \in \mathcal{N}, x \in [0, y]$ (That is to say the total number of callers in a minute is a non-negative integer and the number of female callers naturally assumes a value between 0 and the total number of callers inclusive).  Find the mean and variance of the marginal distribution of $X$. **(Hint:  Think what values can y take on. A change of variables in your sum from y to y-x may make evaluating the sum easier.)**
-
-
-**Answer**:
-
-$$p_{X,Y}(x,y) = e^{-4}\frac{2^y}{x!(y-x)!}$$
-
-$$p_{X,Z}(x,z) = e^{-4}\frac{2^{x+z}}{x!z!}$$
-
-$$p_{X,Z}(x,z) = e^{-4}\frac{{2^x}{2^z}}{x!z!}$$
-
-$$p_{X,Z}(x,z) = e^{-4}\frac{2^x}{x!}\cdot\frac{2^z}{z!}$$
-
-$$p_{X}(x) = e^{-4}\frac{2^x}{x!} \cdot \sum_{0}^{y} \frac{2^z}{z!}$$
-
-$$p_{X}(x) = e^{-4}\frac{2^x}{x!} \cdot \lim_{a\to\infty} \sum_{0}^{a} \frac{2^z}{z!}$$
-
-$$p_{X}(x) = e^{-4}\frac{2^x}{x!} \cdot e^2$$
-
-$$p_{X}(x) = e^{-2}\frac{2^x}{x!}$$
-
-Now, $$E(X) = e^{-2} \cdot \sum_{x=0}^{y} \frac{2^x}{x!} \cdot x$$ 
-
-Again, let's look at the limit as y gets really large.
-
-$$E(X) = e^{-2} \cdot \lim_{b\to\infty} \sum_{x=0}^{b} \frac{2^x}{x!} \cdot x$$
-
-$$E(X) = e^{-2} \cdot 2e^{2} = 2$$
-
-And the variance is $$Var(X) = \sum_{x=0}^{y} [(x - 2)^{2} \cdot \frac{2^x}{x!} \cdot e^{-2}]$$
-
-$$Var(X) = e^{-2} \cdot \sum_{x=0}^{y} [x^{2} \cdot \frac{2^x}{x!} - 4x \cdot \frac{2^x}{x!} + 4 \cdot \frac{2^x}{x!}]$$
-
-$$Var(X) = e^{-2} \cdot \lim_{b\to\infty} \sum_{x=0}^{b} [x^{2} \cdot \frac{2^x}{x!} - 4x \cdot \frac{2^x}{x!} + 4 \cdot \frac{2^x}{x!}]$$
-
-$$Var(X) = e^{-2} \cdot [\lim_{b\to\infty} \sum_{x=0}^{b} x^{2} \cdot \frac{2^x}{x!} - \lim_{b\to\infty} \sum_{x=0}^{b} 4x \cdot \frac{2^x}{x!} + \lim_{b\to\infty} \sum_{x=0}^{b}4 \cdot \frac{2^x}{x!}]$$
-
-$$Var(X) = e^{-2} \cdot [6e^{2} - 8e^{2} + 4e^{2}]$$
-
-$$Var(X) = 2$$
-
-
 
 ```python
 %matplotlib inline
