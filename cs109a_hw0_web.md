@@ -1,5 +1,5 @@
 ---
-title: Homework0
+title: Hwk0
 notebook: cs109a_hw0_web.ipynb
 nav_include: 2
 ---
@@ -12,80 +12,11 @@ nav_include: 2
 
 
 ```python
-## RUN THIS CELL TO GET THE RIGHT FORMATTING 
 import requests
 from IPython.core.display import HTML
 styles = requests.get("https://raw.githubusercontent.com/Harvard-IACS/2018-CS109A/master/content/styles/cs109.css").text
 HTML(styles)
 ```
-
-
-
-
-
-<style>
-blockquote { background: #AEDE94; }
-h1 { 
-    padding-top: 25px;
-    padding-bottom: 25px;
-    text-align: left; 
-    padding-left: 10px;
-    background-color: #DDDDDD; 
-    color: black;
-}
-h2 { 
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: left; 
-    padding-left: 5px;
-    background-color: #EEEEEE; 
-    color: black;
-}
-
-div.exercise {
-	background-color: #ffcccc;
-	border-color: #E9967A; 	
-	border-left: 5px solid #800080; 
-	padding: 0.5em;
-}
-
-span.sub-q {
-	font-weight: bold;
-}
-div.theme {
-	background-color: #DDDDDD;
-	border-color: #E9967A; 	
-	border-left: 5px solid #800080; 
-	padding: 0.5em;
-	font-size: 18pt;
-}
-div.gc { 
-	background-color: #AEDE94;
-	border-color: #E9967A; 	 
-	border-left: 5px solid #800080; 
-	padding: 0.5em;
-	font-size: 12pt;
-}
-p.q1 { 
-    padding-top: 5px;
-    padding-bottom: 5px;
-    text-align: left; 
-    padding-left: 5px;
-    background-color: #EEEEEE; 
-    color: black;
-}
-header {
-   padding-top: 35px;
-    padding-bottom: 35px;
-    text-align: left; 
-    padding-left: 10px;
-    background-color: #DDDDDD; 
-    color: black;
-}
-</style>
-
-
-
 
 
 
@@ -111,13 +42,19 @@ import matplotlib.pyplot as plt
 This can be answered using several different classical hypothesis tests: (i) $z$-test for 2 proportions, (ii) $\chi^2$ test for independence, (iii) Fisher's exact test, or (iv) logistic regression (other approaches are also reasonable).  All 4 test results are provided below:  
 
 The $z$-statistic is calculated for you here, the rest are left up to software:
-$$\hat{p}_1 = 37/76 = 0.4868$$ $$\hat{p}_2 = 50/133 = 0.3759$$ $$\hat{p}_{pooled} = (37+50)/(76+133) = 0.4163$$
+
+$$\hat{p}_1 = 37/76 = 0.4868$$ 
+
+$$\hat{p}_2 = 50/133 = 0.3759$$ 
+
+$$\hat{p}_{pooled} = (37+50)/(76+133) = 0.4163$$
 
 $$z = \frac{\hat{p}_1-\hat{p}_2}{\sqrt{\hat{p}_{pooled}(1-\hat{p}_{pooled})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}} = \frac{0.4868-0.3759}{\sqrt{0.4163(0.5873)(\frac{1}{76}+\frac{1}{133})}} = 1.565$$ 
 
 
 
 ```python
+## Z-test 
 import statsmodels
 from statsmodels.stats.proportion import proportions_ztest
 
@@ -135,6 +72,7 @@ print("Two-sided z-test for proportions: z =", zstat,", pvalue =",pvalue)
 
 
 ```python
+## Chi-squared Test
 y = n - x
 cont_table = np.array([y,x])
 chi2stat, pvalue, df, exp = scipy.stats.chi2_contingency(cont_table)
@@ -148,6 +86,7 @@ print("Chi-sq test for independence: chi2 =",chi2stat,", pvalue =",pvalue)
 
 
 ```python
+## Fisher's exact Test
 OR, pvalue = scipy.stats.fisher_exact(cont_table)
 print("Fisher's Exact Test: estimated odds ratio =",OR,", pvalue =",pvalue)
 ```
@@ -159,6 +98,7 @@ print("Fisher's Exact Test: estimated odds ratio =",OR,", pvalue =",pvalue)
 
 
 ```python
+## Logistic Regression
 import statsmodels.formula.api as sm
 
 xs = np.repeat([0,1], n, axis=0)
@@ -199,7 +139,7 @@ model1.summary()
   <th>Date:</th>          <td>Sun, 28 Jul 2019</td> <th>  Pseudo R-squ.:     </th> <td>0.008588</td>
 </tr>
 <tr>
-  <th>Time:</th>              <td>15:53:32</td>     <th>  Log-Likelihood:    </th> <td> -140.70</td>
+  <th>Time:</th>              <td>16:11:40</td>     <th>  Log-Likelihood:    </th> <td> -140.70</td>
 </tr>
 <tr>
   <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -141.92</td>
