@@ -223,7 +223,7 @@ $(0, 0) \,\, (0, -2) \,\, (\sqrt{3}, 1) \,\, (-\sqrt{3}, 1)$
 **1.4**. A central aspect of call center operations is the per minute statistics of caller demographics.  Because of the massive call volumes call centers achieve, these per minute statistics can often take on well-known distributions.  In the CS109 Homework Helpdesk, X and Y are discrete random variables with X measuring the number of female callers per minute and Y the total number of callers per minute.  We've determined historically the joint pmf of (X, Y) and found it to be $$p_{X,Y}(x,y) = e^{-4}\frac{2^y}{x!(y-x)!}$$ where $y \in \mathcal{N}, x \in [0, y]$ (That is to say the total number of callers in a minute is a non-negative integer and the number of female callers naturally assumes a value between 0 and the total number of callers inclusive).  Find the mean and variance of the marginal distribution of $X$. **(Hint:  Think what values can y take on. A change of variables in your sum from y to y-x may make evaluating the sum easier.)**
 
 
-**Answer:** &nbsp;&nbsp;
+**Answer**:
 
 $$p_{X,Y}(x,y) = e^{-4}\frac{2^y}{x!(y-x)!}$$
 
