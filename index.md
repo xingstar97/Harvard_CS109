@@ -3,8 +3,9 @@ title: Overview:
 nav_include: 1
 ---
 
-## Harvard University 
-## CS109A - Introduction to Data Science
+## Harvard CS109A - Introduction to Data Science
+
+**Haoran Zhao, hz336@cornell.edu**
 
 ### Homeworks:
 
