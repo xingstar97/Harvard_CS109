@@ -9,9 +9,9 @@ nav_include: 1
 
 ### Homeworks:
 
-**Homework 0**: A/B Testing, Unit Testing
+**Homework 0**: A/B Testing + Unit Testing
 
-**Homework 1**: 
+**Homework 1**: Beautiful Soup + Regular Expression
 
 **Homework 2**: 
 
