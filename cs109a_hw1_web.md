@@ -87,7 +87,7 @@ header {
 
 
 
-## Data Collection - Web Scraping - Data Parsing 
+## Beautiful Soup and String Manipulation
  
 In this homework, your goal is to learn how to acquire, parse, clean, and analyze data. Initially you will read the data from a file, and then later scrape them directly from a website. You will look for specific pieces of information by parsing the data, clean the data to prepare them for analysis, and finally, answer some questions.
 
@@ -113,8 +113,6 @@ pd.set_option('display.notebook_repr_html', True)
 import seaborn as sns
 ```
 
-
-### Beautiful Soup and string manipulation
 
 In this part your goal is to parse the HTML page of a professor containing some of his/her publications, and answer some questions. This page is provided to you in the file `data/publist_super_clean.html`. There are 45 publications in descending order from No. 244 to No. 200.
 
@@ -363,7 +361,7 @@ df.to_csv('publist.csv', index=False)
 ```
 
 
-## IMDb's The Top 100 Stars for 2017
+## Requests and Beautiful Soup
 
 In this part, your goal is to extract information from IMDb's Top 100 Stars for 2017 (https://www.imdb.com/list/ls025814950/) and perform some analysis on each star in the list. In particular we are interested to know: a) how many performers made their first movie at 17? b) how many performers started as child actors? c) who is the most proliferate actress or actor in IMDb's list of the Top 100 Stars for 2017? . These questions are addressed in more details in the Questions below. 
 
@@ -372,8 +370,6 @@ When data is not given to us in a file, we need to fetch them using one of the f
 - query a database 
 - query a web API 
 - scrape data from the web page
-
-### Web Scraping using Beautiful Soup and exploring using Pandas 
 
 **2.1** Download the webpage of the "Top 100 Stars for 2017" (https://www.imdb.com/list/ls025814950/) into a `requests` object and name it `my_page`. Explain what the following attributes are:
 
@@ -812,12 +808,7 @@ print(frame.loc[frame['credits'].idxmax()]['name']\
     Sean Young is the most prolific actress or actor in IMDb's list of the Top 100 Stars for 2017
 
 
-<hr style="height:2px">
-##  Going the Extra Mile 
-Be sure to complete problems 1 and 2 before tackling this problem...it is worth only 8 points.
-
-
-<div class='exercise'> <b>Question 3 [8 pts]: Parsing using Regular Expressions (regex) </b></div>
+## Regular Expression
 
 Even though scraping HTML with regex is sometimes considered bad practice, you are to use python's **regular expressions** to answer this problem.  Regular expressions are useful to parse strings, text, tweets, etc. in general (for example, you may encounter a non-standard format for dates at some point). Do not use BeautifulSoup to answer this problem.
 
@@ -829,7 +820,7 @@ Even though scraping HTML with regex is sometimes considered bad practice, you a
  
  **3.4** Create a list named `pub_authors` whose elements are strings containing the authors' names for each paper. 
     
-### Hints
+**Hints**
 - Look for patterns in the HTML tags that reveal where each piece of information such as the title of the paper, the names of the authors, the journal name, is stored. For example, you might notice that the journal name(s) is contained between the &lt;I&gt; HTML tag. 
 - Learning about your domain is always a good idea: you want to check the names to make sure that they belong to actual journals. Thus, while journal name(s) is contained between the &lt;I&gt; HTML tag, please note that <i>all</i> strings found between &lt;I&gt; tags may not be journal names.
 - Each publication has multiple authors. 
@@ -837,7 +828,7 @@ Even though scraping HTML with regex is sometimes considered bad practice, you a
 - There is a comma at the end of the string of authors. You can choose to keep it in the string or remove it and put it back when you write the string as a BibTex entry. 
 - You want to remove duplicates from the list of journals. Duplicates may also occur due to misspellings or spaces, such as: `Nano Lett.`, and `NanoLett.` You can assume that any journals with the same initials (e.g., `NL` for `NanoLett.`) are the same journal.
 
-### Resources
+**Resources**
 - **Regular expressions:** a) https://docs.python.org/3.3/library/re.html, b) https://regexone.com, and c) https://docs.python.org/3/howto/regex.html. 
 - ** HTML:** if you are not familiar with HTML see https://www.w3schools.com/html/ or one of the many tutorials on the internet. 
 - ** Document Object Model (DOM):** for more on this programming interface for HTML and XML documents see https://www.w3schools.com/js/js_htmldom.asp. 
