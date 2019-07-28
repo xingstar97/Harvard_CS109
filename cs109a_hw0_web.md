@@ -1,5 +1,5 @@
 ---
-title: Homework 0
+title: Homework0
 notebook: cs109a_hw0_web.ipynb
 nav_include: 2
 ---
@@ -8,16 +8,6 @@ nav_include: 2
 {:.no_toc}
 *  
 {: toc}
-
-
-This is a homework which you must turn in.
-
-This homework has the following intentions:
-
-1. To get you familiar with the jupyter/python environment
-2. You should easily understand these questions and what is being asked. If you struggle, this may not be the right class for you.
-3. You should be able to understand the intent (if not the exact syntax) of the code and be able to look up google and provide code that is asked of you. If you cannot, this may not be the right class for you.
-
 
 
 
@@ -122,7 +112,7 @@ This can be answered using several different classical hypothesis tests: (i) $z$
 
 The $z$-statistic is calculated for you here, the rest are left up to software:
 $$z = \frac{\hat{p}_1-\hat{p}_2}{\sqrt{\hat{p}_{pooled}(1-\hat{p}_{pooled})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}} = \frac{0.4868-0.3759}{\sqrt{0.4163(0.5873)(\frac{1}{76}+\frac{1}{133})}} = 1.565$$
-where $\hat{p}_1 = 37/76 = 0.4868,\hat{p}_2 = 50/133 = 0.3759, \text{ and } \hat{p}_{pooled} = (37+50)/(76+133) = 0.4163$.
+where $$\hat{p}_1 = 37/76 = 0.4868$$ $$\hat{p}_2 = 50/133 = 0.3759, $$ $$\text{ and } \hat{p}_{pooled} = (37+50)/(76+133) = 0.4163$$
 
 
 
@@ -395,7 +385,7 @@ plot_trials(ax, n_flips, proportions);
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_25_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_24_0.png)
 
 
 **2.5** 
@@ -487,7 +477,7 @@ plot_sample_mean_distributions(ax, mean_samples, labels);
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_35_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_34_0.png)
 
 
 **3.3**
@@ -533,7 +523,7 @@ ax.legend();
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_41_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_40_0.png)
 
 
 ## Working With Distributions in Numpy/Scipy
@@ -629,7 +619,7 @@ plot_binomial_trials(ax, binomial_trials, labels);
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_50_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_49_0.png)
 
 
 **4.4**
