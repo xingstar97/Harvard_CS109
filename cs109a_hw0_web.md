@@ -1,6 +1,6 @@
 ---
-title: hw0
-notebook: cs109a_hw0.ipynb
+title: Homework 0
+notebook: cs109a_hw0_web.ipynb
 nav_include: 2
 ---
 
@@ -10,25 +10,13 @@ nav_include: 2
 {: toc}
 
 
-## Homework 0: Knowledge Test
-
-**Harvard University**<br/>
-**Fall 2018**<br/>
-**Instructors**: Pavlos Protopapas and Kevin Rader
-
-
-<hr style='height:2px'>
-
----
-
-This is a homework which you must  turn in.
+This is a homework which you must turn in.
 
 This homework has the following intentions:
 
 1. To get you familiar with the jupyter/python environment
 2. You should easily understand these questions and what is being asked. If you struggle, this may not be the right class for you.
 3. You should be able to understand the intent (if not the exact syntax) of the code and be able to look up google and provide code that is asked of you. If you cannot, this may not be the right class for you.
-
 
 
 
@@ -110,115 +98,6 @@ header {
 
 
 
----
-
-## Basic Math and Probability/Statistics Calculations
-
-We'll start you off with some basic math and statistics problems questions to make sure you have the appropriate background to be comfortable with concepts that will come up in CS 109a.
-
-### Question 1: Mathiage is What Brings Us Together Today
-
-**Matrix Operations**
-
-*Complete the following matrix operations (show your work as a markdown/latex notebook cell)*
-
-**1.1.** &nbsp;&nbsp;Let &nbsp;&nbsp; $ A =  \left( \begin{array}{ccc}
-3 & 4 & 2 \\
-5 & 6 & 4 \\
-4 & 3 & 4 \end{array} \right) \,\,$ and  $ \,\, B = \left( \begin{array}{ccc}
-1 & 4 & 2 \\
-1 & 9 & 3 \\
-2 & 3 & 3 \end{array} \right)
-$.  
-
-Compute &nbsp;$A \cdot B$.
-
-
-
-**Answer:** &nbsp;&nbsp;$ A \cdot B 
-=  
-\left( \begin{array}{ccc}
-(3\cdot1)+(4\cdot1)+(2\cdot2) &  (3\cdot4)+(4\cdot9)+(2\cdot3) & (3\cdot2)+(4\cdot3)+(2\cdot3)  \\
-(5\cdot1)+(6\cdot1)+(4\cdot2) &  (5\cdot4)+(6\cdot9)+(4\cdot3) & (5\cdot2)+(6\cdot3)+(4\cdot3) \\
-(4\cdot1)+(3\cdot1)+(4\cdot2) &  (4\cdot4)+(3\cdot9)+(4\cdot3) & (4\cdot2)+(3\cdot3)+(4\cdot3) \end{array} \right)
-=
-\left( \begin{array}{ccc}
-11 & 54 & 24 \\
-19 & 86 & 40 \\
-15 & 55 & 29 \end{array} \right) $ 
-
-
-
-**1.2.** &nbsp;&nbsp;Let &nbsp;&nbsp;
-$ A =  \left( \begin{array}{ccc}
-0 & 12 & 8 \\
-1 & 15 & 0 \\
-0 & 6 & 3 \end{array} \right)$.  
-
-Compute &nbsp; $A^{-1}$.  
-
-
-**Answer:** &nbsp;&nbsp; Lot's of ways to solve this...this is the way I was taught to do it by hand:
-
-$$\left( \begin{array}{ccc|ccc}
-0 & 12 & 8 & 1 & 0 & 0\\
-1 & 15 & 0 & 0 & 1 & 0\\
-0 & 6 & 3 & 0 & 0 & 1\end{array} \right) \stackrel{0.5\cdot R_1-R_3\to R_3}{\implies}
-\left( \begin{array}{ccc|ccc}
-0 & 12 & 8 & 1 & 0 & 0\\
-1 & 15 & 0 & 0 & 1 & 0\\
-0 & 0  & 1 & \frac{1}{2} & 0 & -1\end{array} \right) \stackrel{1/12\cdot (R_1-8R_3)\to R_1}{\implies}
-\left( \begin{array}{ccc|ccc}
-0 & 1 & 0 & -\frac{1}{4} & 0 & \frac{2}{3}\\
-1 & 15 & 0 & 0 & 1 & 0\\
-0 & 0  & 1 & \frac{1}{2} & 0 & -1\end{array} \right) \stackrel{R_2-15R_1\to R_2}{\implies}
-\left( \begin{array}{ccc|ccc}
-0 & 1 & 0 & -\frac{1}{4} & 0 & \frac{2}{3}\\
-1 & 0 & 0 & \frac{15}{4} & 1 & -10\\
-0 & 0  & 1 & \frac{1}{2} & 0 & -1\end{array} \right) \stackrel{swap(R_1,R_2)}{\implies}
-\left( \begin{array}{ccc|ccc}
-1 & 0 & 0 & \frac{15}{4} & 1 & -10\\
-0 & 1 & 0 & -\frac{1}{4} & 0 & \frac{2}{3}\\
-0 & 0  & 1 & \frac{1}{2} & 0 & -1\end{array} \right) $$
-
-Thus,
-$ A^{-1} =  \left( \begin{array}{ccc}
-\frac{15}{4} & 1 & -10 \\
--\frac{1}{4} & 0 & \frac{2}{3}\\
-\frac{1}{2} & 0 & -1 \end{array} \right) $.
-
-
-
-**Calculus and Probability**
-
-*Complete the following (show your work as a markdown/latex notebook cell)*
-
-**1.3**. From Wikipedia:
-
-  > In mathematical optimization, statistics, econometrics, decision theory, machine learning and computational neuroscience, a loss function or cost function is a function that maps an event or values of one or more variables onto a real number intuitively representing some "cost" associated with the event. An optimization problem seeks to minimize a loss function.
-  
-   We've generated a cost function on parameters $x,y \in \mathcal{R}$  $L(x,y)= 3x^2y - y^3 - 3x^2 - 3y^2 + 2$.  Find the critical points (optima) of $L(x,y)$.
-
-
-
-
-
-**Answer:** &nbsp;&nbsp;
-
-$L(x,y)= 3x^2y - y^3 - 3x^2 - 3y^2 + 2$
-
-$\begin{align}
-L_x(x,y) & = 6xy - 6x \\
-L_y(x,y) & = 3x^2 - 3y^2 - 6y \\
-\end{align}$
-
-$\begin{align}
-L_x(x,y) & = 0 \Leftrightarrow 6xy - 6x = 0 \Leftrightarrow x(y - 1) = 0 \\
-L_y(x,y) & = 0 \Leftrightarrow 3x^2 - 3y^2 - 6y = 0 \Leftrightarrow x^2 - y^2 - 2y = 0 \\
-\end{align}$
-
-Solving the above two equations, there are 4 critical solutions: 
-$(0, 0) \,\, (0, -2) \,\, (\sqrt{3}, 1) \,\, (-\sqrt{3}, 1)$
 
 
 ```python
@@ -231,7 +110,7 @@ import matplotlib.pyplot as plt
 ```
 
 
-**Basic Statistics**
+## Basic Statistics
 
 *Complete the following: you can perform the calculations by hand (show your work) or using software (include the code and output, screenshots are fine if it is from another platform).*
 
@@ -357,8 +236,6 @@ model1.summary()
 
 
 All 4 tests have similar results: all 4 p-values hover between 0.118 and 0.156.  Thus, we are unable to reject the null hypothesis (of no difference in CS109A enrollment between the sexes amoung the CS concentrators).  Male and female CS concentrators may truly take CS109A at the same rate.
-
-------
 
 ## Simulation of a Coin Throw
 
@@ -518,7 +395,7 @@ plot_trials(ax, n_flips, proportions);
 
 
 
-![png](cs109a_hw0_files/cs109a_hw0_38_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_25_0.png)
 
 
 **2.5** 
@@ -610,7 +487,7 @@ plot_sample_mean_distributions(ax, mean_samples, labels);
 
 
 
-![png](cs109a_hw0_files/cs109a_hw0_48_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_35_0.png)
 
 
 **3.3**
@@ -656,7 +533,7 @@ ax.legend();
 
 
 
-![png](cs109a_hw0_files/cs109a_hw0_54_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_41_0.png)
 
 
 ## Working With Distributions in Numpy/Scipy
@@ -752,7 +629,7 @@ plot_binomial_trials(ax, binomial_trials, labels);
 
 
 
-![png](cs109a_hw0_files/cs109a_hw0_63_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_50_0.png)
 
 
 **4.4**
