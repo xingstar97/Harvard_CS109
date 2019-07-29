@@ -88,7 +88,7 @@ header {
 
 
 
-![](pic/hw3_BBS.png)
+![](pic/hw3_BSS.png)
 
 You are hired by the administrators of the [Capital Bikeshare program](https://www.capitalbikeshare.com) program in Washington D.C., to **help them predict the hourly demand for rental bikes** and **give them suggestions on how to increase their revenue**. Your task is to prepare a short report summarizing your findings and make recommendations.
 
@@ -1389,7 +1389,7 @@ BSS_test.columns
 
 
 
-## Question 4: Multiple Linear Regression 
+## Multiple Linear Regression 
 
 **4.1** Use statsmodels to fit a multiple linear regression model to the training set using all the predictors (no interactions or polynomial terms) to predict `counts`, and report its $R^2$ score on the train and test sets.
 
