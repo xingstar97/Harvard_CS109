@@ -13,9 +13,9 @@ nav_include: 1
 
 **Homework 1**: Beautiful Soup + Regular Expression
 
-**Homework 2**: kNN + Linear Regression
+**Homework 2**: kNN + Simple Linear Regression
 
-**Homework 3**: 
+**Homework 3**: Multiple Linear Regression + Subset Selection 
 
 **Homework 4**: 
 
