@@ -13,7 +13,7 @@ nav_include: 1
 
 **Homework 1**: Beautiful Soup + Regular Expression
 
-**Homework 2**: 
+**Homework 2**: kNN + Linear Regression
 
 **Homework 3**: 
 
