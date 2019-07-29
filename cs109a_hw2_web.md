@@ -104,7 +104,7 @@ from statsmodels.api import OLS
 ```
 
 
-<div class="theme"> Predicting Taxi Pickups in NYC </div>
+## Predicting Taxi Pickups in NYC
 
 In this homework, we will explore k-nearest neighbor and linear regression methods for predicting a quantitative variable. Specifically, we will build regression models that can predict the number of taxi pickups in New York city at any given time of the day. These prediction models will be useful, for example, in monitoring traffic in the city.
 
