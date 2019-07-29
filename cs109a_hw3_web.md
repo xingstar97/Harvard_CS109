@@ -1,7 +1,7 @@
 ---
 title: H3
 notebook: cs109a_hw3_web.ipynb
-nav_include: 4
+nav_include: 5
 ---
 
 ## Contents
@@ -88,7 +88,7 @@ header {
 
 
 
-![](pic/hw3_BSS.png)
+![bike_sharing](fig/BSS.png)
 
 You are hired by the administrators of the [Capital Bikeshare program](https://www.capitalbikeshare.com) program in Washington D.C., to **help them predict the hourly demand for rental bikes** and **give them suggestions on how to increase their revenue**. Your task is to prepare a short report summarizing your findings and make recommendations.
 
@@ -154,7 +154,7 @@ The initial data set is provided in the file `data/BSS_hour_raw.csv`. You will f
 **Resources**
 http://pandas.pydata.org/pandas-docs/stable/generated/pandas.to_datetime.html
 
-## Question 1: Data Cleaning
+## Data Cleaning
 
 In this section, we read in the data and begin one of the most important analytic steps: verifying that the data is what it claims to be.
 
@@ -670,7 +670,7 @@ bikes_df.head()
 
 
 
-## Question 2: Exploratory Data Analysis
+## Exploratory Data Analysis
 
 In this question, we continue validating the data, and begin hunting for patterns in ridership that shed light on who uses the service and why.
 
@@ -1123,7 +1123,7 @@ fall.loc[fall['counts'].idxmin()]
 
 10/29/2018 is the day Hurricane Sandy, one of the worst hurricane, landed the east coast. It makes sense people stayed home for such day.
 
-## Question 3: Prepare the data for Regression
+## Prepare the data for Regression
 
 In order to build and evaluate our regression models, a little data cleaning is needed.  In this problem, we will explicitly create binary variables to represent the categorical predictors, set up the train-test split in a careful way, remove ancillary variables, and do a little data exploration that will be useful to consider in the regression models later.
 
@@ -2542,7 +2542,7 @@ The estimates are more sensible in the model:
 
 R-squared, AIC and BIC are all comparable before and after droping the redundant variables. 
 
-## Question 5: Subset Selection
+## Subset Selection
 Perhaps we can automate finding a good set of predictors. This question focuses on forward stepwise selection, where predictors are added to the model one by one.
 
 **5.1** Implement forward step-wise selection to select a minimal subset of predictors that are related to the response variable. Run your code on the richest dataset, `X_train_poly`, and determine which predictors are selected.
@@ -3230,7 +3230,7 @@ print("BIC of OLS polynomial model: %f" % ols_poly.bic)
 
 The polynomial model is slightly better than the step-wise model in terms of R-squared in training and testing set, but step-wise model is better in terms of BIC.
 
-## Question 6: Written Report to the Administrators
+## Written Report to the Administrators
 
 Write a short repost stating some of your findings on how the administrators can increase the bike share system's revenue. You might want to include suggestions such as what model to use to predict ridership, what additional services to provide, or when to give discounts, etc. Include your report as a pdf file in canvas. The report should not be longer than one page (300 words) and should include a maximum of 5 figures. 
 
