@@ -17,9 +17,9 @@ nav_include: 1
 
 **Homework 3**: Multiple Linear Regression + Subset Selection 
 
-**Homework 4**: Lasso and Ridge Regression 
+**Homework 4**: Lasso + Ridge Regression 
 
-**Homework 5**: 
+**Homework 5**: Logistic Regression + Principal Component Regression
 
 **Homework 6**: 
 
