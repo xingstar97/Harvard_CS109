@@ -117,7 +117,7 @@ from sklearn.preprocessing import StandardScaler
 ```
 
 
-<div class='exercise'><b> Question 1 [20 pts]: Overview of Multiclass Thyroid Classification </b></div>
+## Overview of Multiclass Thyroid Classification 
 
 In this problem set you will build a model for diagnosing disorders in a patient's thyroid gland. Given the results of medical tests on a patient, the task is to classify the patient either as:
 - *normal* (class 1)
@@ -648,7 +648,7 @@ assert all(np.sum(manual_predictions == i) > 0 for i in [1, 2, 3]), "Should pred
 
 Since an initial manual exploration of axis-aligned linear classifiers resulted an accuracy of over 85%, I'm quite confident that a tuned linear classifier could perform even better. However, the boundaries between normal and hyperthyroidism and normal and hypothyroidism seem to be slightly curved, so a classifier that permits curved decision boundaries might do even better. But with so little data, such a classifier would also be at greater risk of overfitting.
 
-<div class='exercise'><b> Question 2 [20 pts]: Multiclass Logistic Regression</b></div>
+## Multiclass Logistic Regression
 
 **2.1** Fit two one-vs-rest logistic regression models using sklearn. For the first model, use the train dataset as-is (so the decision boundaries will be linear); for the second model, also include quadratic and interaction terms. For both models, use $L_2$ regularization, tuning the regularization parameter using 5-fold cross-validation. 
 
@@ -896,7 +896,7 @@ The polynomial classifier surprisingly seems to have lower validation variance t
 
 Note that we're actually running a nested CV here: For each training fold, `cross_val_score` calls `LogisticRegressionCV().fit()`, and `LogisticRegressionCV` then runs a CV within those samples to pick its best `C` parameters (then re-fits on the entire fold). That's a bit odd, but okay: we're treating the entire `LogisticRegressionCV` process as the learning process that we're evaluating.
 
-<div class='exercise'><b> Question 3 [20 pts]: Discriminant Analysis</b></div>
+## Discriminant Analysis
 
 **3.1** Consider the following synthetic dataset with two classes. A green star marks a test observation; which class do you think it belongs to? How would LDA classify that observation? How would QDA? Explain your reasoning.
 
@@ -1144,7 +1144,7 @@ We notice various differences between the decision boundaries:
 - QDA makes extra regions where there isn't any data. Notice the extra *hyper* region above Normal, and the extra *hypo* region to the left of Normal. This is because the Normal region has lower variance overall, so its distribution is more "tight" than the other two. LDA doesn't do that. In this aspect, LDA seems to make more sense, though we'd need to know more biology to really decide.
 - LDA gives too big of a region to Normal, because it has to let it have the same (high) variance as the other two classes. In particular, we notice the lower edge of the Normal region is pushed down from where it should be, so some `hyperthyroid` observations get misclassified. QDA's boundary seems to make more sense there.
 
-<div class='exercise'> <b> Question 4 [20 pts]: Fit Decision Trees </b> </div> 
+## Decision Trees
 
 
 We next try out decision trees for thyroid classification. For the following questions, you should use the *Gini* index as the splitting criterion while fitting the decision tree. 
@@ -1354,7 +1354,7 @@ For this, we predict class 3 in nodes 9 or 10. Both are under node 6, which we g
 So we'd predict hypothyroidism if Biomarker 1 > 1.270, or if Biomarker 1 < 1.270 and Biomarker 2 > 1.879.
 
 
-<div class='exercise'><b> Question 5 [18 pts]: k-NN and Model comparison </b> </div>
+## k-NN and Model Comparison
 
 We have now seen six different ways of fitting a classification model: **linear logistic regression**, **logistic regression with polynomial terms**, **LDA**, **QDA**, **decision trees**, and in this problem we'll add **k-NN**. Which of these methods should we use in practice for this problem? To answer this question, we now compare and contrast these methods.
 
@@ -1724,7 +1724,7 @@ If you were a clinician who had to use the classifier to diagnose thyroid disord
 
 As a clinician, I'd want a decision rule that performs well (ruling out LDA) and is easy to understand (ruling out logistic regression). It should also make biological sense, so I'd probably rule out k-NN and QDA because their decision boundaries have those arbitrary regions. So I think I'd choose the decision tree here.
 
-<div class='exercise'><b> Question 6: [2 pts] Including an 'abstain' option </b></div>
+## Including an 'abstain' option 
 **Note this question is only worth 2 pts. **
 
 One of the reasons a hospital might be hesitant to use your thyroid classification model is that a misdiagnosis by the model on a patient can sometimes prove to be very costly (e.g. if the patient were to file a law suit seeking a compensation for damages). One way to mitigate this concern is to allow the model to 'abstain' from making a prediction: whenever it is uncertain about the diagnosis for a patient. However, when the model abstains from making a prediction, the hospital will have to forward the patient to a thyroid specialist (i.e. an endocrinologist), which would incur additional cost.  How could one design a thyroid classification model with an abstain option, such that the cost to the hospital is minimized?
@@ -1737,7 +1737,7 @@ One of the reasons a hospital might be hesitant to use your thyroid classificati
 
 **General approach**: Assuming the OvR logistic regression model, we estimate $p_j$ for $j\in \{1,2,3\}$, the marginal probability of being in each class, and then normalize these to sum to 1 (handled by sklearn). The normalization step is not necessary for the multinomial model, since the softmax function is already constrained to sum to 1. 
 
-Following the hint, we will proceed by using the trained OvR logistic regression model to estimate $\hat{p}_j$ and then making a decision based on minimizing the expected cost. The expected cost for abstaining is \$1000. The expected cost for predicting is \$ $5000 * P(\text{misdiagnosis}) = 5000 * (1 - \hat{p}_k)$ where $k$ is the label of the predicted class. 
+Following the hint, we will proceed by using the trained OvR logistic regression model to estimate $\hat{p}_j$ and then making a decision based on minimizing the expected cost. The expected cost for abstaining is 1000 dollars. The expected cost for predicting is \$ 5000 * P(\text{misdiagnosis}) = 5000 * (1 - \hat{p}_k)$ where $k$ is the label of the predicted class. 
 
 So our decision rule is if $5000 * (1 - \hat{p}_k) < 1000$, attempt a prediction. Otherwise, abstain.
 
