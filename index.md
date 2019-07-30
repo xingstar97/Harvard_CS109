@@ -21,9 +21,9 @@ nav_include: 1
 
 **Homework 5**: Logistic Regression + Principal Component Regression
 
-**Homework 6**: 
+**Homework 6**: Feed Forward Neural Network + Missing Data
 
-**Homework 7**: 
+**Homework 7**: Logistic vs LDA/QDA vs kNN vs Decision Tree
 
 **Homework 8**: 
 
