@@ -27,5 +27,6 @@ nav_include: 1
 
 **Homework 8**: Bagging + Random Forests + Boosting
 
-**Homework 9**: 
+**Homework 9**: Neural Network Regularization
+
 
