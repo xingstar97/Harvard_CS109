@@ -321,118 +321,8 @@ model.fit(X_train, y_train,
           epochs=50, 
           batch_size=32, 
           validation_split=.2,
-          verbose=1)
+          verbose=0)
 ```
-
-
-    Train on 8000 samples, validate on 2000 samples
-    Epoch 1/50
-    8000/8000 [==============================] - 1s 85us/step - loss: 0.0204 - val_loss: 0.0227
-    Epoch 2/50
-    8000/8000 [==============================] - 1s 85us/step - loss: 0.0214 - val_loss: 0.0236
-    Epoch 3/50
-    8000/8000 [==============================] - 1s 87us/step - loss: 0.0207 - val_loss: 0.0234
-    Epoch 4/50
-    8000/8000 [==============================] - 1s 88us/step - loss: 0.0209 - val_loss: 0.0241
-    Epoch 5/50
-    8000/8000 [==============================] - 1s 82us/step - loss: 0.0210 - val_loss: 0.0211
-    Epoch 6/50
-    8000/8000 [==============================] - 1s 102us/step - loss: 0.0207 - val_loss: 0.0242
-    Epoch 7/50
-    8000/8000 [==============================] - 1s 80us/step - loss: 0.0211 - val_loss: 0.0241
-    Epoch 8/50
-    8000/8000 [==============================] - 1s 85us/step - loss: 0.0210 - val_loss: 0.0225
-    Epoch 9/50
-    8000/8000 [==============================] - 1s 79us/step - loss: 0.0208 - val_loss: 0.0218
-    Epoch 10/50
-    8000/8000 [==============================] - 1s 79us/step - loss: 0.0209 - val_loss: 0.0224
-    Epoch 11/50
-    8000/8000 [==============================] - 1s 76us/step - loss: 0.0205 - val_loss: 0.0230
-    Epoch 12/50
-    8000/8000 [==============================] - 1s 83us/step - loss: 0.0208 - val_loss: 0.0213
-    Epoch 13/50
-    8000/8000 [==============================] - 1s 84us/step - loss: 0.0206 - val_loss: 0.0217
-    Epoch 14/50
-    8000/8000 [==============================] - 1s 80us/step - loss: 0.0207 - val_loss: 0.0222
-    Epoch 15/50
-    8000/8000 [==============================] - 1s 100us/step - loss: 0.0205 - val_loss: 0.0232
-    Epoch 16/50
-    8000/8000 [==============================] - 1s 102us/step - loss: 0.0204 - val_loss: 0.0213
-    Epoch 17/50
-    8000/8000 [==============================] - 1s 114us/step - loss: 0.0202 - val_loss: 0.0224
-    Epoch 18/50
-    8000/8000 [==============================] - 1s 92us/step - loss: 0.0199 - val_loss: 0.0200
-    Epoch 19/50
-    8000/8000 [==============================] - 1s 84us/step - loss: 0.0203 - val_loss: 0.0221
-    Epoch 20/50
-    8000/8000 [==============================] - 1s 88us/step - loss: 0.0203 - val_loss: 0.0217
-    Epoch 21/50
-    8000/8000 [==============================] - 1s 85us/step - loss: 0.0197 - val_loss: 0.0222
-    Epoch 22/50
-    8000/8000 [==============================] - 1s 84us/step - loss: 0.0200 - val_loss: 0.0211
-    Epoch 23/50
-    8000/8000 [==============================] - 1s 84us/step - loss: 0.0198 - val_loss: 0.0232
-    Epoch 24/50
-    8000/8000 [==============================] - 1s 84us/step - loss: 0.0202 - val_loss: 0.0215
-    Epoch 25/50
-    8000/8000 [==============================] - 1s 81us/step - loss: 0.0200 - val_loss: 0.0227
-    Epoch 26/50
-    8000/8000 [==============================] - 1s 86us/step - loss: 0.0206 - val_loss: 0.0209
-    Epoch 27/50
-    8000/8000 [==============================] - 1s 87us/step - loss: 0.0206 - val_loss: 0.0244
-    Epoch 28/50
-    8000/8000 [==============================] - 1s 88us/step - loss: 0.0198 - val_loss: 0.0216
-    Epoch 29/50
-    8000/8000 [==============================] - 1s 88us/step - loss: 0.0197 - val_loss: 0.0219
-    Epoch 30/50
-    8000/8000 [==============================] - 1s 88us/step - loss: 0.0196 - val_loss: 0.0215
-    Epoch 31/50
-    8000/8000 [==============================] - 1s 95us/step - loss: 0.0198 - val_loss: 0.0219
-    Epoch 32/50
-    8000/8000 [==============================] - 1s 83us/step - loss: 0.0197 - val_loss: 0.0193
-    Epoch 33/50
-    8000/8000 [==============================] - 1s 81us/step - loss: 0.0190 - val_loss: 0.0197
-    Epoch 34/50
-    8000/8000 [==============================] - 1s 81us/step - loss: 0.0201 - val_loss: 0.0210
-    Epoch 35/50
-    8000/8000 [==============================] - 1s 81us/step - loss: 0.0198 - val_loss: 0.0214
-    Epoch 36/50
-    8000/8000 [==============================] - 1s 88us/step - loss: 0.0197 - val_loss: 0.0208
-    Epoch 37/50
-    8000/8000 [==============================] - 1s 81us/step - loss: 0.0194 - val_loss: 0.0224
-    Epoch 38/50
-    8000/8000 [==============================] - 1s 91us/step - loss: 0.0195 - val_loss: 0.0200
-    Epoch 39/50
-    8000/8000 [==============================] - 1s 82us/step - loss: 0.0191 - val_loss: 0.0208
-    Epoch 40/50
-    8000/8000 [==============================] - 1s 81us/step - loss: 0.0192 - val_loss: 0.0249
-    Epoch 41/50
-    8000/8000 [==============================] - 1s 83us/step - loss: 0.0195 - val_loss: 0.0220
-    Epoch 42/50
-    8000/8000 [==============================] - 1s 82us/step - loss: 0.0196 - val_loss: 0.0212
-    Epoch 43/50
-    8000/8000 [==============================] - 1s 86us/step - loss: 0.0194 - val_loss: 0.0232
-    Epoch 44/50
-    8000/8000 [==============================] - 1s 87us/step - loss: 0.0192 - val_loss: 0.0207
-    Epoch 45/50
-    8000/8000 [==============================] - 1s 91us/step - loss: 0.0184 - val_loss: 0.0193
-    Epoch 46/50
-    8000/8000 [==============================] - 1s 89us/step - loss: 0.0193 - val_loss: 0.0207
-    Epoch 47/50
-    8000/8000 [==============================] - 1s 85us/step - loss: 0.0188 - val_loss: 0.0206
-    Epoch 48/50
-    8000/8000 [==============================] - 1s 100us/step - loss: 0.0192 - val_loss: 0.0195
-    Epoch 49/50
-    8000/8000 [==============================] - 1s 85us/step - loss: 0.0194 - val_loss: 0.0194
-    Epoch 50/50
-    8000/8000 [==============================] - 1s 91us/step - loss: 0.0191 - val_loss: 0.0205
-
-
-
-
-
-    <keras.callbacks.History at 0x1a2a5acda0>
-
 
 
 **1.6** Use the `plot_predictions` function to plot the model's predictions on `X_test` to the true values in `y_test` (by default, it will only plot the first few rows). Report the model's overall loss on the test set. Comment on how well the model performs on this unseen data. Do you think it has accurately learned how to map from sample data to the coefficients that generated the data?
@@ -598,7 +488,7 @@ However, although the model learned _a_ rule for mapping from its training input
 **Instructor's note: This is a common theme with neural networks and other black-box learners: they will figure out a rule that works on the data they are trained on, but that rule is unlikely to extend beyond the range of the training examples. Collecting good data is the most important analytic step!**
 
 
-## Regulrizing Neural Networks
+## Neural Network Regularization
 
 In this problem set we have already explored how ANN are able to learn a mapping from example input data (of fixed size) to example output data (of fixed size), and how well the neural network can generalize. In this problem we focus on issues of overfitting and regularization in Neural Networks.
 
