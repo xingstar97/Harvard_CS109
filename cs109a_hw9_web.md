@@ -145,21 +145,6 @@ We'll use 6 data files in this question:
 
 **These datasets are read in to their respective variables for you.**
 
-**1.1** Plot the first row of the `X_train` training data and visually verify that it is a sinusoidal curve.
-
-**1.2** The first row of the `y_train` data is $[0.024, 0.533, 0.018, 0.558]$. Visually or numerically verify that the first row of X_train is 1000 equally-spaced samples in $[0,10\pi]$ from the function $f(x) = 0.024\sin(0.533\,x) + 0.018\cos(0.558\,x)$. This pattern (y_train is the true parameters of the curve in X_train) will always hold.
-
-**1.3** Use `Sequential` and `Dense` from Keras to build a fully-connected neural network. You can choose any number of layers and any number of nodes in each layer. 
-
-**1.4** Compile your model via the line `model.compile(loss='mean_absolute_error', optimizer='adam')` and display the `.summary()`. Explain why the first layer in your network has the indicated number of parameters.
-
-**1.5** Fit your model to the data for 50 epochs using a batch size of 32 and a validation split of 0.2. You can train for longer if you wish- the fit tends to improve over time.
-
-**1.6** Use the `plot_predictions` function to plot the model's predictions on `X_test` to the true values in `y_test` (by default, it will only plot the first few rows). Report the model's overall loss on the test set. Comment on how well the model performs on this unseen data. Do you think it has accurately learned how to map from sample data to the coefficients that generated the data?
-
-**1.7** Examine the model's performance on the 9 train/test pairs in the `extended_test` variables. Which examples does the model do well on, and which examples does it struggle with?
-
-**1.8** Is there something that stands out about the difficult examples, especially with respect to the data the model was trained on? Did the model learn the mapping we had in mind? Would you say the model is overfit, underfit, or neither?
 
 **Hint**:
 - Keras's documentation and examples of a Sequential model are a good place to start.
@@ -229,9 +214,8 @@ y_extended_test = np.load('data/sinewaves_y_extended_test.npy')
 ```
 
 
-### Answers:  
+**1.1** Plot the first row of the `X_train` training data and visually verify that it is a sinusoidal curve.
 
-**1.1** Plot the first row of the `X_train` training data and visually verify that it is a sinusoidal curve
 
 
 
@@ -244,7 +228,8 @@ plt.plot(X_train[0,:]);
 ![png](cs109a_hw9_web_files/cs109a_hw9_web_7_0.png)
 
 
-**1.2** The first row of the `y_train` data is $[0.024, 0.533, 0.018, 0.558]$. Visually or numerically verify that the first row of X_train is 1000 equally-spaced points in $[0,10\pi]$ from the function $f(x) = 0.024\sin(0.533\,x) + 0.018\cos(0.558\,x)$...
+**1.2** The first row of the `y_train` data is $[0.024, 0.533, 0.018, 0.558]$. Visually or numerically verify that the first row of X_train is 1000 equally-spaced samples in $[0,10\pi]$ from the function $f(x) = 0.024\sin(0.533\,x) + 0.018\cos(0.558\,x)$. This pattern (y_train is the true parameters of the curve in X_train) will always hold.
+
 
 
 
@@ -286,6 +271,7 @@ np.all(X_train[0,:]==train_from_test)
 
 
 
+
 ```python
 model = Sequential([
     Dense(200, input_shape=(X_train.shape[1],), activation='relu'),
@@ -297,6 +283,7 @@ model = Sequential([
 
 
 **1.4** Compile your model via the line `model.compile(loss='mean_absolute_error', optimizer='adam')` and display the `.summary()`. Explain why the first layer in your network has the indicated number of parameters.
+
 
 
 
@@ -324,7 +311,8 @@ model.summary()
     _________________________________________________________________
 
 
-**1.5** Fit your model to the data for 50 epochs using a batch size of 32 and a validation split of .2. You can train for longer if you wish- the fit tends to improve over time.
+**1.5** Fit your model to the data for 50 epochs using a batch size of 32 and a validation split of 0.2. You can train for longer if you wish- the fit tends to improve over time.
+
 
 
 
@@ -447,7 +435,8 @@ model.fit(X_train, y_train,
 
 
 
-**1.6** Use the `plot_predictions` function to plot the model's predictions on `X-test` to the true values in `y_test` (by default, it will only plot the first few rows). Report the model's overall loss on the test set. Comment on how well the model performs on this unseen data. Do you think it has accurately learned how to map from sample data to the coefecients that generated the data?
+**1.6** Use the `plot_predictions` function to plot the model's predictions on `X_test` to the true values in `y_test` (by default, it will only plot the first few rows). Report the model's overall loss on the test set. Comment on how well the model performs on this unseen data. Do you think it has accurately learned how to map from sample data to the coefficients that generated the data?
+
 
 
 
@@ -606,7 +595,7 @@ The model is struggling to accurately predict answers on data outside the exampl
 
 However, although the model learned _a_ rule for mapping from its training input to the example outputs, it did not learn the rule we had in mind, and the model does not extend beyond the kinds of examples it was trained on.  This is a form of extrapolation.
 
-**Instructor's note**: This is a common theme with neural networks and other black-box learners: they will figure out a rule that works on the data they are trained on, but that rule is unlikely to extend beyond the range of the training examples. Collecting good data is the most important analytic step!
+**Instructor's note: This is a common theme with neural networks and other black-box learners: they will figure out a rule that works on the data they are trained on, but that rule is unlikely to extend beyond the range of the training examples. Collecting good data is the most important analytic step!**
 
 
 ## Regulrizing Neural Networks
