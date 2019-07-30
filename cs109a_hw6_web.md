@@ -127,7 +127,7 @@ For this homework you may **not** use a machine learning library such as `keras`
 
 - Q2 deals with missing data in a medical dataset.
 
-<div class="exercise"> <b> Question 1: Construct a feed forward neural network [60 pts]</b> </div>
+## Construct a feed forward neural network [60 pts]
     
 In this part of the homework you are to construct three feed forward neural networks consisting of an input layer, one hidden layer with 1, 2 and 4 nodes respectively, and an output layer.  The hidden layer uses the sigmoid as the activation function and use a linear  output node. 
 You should code the equations from scratch. 
@@ -452,7 +452,7 @@ def gradient_descent(steps, lr, WL0, WL1, X, y, fn):
 ```
 
 
-#### a) step function NN (a hidden layer with a single node)
+**a) step function NN (a hidden layer with a single node)**
 
 
 
@@ -497,7 +497,7 @@ ax[1].set_title('Gradient Descent')
 ![png](cs109a_hw6_web_files/cs109a_hw6_web_21_1.png)
 
 
-#### b) one hump function NN (a hidden layer with two nodes)
+**b) one hump function NN (a hidden layer with two nodes)**
 
 
 
@@ -545,7 +545,7 @@ ax[1].set_title('Gradient Descent')
 ![png](cs109a_hw6_web_files/cs109a_hw6_web_23_1.png)
 
 
-#### c) two hump function NN (a hidden layer with 4 nodes)
+**c) two hump function NN (a hidden layer with 4 nodes)**
 
 
 
@@ -603,7 +603,7 @@ ax[1].set_title('Gradient Descent')
 ![png](cs109a_hw6_web_files/cs109a_hw6_web_25_1.png)
 
 
-<div class="exercise"> <b> Question 2: Working with missing data. [40 pts]</b> </div>
+## Working with missing data. [40 pts]
 
 In this exercise we are going to use the **Pima Indians onset of diabetes** dataset found in `pima-indians-diabetes.csv`. This dataset describes patient medical record data for Pima Indians and whether they had an onset of diabetes within five years. It is a binary classification problem (onset of diabetes as 1 or not as 0). The input variables that describe each patient are numerical and have varying scales. The list below shows the eight attributes plus the target variable for the dataset:
 
@@ -728,7 +728,7 @@ pima_df.head()
 
 
 
-#### 1. Checking values and Removing unnecessary characters
+**1. Checking values and Removing unnecessary characters**
 
 
 
@@ -956,9 +956,7 @@ pima_df.isnull().sum()
 
 
 
-#### 2. Checking for missing values
-
-*Your answer here*
+**2. Checking for missing values**
 
 Upon first inspection we do not see any missing values. But if we look closer and without being doctors, we see that Glucose cannot be `0` so we assume that this is a missing value. Same goes for the other variables. [open to interpretation by students here]
 
@@ -1144,7 +1142,7 @@ print('Total number of rows with all missing data =',
     Total number of rows with all missing data = 0 rows
 
 
-#### 3. Checking correlation of columns
+**3. Checking correlation of columns**
 
 
 
@@ -1169,7 +1167,7 @@ scatter_matrix(df_wo_zeros, figsize=(30,20));
 We see from the above plot that BMI and Skin Thickness are correlated. We also see that Insulin and Glucose seem correlated. 
 There also is some weak correlations between Age and Pregnancies.
 
-#### 4. Separating dataset into clean and unclean (has missing values)
+**4. Separating dataset into clean and unclean (has missing values)**
 
 
 
