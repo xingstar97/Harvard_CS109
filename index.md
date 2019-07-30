@@ -25,7 +25,7 @@ nav_include: 1
 
 **Homework 7**: Logistic vs LDA/QDA vs kNN vs Decision Tree
 
-**Homework 8**: 
+**Homework 8**: Bagging + Random Forests + Boosting
 
 **Homework 9**: 
 
