@@ -127,7 +127,7 @@ For this homework you may **not** use a machine learning library such as `keras`
 
 - Q2 deals with missing data in a medical dataset.
 
-## Construct a feed forward neural network [60 pts]
+## Construct a feed forward neural network
     
 In this part of the homework you are to construct three feed forward neural networks consisting of an input layer, one hidden layer with 1, 2 and 4 nodes respectively, and an output layer.  The hidden layer uses the sigmoid as the activation function and use a linear  output node. 
 You should code the equations from scratch. 
@@ -603,7 +603,7 @@ ax[1].set_title('Gradient Descent')
 ![png](cs109a_hw6_web_files/cs109a_hw6_web_25_1.png)
 
 
-## Working with missing data. [40 pts]
+## Working with missing data
 
 In this exercise we are going to use the **Pima Indians onset of diabetes** dataset found in `pima-indians-diabetes.csv`. This dataset describes patient medical record data for Pima Indians and whether they had an onset of diabetes within five years. It is a binary classification problem (onset of diabetes as 1 or not as 0). The input variables that describe each patient are numerical and have varying scales. The list below shows the eight attributes plus the target variable for the dataset:
 
@@ -2301,8 +2301,6 @@ df.head()
 </div>
 
 
-
-*your answer here*
 
 Here, 
  * method 1: logreg1, logistic regression with missing values
