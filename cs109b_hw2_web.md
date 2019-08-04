@@ -1,6 +1,6 @@
 ---
 title: H11
-notebook: cs109b_hw1_web.ipynb
+notebook: cs109b_hw2_web.ipynb
 nav_include: 13
 ---
 
@@ -8,7 +8,6 @@ nav_include: 13
 {:.no_toc}
 *  
 {: toc}
-
 
 
 
@@ -127,9 +126,6 @@ set_random_seed(2)
     Using TensorFlow backend.
 
 
-<div class="theme"> Overview </div> 
-
-### Galaxy Zoo
 For this homework you will work with real astronomical data with the purpose of classifying galaxies based on visual attributes as they appear in astronomical surveys of the night sky, such as color and morphology. Galaxy morphology is strongly correlated with many physical parameters of those astronomical bodies, including their mass, density distribution, temperature, and star formation history. In turn, these parameters can be estimated using observations of the attributes mentioned above. 
 
 The Galaxy Zoo project includes collected morphological attributes of nearly 900,000 galaxies drawn from the [Sloan Digital Sky Survey](http://skyserver.sdss.org/dr15/en/home.aspx). The annotation was provided by hundreds of thousands of volunteers, or 'citizen scientists' as we call them, who voted on the galaxy type based only on its image (for more details on galaxy morphology and classification see <a href="https://academic.oup.com/mnras/article/410/1/166/1032478">Chris Lintott et al.</a>). 
@@ -157,7 +153,7 @@ We provide a subset of data in `galaxy_morphology_labeled.csv` so there is no ne
 
 Notice that the volunteers did not have access to any of the attributes but the galaxy shape when voting.
 
-<div class='exercise'><b> Question 1: Models for Galaxy Classification </b></div>
+## Models for Galaxy Classification 
 
 
 
@@ -990,7 +986,7 @@ We have improved the classifier by the following steps:
 
 We have improved the average classification accuracy from 93% to 95%, the pecentage of elliptical classified correctlhy from 86% to 92%, and F1 score from 89% to 93%.
 
-<div class='exercise'><b> Question 2: Optimization Problems in Model Training </b></div>
+## Optimization Problems in Model Training
 
 In Question 1, you found an appropriate choice of training parameters for your model (e.g. optimizer, learning rate etc). In this problem, you will carefully investigate the effect of these parameters on the baseline model from Question 1.
 
@@ -1546,7 +1542,7 @@ Q: Which optimization method do you prefer for this data set? Why?
 Q: Think of some scenarios where each optimizer might be more appropriate than the other.
 - SGD is fast and preferred in our data set. While if there is high curvature, SGD will oscillate and become slow because updates do not exploit curvature information. Adam, Adaptive Moment Estimation, will be faster, given that the average gradient may present a faster path.  
 
-<div class='exercise'><b> Question 3: Generalizing Models for Galaxy Classification </b></div>
+## Generalizing Models for Galaxy Classification
 
 In this problem, you will revisit the task of classifying galaxies based on visual morphology. You will deploy the model you built in Question 1 on a new, much larger sky survey. In this new data set, which for now we will assume it represents the true Universe, only a small number of observations have been labeled. Your goal is to estimate the proportion of elliptical galaxies in the Universe.
 <br><br>**Note** There are multiple *correct* answers to these questions. What we are looking for is a scientific approach to support your arguments with empirical evidences or first principles. 
