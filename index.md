@@ -29,4 +29,10 @@ nav_include: 1
 
 **Homework 9**: Neural Network Regularization
 
+**Homework 10**: Smoothers + Generalized Additive Models
+
+
+
+
+
 
