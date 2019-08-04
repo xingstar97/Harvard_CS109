@@ -31,6 +31,7 @@ nav_include: 1
 
 **Homework 10**: Smoothers + Generalized Additive Models
 
+**Homework 11**: Optimizers
 
 
 
