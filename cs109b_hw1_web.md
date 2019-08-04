@@ -1,5 +1,5 @@
 ---
-title: title: H10
+title: H10
 notebook: cs109b_hw1_web.ipynb
 nav_include: 12
 ---
