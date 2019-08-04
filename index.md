@@ -3,7 +3,7 @@ title: Overview:
 nav_include: 1
 ---
 
-## Harvard CS109A - Introduction to Data Science
+## Harvard CS109 - Machine Learning
 
 **Haoran Zhao, hz336@cornell.edu**
 
