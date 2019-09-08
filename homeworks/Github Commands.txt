@@ -1,0 +1,10 @@
+jupyter nbconvert --output-dir . --to markdown --template _support/markdown.tpl homeworks/hw0/cs109a_hw0_web.ipynb
+
+python _support/nbmd.py cs109a_hw0_web.md
+
+nav_include: 1
+
+
+
+
+

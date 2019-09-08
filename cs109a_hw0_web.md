@@ -11,6 +11,7 @@ nav_include: 2
 
 
 
+
 ```python
 import requests
 from IPython.core.display import HTML
@@ -101,9 +102,7 @@ import matplotlib.pyplot as plt
 
 ## Basic Statistics
 
-*Complete the following: you can perform the calculations by hand (show your work) or using software (include the code and output, screenshots are fine if it is from another platform).*
-
-**1.5**. 37 of the 76 female CS concentrators have taken Data Science 1 (DS1) while 50 of the 133 male concentrators haven taken DS1.  Perform a statistical test to determine if interest in Data Science (by taking DS1) is related to sex.  Be sure to state your conclusion.
+**Question**: 37 of the 76 female CS concentrators have taken Data Science 1 (DS1) while 50 of the 133 male concentrators haven taken DS1.  Perform a statistical test to determine if interest in Data Science (by taking DS1) is related to sex.  Be sure to state your conclusion.
 
 **Answer**:
 
@@ -130,11 +129,11 @@ x = np.array([37,50])
 n = np.array([76,133])
 
 zstat, pvalue = statsmodels.stats.proportion.proportions_ztest(x, n)    
-print("Two-sided z-test for proportions: z =", zstat,", pvalue =",pvalue)
+print("Two-sided z-test for proportions: z-test statistics = {0:0.3f}, p-value = {1:0.3f}".format(zstat, pvalue))
 ```
 
 
-    Two-sided z-test for proportions: z = 1.56461178592235 , pvalue = 0.11767396368458083
+    Two-sided z-test for proportions: z-test statistics = 1.565, p-value = 0.118
 
 
 
@@ -144,11 +143,11 @@ print("Two-sided z-test for proportions: z =", zstat,", pvalue =",pvalue)
 y = n - x
 cont_table = np.array([y,x])
 chi2stat, pvalue, df, exp = scipy.stats.chi2_contingency(cont_table)
-print("Chi-sq test for independence: chi2 =",chi2stat,", pvalue =",pvalue)
+print("Chi-sq test for independence: ch2-test statistics = {0:0.3f}, p-value = {1:0.3f}".format(chi2stat, pvalue))
 ```
 
 
-    Chi-sq test for independence: chi2 = 2.0128746736116727 , pvalue = 0.15596953904839853
+    Chi-sq test for independence: ch2-test statistics = 2.013, p-value = 0.156
 
 
 
@@ -156,11 +155,11 @@ print("Chi-sq test for independence: chi2 =",chi2stat,", pvalue =",pvalue)
 ```python
 ## Fisher's exact Test
 OR, pvalue = scipy.stats.fisher_exact(cont_table)
-print("Fisher's Exact Test: estimated odds ratio =",OR,", pvalue =",pvalue)
+print("Fisher's Exact Test: estimated odds ratio = {0:0.3f}, p-value = {1:0.3f}".format(OR, pvalue))
 ```
 
 
-    Fisher's Exact Test: estimated odds ratio = 0.6349723217193096 , pvalue = 0.1447189385430398
+    Fisher's Exact Test: estimated odds ratio = 0.635, p-value = 0.145
 
 
 
@@ -169,19 +168,64 @@ print("Fisher's Exact Test: estimated odds ratio =",OR,", pvalue =",pvalue)
 ## Logistic Regression
 import statsmodels.formula.api as sm
 
+## X variable: 0 for female and 1 for male; In total, there are 76 0's, and 133 1's. 
 xs = np.repeat([0,1], n, axis=0)
+
+## Y variable: Among the 76 0's, there are 37 1's, and 39 0's. Among the 133 1's, there are 50 1's, and 83 0's. 
 ys = np.repeat([0,1,0,1], [x[0], y[0],x[1],y[1]], axis=0)
 
-pd.crosstab(ys,xs)
+## this is just to be sure the data were defined correctly
+display(pd.crosstab(ys,xs))
 
 X = statsmodels.tools.tools.add_constant(xs)
-
 model = sm.Logit(ys,X)
- 
 model1 = model.fit()
-
 model1.summary()
 ```
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>col_0</th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+    <tr>
+      <th>row_0</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>37</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>39</td>
+      <td>83</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 
     Optimization terminated successfully.
@@ -204,10 +248,10 @@ model1.summary()
   <th>Method:</th>               <td>MLE</td>       <th>  Df Model:          </th>  <td>     1</td> 
 </tr>
 <tr>
-  <th>Date:</th>          <td>Sun, 28 Jul 2019</td> <th>  Pseudo R-squ.:     </th> <td>0.008588</td>
+  <th>Date:</th>          <td>Sat, 07 Sep 2019</td> <th>  Pseudo R-squ.:     </th> <td>0.008588</td>
 </tr>
 <tr>
-  <th>Time:</th>              <td>16:11:40</td>     <th>  Log-Likelihood:    </th> <td> -140.70</td>
+  <th>Time:</th>              <td>21:13:45</td>     <th>  Log-Likelihood:    </th> <td> -140.70</td>
 </tr>
 <tr>
   <th>converged:</th>           <td>True</td>       <th>  LL-Null:           </th> <td> -141.92</td>
@@ -236,6 +280,8 @@ All 4 tests have similar results: all 4 p-values hover between 0.118 and 0.156. 
 
 We'd like to do some experiments with coin flips, but we don't have a physical coin at the moment. So let us **simulate** the process of flipping a coin on a computer. To do this we will use a form of the **random number generator** built into `numpy`. In particular, we will use the function `np.random.choice` which picks items with uniform probability from a list. If we provide it a list ['H', 'T'], it will pick one of the two items in the list. We can also ask it to do this multiple times by specifying the parameter `size`. 
 
+`np.sum` is a function that returns the sum of items in an iterable (i.e. a list or an array).  Because python coerces `True` to 1 and `False` to 0, the effect of calling `np.sum` on the array of `True`s and `False`s will be to return the number of of `True`s in the array which is the same as the number of heads.
+
 
 
 ```python
@@ -244,33 +290,8 @@ def throw_a_coin(n_trials):
 ```
 
 
-`np.sum` is a function that returns the sum of items in an iterable (i.e. a list or an array).  Because python coerces `True` to 1 and `False` to 0, the effect of calling `np.sum` on the array of `True`s and `False`s will be to return the number of of `True`s in the array which is the same as the number of heads.
-
-**Question 2: The 12 Labors of Bernoullis**
-
-Now that we know how to run our coin flip experiment, we're interested in knowing what happens as we choose larger and larger number of coin flips.
-
-
 **2.1**.  Run one experiment of flipping a coin 40 times storing the resulting sample in the variable `throws1`.   What's the total proportion of heads?
 
-**2.2**.  **Replicate** the experiment in 2.1 storing the resulting sample  in the variable `throws2`.   What's the proportion of heads?  How does this result compare to that you obtained in question 2.1?
-
-**2.3**.  Write a function  called `run_trials` that takes as input a list, called `n_flips`, of integers representing different values for the number of coin flips in a trial.  For each element in the input list, `run_trials` should run the coin flip experiment with that number of flips and calculate the proportion of heads.  The output of `run_trials` should be the list of calculated proportions.  Store the output of calling `run_trials` in a list called `proportions`.
-
-**2.4**.  Plot the results in 2.3. 
-
-**2.5**.  What's the appropriate observation about the result of running the coin flip experiment with larger and larger numbers of coin flips?  Choose the appropriate one from the choices below. 
-
-> A. Regardless of sample size the probability of in our experiment of observing heads is 0.5 so the proportion of heads observed in the coin-flip experiments will always be 0.5.  
->
-> B. The proportions **fluctuate** about their long-run value of 0.5 (what you might expect if you tossed the coin an infinite amount of times), in accordance with the notion of a fair coin (which we encoded in our simulation by having `np.random.choice` choose between two possibilities with equal probability), with the fluctuations seeming to become much smaller as the number of trials increases.
->
-> C. The proportions **fluctuate** about their long-run value of 0.5 (what you might expect if you tossed the coin an infinite amount of times), in accordance with the notion of a fair coin (which we encoded in our simulation by having `np.random.choice` choose between two possibilities with equal probability), with the fluctuations constant regardless of the number of trials.
-
-
-**Answers**
-
-**2.1**
 
 
 
@@ -278,49 +299,25 @@ Now that we know how to run our coin flip experiment, we're interested in knowin
 throws1 = throw_a_coin(40)
 print("Throws: ", throws1)
 print("Number of Heads:", np.sum(throws1 == 'H'))
-print("p2 = Number of Heads/Total Throws:", np.sum(throws1 ==  'H')/40.)
+print("Number of Heads/Total Throws:", np.sum(throws1 == 'H')/40.)
 ```
 
 
-    Throws:  ['T' 'T' 'T' 'H' 'T' 'H' 'T' 'H' 'T' 'T' 'T' 'T' 'T' 'H' 'T' 'H' 'T' 'T'
-     'T' 'H' 'T' 'T' 'H' 'T' 'H' 'T' 'H' 'H' 'T' 'H' 'T' 'T' 'H' 'H' 'H' 'T'
-     'T' 'H' 'T' 'H']
-    Number of Heads: 16
-    p2 = Number of Heads/Total Throws: 0.4
+    Throws:  ['H' 'H' 'T' 'T' 'H' 'T' 'H' 'H' 'H' 'T' 'T' 'T' 'H' 'H' 'T' 'T' 'H' 'T'
+     'H' 'T' 'T' 'T' 'H' 'T' 'H' 'T' 'H' 'T' 'H' 'H' 'T' 'T' 'H' 'H' 'H' 'T'
+     'T' 'T' 'H' 'T']
+    Number of Heads: 19
+    Number of Heads/Total Throws: 0.475
 
 
-**2.2** 
+**2.2**.  Write a function  called `run_trials` that takes as input a list, called `n_flips`, of integers representing different values for the number of coin flips in a trial.  For each element in the input list, `run_trials` should run the coin flip experiment with that number of flips and calculate the proportion of heads.  The output of `run_trials` should be the list of calculated proportions.  Store the output of calling `run_trials` in a list called `proportions`.
 
-
-
-```python
-throws2 = throw_a_coin(40)
-print("Throws: ",throws2)
-
-print("Number of Heads:", np.sum(throws2 == 'H'))
-print("p2 = Number of Heads/Total Throws:", np.sum(throws2 ==  'H')/40.)
-```
-
-
-    Throws:  ['H' 'T' 'H' 'H' 'H' 'T' 'T' 'H' 'H' 'H' 'H' 'H' 'T' 'H' 'T' 'H' 'H' 'T'
-     'H' 'T' 'T' 'H' 'H' 'H' 'T' 'T' 'H' 'T' 'T' 'H' 'T' 'T' 'T' 'H' 'T' 'T'
-     'H' 'T' 'T' 'T']
-    Number of Heads: 20
-    p2 = Number of Heads/Total Throws: 0.5
-
-
-**2.3** 
 
 
 
 ```python
 n_flips = [10, 30, 50, 70, 100, 130, 170, 200, 500, 1000, 2000, 5000, 10000]
-```
 
-
-
-
-```python
 def run_trials(n_flips: list) -> list:
     '''Run one replication of coin flip experiment for each element in trials.
        
@@ -332,96 +329,44 @@ def run_trials(n_flips: list) -> list:
     '''
     
     return([np.sum(throw_a_coin(j) == 'H')/np.float(j) for j in n_flips])
-```
 
-
-
-
-```python
 proportions = run_trials(n_flips)
-proportions
 ```
 
 
+**2.3**.  Plot the results in 2.2. 
 
-
-
-    [0.4,
-     0.5,
-     0.52,
-     0.5285714285714286,
-     0.51,
-     0.49230769230769234,
-     0.43529411764705883,
-     0.535,
-     0.488,
-     0.481,
-     0.5015,
-     0.4986,
-     0.4994]
-
-
-
-**2.4** 
 
 
 
 ```python
 def plot_trials(ax, trials, proportions):
-    
-    ax.plot(trials, proportions, 'o-', alpha=0.6);
-    ax.axhline(0.5, 0, 1, color='r');
-    ax.set_xlabel('number of flips');
-    ax.set_ylabel('proportions of heads from simulation');
-    ax.set_title('Proportions of Heads in Simulation vs. Total Numbers of Flips');
-    
+    ax.plot(trials, proportions, 'o-', alpha=0.6)
+    ax.axhline(0.5, 0, 1, color='r')
+    ax.set_xlabel('Number of flips', fontsize=14)
+    ax.set_ylabel('Proportions of heads from simulation', fontsize=14)
     return ax
-```
 
-
-
-
-```python
-fig, ax = plt.subplots(figsize=(8,8))
-
+fig, ax = plt.subplots(figsize=(8,6))
 plot_trials(ax, n_flips, proportions);
 ```
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_24_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_17_0.png)
 
 
-**2.5** 
+**2.4**.  What's the appropriate observation about the result of running the coin flip experiment with larger and larger numbers of coin flips?
 
-B
+**Answer:** The proportions **fluctuate** about their long-run value of 0.5 (what you might expect if you tossed the coin an infinite amount of times), in accordance with the notion of a fair coin (which we encoded in our simulation by having `np.random.choice` choose between two possibilities with equal probability), with the fluctuations seeming to become much smaller as the number of trials increases.
 
 
 ## Multiple Replications of the Coin Flip Experiment
 
 The coin flip experiment that we did above gave us some insight, but we don't have a good notion of how robust our results are under repetition as we've only run one experiment for each number of coin flips. Lets redo the coin flip experiment, but let's incorporate multiple repetitions of each number of coin flips. For each choice of the number of flips,  $n$, in an experiment, we'll do $M$ replications of the coin tossing experiment.
 
-**Question 3. So Many Replications**
-
 **3.1**.  Write a function `make_throws` which takes as arguments the `n_replications` ($M$) and the `n_flips` ($n$), and returns a list (of size $M$) of proportions, with each proportion calculated by taking the ratio of heads to to total number of coin flips in each replication of $n$ coin tosses.  `n_flips` should be a python parameter whose value should default to 20 if unspecified when `make_throws` is called. 
 
-**3.2**.  Create the variables `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  Store in these variables the result of `make_throws` for `n_flips` equal to 100 and 1000 respectively while keeping `n_replications` at 200.  Create a plot with the histograms of `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  Make sure to title your plot, label the x-axis and provide a legend.(See below for an example of what the plot may look like)
-
-**3.3**. Calculate the mean and variance of the results in the each of the variables `proportions_at_n_flips_100` and `proportions_at_n_flips_1000` generated in 3.2.
-
-**3.4**. Based upon the plots what would be your guess of what type of distribution is represented by histograms in 3.2?  Explain the factors that influenced your choice.
-> A. Gamma Distribution
->
-> B. Beta Distribution
->
-> C. Gaussian
-
-**3.5**. Let's just assume for arguments sake that the answer to 3.4 is **C. Gaussian**.  Plot a **normed histogram** of your results `proportions_at_n_flips_1000` overlayed with your selection for the appropriate gaussian distribution to represent the experiment of flipping a coin 1000 times.   (**Hint:  What parameters should you use for your Gaussian?**)
-
-
-**Answers**
-
-**3.1**
 
 
 
@@ -447,110 +392,88 @@ def make_throws(n_replications : int, n_flips = 20) -> list:
         replication = throw_a_coin(n_flips)
         mean_of_replication = np.mean(replication == 'H')
         sample_props.append(mean_of_replication)
+        
     return sample_props
-
 ```
 
 
-**3.2**
+**3.2**.  Create the variables `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  Store in these variables the result of `make_throws` for `n_flips` equal to 100 and 1000 respectively while keeping `n_replications` at 200.  Create a plot with the histograms of `proportions_at_n_flips_100` and `proportions_at_n_flips_1000`.  
 
 
 
 ```python
 proportions_at_n_flips_100 = make_throws(n_replications=200, n_flips=100)
 proportions_at_n_flips_1000 = make_throws(n_replications=200, n_flips=1000)
-```
 
-
-
-
-```python
 def plot_sample_mean_distributions(ax, mean_samples, labels):
     [ax.hist(sample, alpha=0.3, label=labels[i], bins=12) for i, sample in enumerate(mean_samples)]
-    ax.set_xlabel("mean proportion of heads")
-    ax.set_title("Histogram of Samples at Different Numbers of Flips");
+    ax.set_xlabel("Mean proportion of heads", fontsize=14)
+    ax.set_title("Histogram of Samples at Different Numbers of Flips", fontsize=14);
     ax.legend();
     return ax
 
 mean_samples = [proportions_at_n_flips_100, proportions_at_n_flips_1000]
 labels = ["100 flips", "1000 flips"]
-fig, ax = plt.subplots(figsize=(8,8))
+fig, ax = plt.subplots(figsize=(8,6))
 plot_sample_mean_distributions(ax, mean_samples, labels);
-
 ```
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_34_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_23_0.png)
 
 
-**3.3**
+**3.3**. Calculate the mean and variance of the results in the each of the variables `proportions_at_n_flips_100` and `proportions_at_n_flips_1000` generated in 3.2.
 
 
 
 ```python
-print("Mean of 200 trials of 100 flips each: {:.4} ".format(np.mean(proportions_at_n_flips_100)))
-print("Mean of 200 trials of 1000 flips each: {:.4} ".format(np.mean(proportions_at_n_flips_1000)))
-print("Variance of 200 trials of 100 flips each: {:.5} ".format(np.var(proportions_at_n_flips_100)))
-print("Variance of 200 trials of 1000 flips each: {:.5} ".format(np.var(proportions_at_n_flips_1000)))
+print("Mean of 200 trials of 100 flips each: {:.3f} ".format(np.mean(proportions_at_n_flips_100)))
+print("Mean of 200 trials of 1000 flips each: {:.3f} ".format(np.mean(proportions_at_n_flips_1000)))
+print("Variance of 200 trials of 100 flips each: {:.4f} ".format(np.var(proportions_at_n_flips_100)))
+print("Variance of 200 trials of 1000 flips each: {:.4f} ".format(np.var(proportions_at_n_flips_1000)))
 ```
 
 
-    Mean of 200 trials of 100 flips each: 0.5014 
-    Mean of 200 trials of 1000 flips each: 0.4995 
-    Variance of 200 trials of 100 flips each: 0.0022967 
-    Variance of 200 trials of 1000 flips each: 0.00028715 
+    Mean of 200 trials of 100 flips each: 0.498 
+    Mean of 200 trials of 1000 flips each: 0.500 
+    Variance of 200 trials of 100 flips each: 0.0022 
+    Variance of 200 trials of 1000 flips each: 0.0002 
 
 
-**3.4**
+**3.4**. Based upon the plots what would be your guess of what type of distribution is represented by histograms in 3.2?  Explain the factors that influenced your choice.
 
-C -- The distributions are roughly symmetric and unimodal and each is comprised of a sum of iid distributions (i.e. the bernoullis representing the coin flips), so we feel that the gaussian would be a good guess as the underlying distribution.
+**Answer:** The distributions are roughly symmetric and unimodal and each is comprised of a sum of iid distributions (i.e. the bernoullis representing the coin flips), so we feel that the gaussian would be a good guess as the underlying distribution.
 
 
-
-**3.5**
+**3.5**. Plot a **normed histogram** of your results `proportions_at_n_flips_1000` overlayed with your selection for the appropriate gaussian distribution to represent the experiment of flipping a coin 1000 times.   (**Hint:  What parameters should you use for your Gaussian?**)
 
 
 
 ```python
-fig, ax = plt.subplots(figsize=(8,8))
-x = np.linspace(0.44,0.56, num=500)
+fig, ax = plt.subplots(figsize=(8,6))
 
+x = np.linspace(0.44, 0.56, num=500)
 ax.hist(np.array(proportions_at_n_flips_1000), alpha=0.3, label="1000 flips")
 ax.plot(x, scipy.stats.norm.pdf(x, loc=np.mean(proportions_at_n_flips_1000), 
-                                scale = np.sqrt(np.var(proportions_at_n_flips_1000))), label="Gaussian PDF" )
-ax.set_xlabel("proportion of heads")
-ax.set_title("Histogram of Samples at Different Numbers of Flips");
-ax.legend();
-
+                                scale = np.sqrt(np.var(proportions_at_n_flips_1000))), label="Gaussian PDF")
+ax.set_title("Histogram of Samples at Different Numbers of Flips", fontsize=14);
+ax.legend(fontsize=14);
 ```
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_40_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_28_0.png)
 
 
 ## Working With Distributions in Numpy/Scipy
 
 Earlier in this problem set we've been introduced to the Bernoulli "aka coin-flip" distribution and worked with it indirectly by using np.random.choice to make a random selection between two elements 'H' and 'T'.  Let's see if we can create comparable results by taking advantage of the machinery for working with other probability distributions in python using numpy and scipy.
 
-**Question 4: My Normal Binomial**
-
 Let's use our coin-flipping machinery to do some experimentation with the binomial distribution.  The binomial distribution, often represented by  $k \sim Binomial(n, p)$ is often described the number of successes in `n` Bernoulli trials with each trial having a probability of success `p`.  In other words,  if you flip a coin `n` times, and each coin-flip has a probability `p` of landing heads, then the number of heads you observe is a sample from a bernoulli distribution.
 
+
 **4.1**. Sample the binomial distribution using coin flips by writing a function `sample_binomial1` which takes in integer parameters `n` and `size`.  The output of `sample_binomial1` should be a list of length `size` observations with each observation being the outcome of flipping a coin `n` times and counting the number of heads.  By default `size` should be 1.  Your code should take advantage of the `throw_a_coin` function we defined above. 
-
-**4.2**. Sample the binomial distribution directly using scipy.stats.binom.rvs by writing another function `sample_binomial2` that takes in integer parameters `n` and `size` as well as a float `p` parameter `p` where $p \in [0 \ldots 1]$.  The output of `sample_binomial2` should be a list of length `size` observations with each observation a sample of $Binomial(n, p)$ (taking advantage of scipy.stats.binom).  By default `size` should be 1 and `p` should be 0.5.
-
-**4.3**. Run sample_binomial1 with 25 and 200 as values of the `n` and `size` parameters respectively and store the result in `binomial_trials1`. Run sample_binomial2 with 25, 200 and 0.5 as values of the `n`, `size` and `p` parameters respectively and store the results in `binomial_trials2`.  Plot normed histograms of `binomial_trials1` and `binomial_trials2`.  On both histograms, overlay a plot of the pdf of $Binomial(n=25, p=0.5)$
-
-**4.4**. How do the plots in 4.3 compare?
-
-**4.5**. Find the mean and variance of `binomial_trials1`.  How do they compare to the mean and variance of $Binomial(n=25, p=0.5)$
-
-**Answers**
-
-**4.1**
 
 
 
@@ -560,11 +483,11 @@ def sample_binomial1(n : int, size : int = 1) -> list:
     Generate a list of observations with each observation being the outcome of flipping a coin `n` times and counting 
     the number of heads
     Args:
-        n: number of coins flipped
+        n: the number of coins flipped
         size:  The number of observations
 
     Returns:
-        A list of observations each one being the total number of heads out of  n total coins flipped
+        A list of observations each one being the total number of heads out of n total coins flipped
     """
     observations = []
     for i in range(size):
@@ -575,7 +498,8 @@ def sample_binomial1(n : int, size : int = 1) -> list:
 ```
 
 
-**4.2**
+**4.2**. Sample the binomial distribution directly using scipy.stats.binom.rvs by writing another function `sample_binomial2` that takes in integer parameters `n` and `size` as well as a float `p` parameter `p` where $p \in [0 \ldots 1]$.  The output of `sample_binomial2` should be a list of length `size` observations with each observation a sample of $Binomial(n, p)$ (taking advantage of scipy.stats.binom).  By default `size` should be 1 and `p` should be 0.5.
+
 
 
 
@@ -596,7 +520,7 @@ def sample_binomial2(n : int, size : int = 1, p : float = 0.5) -> list:
 ```
 
 
-**4.3**
+**4.3**. Run sample_binomial1 with 25 and 200 as values of the `n` and `size` parameters respectively and store the result in `binomial_trials1`. Run sample_binomial2 with 25, 200 and 0.5 as values of the `n`, `size` and `p` parameters respectively and store the results in `binomial_trials2`.  Plot normed histograms of `binomial_trials1` and `binomial_trials2`.  On both histograms, overlay a plot of the pdf of $Binomial(n=25, p=0.5)$
 
 
 
@@ -605,47 +529,46 @@ binomial_trials1 = sample_binomial1(n=25, size=200)
 binomial_trials2 = sample_binomial2(n=25, size=200, p = 0.5)
 
 def plot_binomial_trials(ax, mean_samples, labels):
-    [ax.hist(sample,alpha=0.3, label=labels[i], bins=12) for i, sample in enumerate(mean_samples)]
+    [ax.hist(sample, alpha=0.3, label=labels[i], bins=12) for i, sample in enumerate(mean_samples)]
     
-    binomial = scipy.stats.binom.pmf(range(26),25, 0.5)
+    binomial = scipy.stats.binom.pmf(range(26), 25, 0.5)
     ax.plot(binomial, label="Binomial PMF")
-    ax.set_xlabel("number of successes/heads")
-    ax.set_title("Normed Binomial Histograms from Flipping Coins and Directly from Scipy");
+    ax.set_xlabel("number of successes/heads", fontsize=14)
+    ax.set_title("Normed Binomial Histograms", fontsize=14);
     ax.legend();
     return ax
 
 binomial_trials = [binomial_trials1, binomial_trials2]
 labels = ["Flipping Coins", "Scipy"]
-fig, ax = plt.subplots(figsize=(8,8))
+fig, ax = plt.subplots(figsize=(8,6))
 plot_binomial_trials(ax, binomial_trials, labels);
-
 ```
 
 
 
-![png](cs109a_hw0_web_files/cs109a_hw0_web_49_0.png)
+![png](cs109a_hw0_web_files/cs109a_hw0_web_35_0.png)
 
 
-**4.4**
+**4.4**. How do the plots in 4.3 compare?
 
-They are similar enough for any differences to be the result of random chance.  Since the underlying distributions being plotted are the result of the sum of iid distributions (Bernoullis), the CLT holds and the resulting distributions although Binomial should be also be approximately Gaussian.
+**Answer:** They are similar enough for any differences to be the result of random chance.  Since the underlying distributions being plotted are the result of the sum of iid distributions (Bernoullis), the CLT holds and the resulting distributions although Binomial should be also be approximately Gaussian.
 
 
-**4.5**
+**4.5**. Find the mean and variance of `binomial_trials1`.  How do they compare to the mean and variance of $Binomial(n=25, p=0.5)$
 
 
 
 ```python
-print("Mean of Binomial Trials From Coin Flips: {}".format(np.mean(binomial_trials1)))
-print("Variance of Binomial Trials From Coin Flips: {}".format(np.var(binomial_trials1)))
-print("Mean of Binomial(n=25, p=0.5): {}".format(scipy.stats.binom.mean(25, 0.5)))
-print("Variance of Binomial(n=25, p=0.5): {}".format(scipy.stats.binom.var(25, 0.5)))
+print("Mean of Binomial Trials From Coin Flips: {:.2f}".format(np.mean(binomial_trials1)))
+print("Variance of Binomial Trials From Coin Flips: {:.2f}".format(np.var(binomial_trials1)))
+print("Mean of Binomial(n=25, p=0.5): {:.2f}".format(scipy.stats.binom.mean(25, 0.5)))
+print("Variance of Binomial(n=25, p=0.5): {:.2f}".format(scipy.stats.binom.var(25, 0.5)))
 ```
 
 
-    Mean of Binomial Trials From Coin Flips: 12.91
-    Variance of Binomial Trials From Coin Flips: 6.211899999999999
-    Mean of Binomial(n=25, p=0.5): 12.5
+    Mean of Binomial Trials From Coin Flips: 12.48
+    Variance of Binomial Trials From Coin Flips: 6.64
+    Mean of Binomial(n=25, p=0.5): 12.50
     Variance of Binomial(n=25, p=0.5): 6.25
 
 
@@ -653,7 +576,7 @@ The means are very similar.  The variance of the sample differs somewhat from th
 
 ## Unit Testing 
 
-In the following section we're going to do a brief introduction to unit testing.  We do so not only because unit testing has become an increasingly important part of of the methodology of good software practices, but also because we plan on using unit tests as part of our own CS109 grading practices as a way of increasing rigor and repeatability decreasing complexity and manual workload in our evaluations of your code.  We'll provide an example unit test at the end of this section.
+In the following section we're going to do a brief introduction to unit testing.  We do so not only because unit testing has become an increasingly important part of the methodology of good software practices, but also because we plan on using unit tests as part of our own CS109 grading practices as a way of increasing rigor and repeatability decreasing complexity and manual workload in our evaluations of your code.  We'll provide an example unit test at the end of this section.
 
 
 
@@ -679,50 +602,18 @@ def throw_a_coin(N):
 
 
 ```python
-throw_a_coin(0)
+print(throw_a_coin(0))
+print(throw_a_coin(5))
+print(throw_a_coin(8))
 ```
 
 
+    []
+    ['H' 'H' 'T' 'T' 'H']
+    ['T' 'H' 'H' 'T' 'T' 'H' 'H' 'H']
 
 
-
-    array([], dtype='<U1')
-
-
-
-Great!  If we give it positive values of $N$ we should get that number of 'H's and 'T's.
-
-
-
-```python
-throw_a_coin(5)
-```
-
-
-
-
-
-    array(['T', 'H', 'H', 'T', 'T'], dtype='<U1')
-
-
-
-
-
-```python
-throw_a_coin(8)
-```
-
-
-
-
-
-    array(['T', 'T', 'H', 'T', 'H', 'T', 'T', 'H'], dtype='<U1')
-
-
-
-Exactly what we expected!  
-
-What happens if the input isn't a positive integer though?
+Great! If we give it positive values of $N$ we should get that number of 'H's and 'T's, which is exactly what we expect. What happens if the input isn't a positive integer though?
 
 
 
@@ -736,11 +627,11 @@ throw_a_coin(4.5)
 
     TypeError                                 Traceback (most recent call last)
 
-    <ipython-input-35-7a98054470df> in <module>
+    <ipython-input-22-7a98054470df> in <module>
     ----> 1 throw_a_coin(4.5)
     
 
-    <ipython-input-31-9b62022d816e> in throw_a_coin(N)
+    <ipython-input-20-9b62022d816e> in throw_a_coin(N)
           1 def throw_a_coin(N):
     ----> 2     return np.random.choice(['H','T'], size=N)
     
@@ -774,11 +665,11 @@ throw_a_coin(-4)
 
     ValueError                                Traceback (most recent call last)
 
-    <ipython-input-36-8560c28a4e91> in <module>
+    <ipython-input-23-8560c28a4e91> in <module>
     ----> 1 throw_a_coin(-4)
     
 
-    <ipython-input-31-9b62022d816e> in throw_a_coin(N)
+    <ipython-input-20-9b62022d816e> in throw_a_coin(N)
           1 def throw_a_coin(N):
     ----> 2     return np.random.choice(['H','T'], size=N)
     
@@ -821,26 +712,22 @@ def test_throw_a_coin_length_positive():
     for n in range(1,20):
         assert len(throw_a_coin(n)) == n
 
-## verify that throw_a_coin produces an empty list (i.e. a list of length 0) if provide with an input
-## of 0
+## verify that throw_a_coin produces an empty list (i.e. a list of length 0) if provide with an input of 0
 def test_throw_a_coin_length_zero():
     ## should be the empty array
     assert len(throw_a_coin(0)) == 0
     
-
 ## verify that given a positive floating point input (i.e. 4.34344298547201), throw_a_coin produces a list of
 ## coin flips of length equal to highest integer less than the input
 def test_throw_a_coin_float():
     for n in np.random.exponential(7, size=5):
         assert len(throw_a_coin(n)) == np.floor(n)
         
-
 ## verify that given any negative input (e.g. -323.4), throw_a_coin produces an empty
 def test_throw_a_coin_negative():
     for n in range(-7, 0):
         assert len(throw_a_coin(n)) == 0
 
-        
 ipytest.run_tests()
 ```
 
@@ -855,9 +742,9 @@ ipytest.run_tests()
     ERROR: unittest.case.FunctionTestCase (test_throw_a_coin_float)
     ----------------------------------------------------------------------
     Traceback (most recent call last):
-      File "<ipython-input-37-78a86d656b91>", line 22, in test_throw_a_coin_float
+      File "<ipython-input-24-45bcb54ecd5f>", line 20, in test_throw_a_coin_float
         assert len(throw_a_coin(n)) == np.floor(n)
-      File "<ipython-input-31-9b62022d816e>", line 2, in throw_a_coin
+      File "<ipython-input-20-9b62022d816e>", line 2, in throw_a_coin
         return np.random.choice(['H','T'], size=N)
       File "mtrand.pyx", line 1163, in mtrand.RandomState.choice
       File "mtrand.pyx", line 995, in mtrand.RandomState.randint
@@ -869,9 +756,9 @@ ipytest.run_tests()
     ERROR: unittest.case.FunctionTestCase (test_throw_a_coin_negative)
     ----------------------------------------------------------------------
     Traceback (most recent call last):
-      File "<ipython-input-37-78a86d656b91>", line 28, in test_throw_a_coin_negative
+      File "<ipython-input-24-45bcb54ecd5f>", line 25, in test_throw_a_coin_negative
         assert len(throw_a_coin(n)) == 0
-      File "<ipython-input-31-9b62022d816e>", line 2, in throw_a_coin
+      File "<ipython-input-20-9b62022d816e>", line 2, in throw_a_coin
         return np.random.choice(['H','T'], size=N)
       File "mtrand.pyx", line 1163, in mtrand.RandomState.choice
       File "mtrand.pyx", line 995, in mtrand.RandomState.randint
@@ -887,17 +774,8 @@ ipytest.run_tests()
 
 As you see, we were able to use pytest (and ipytest which allows us to run pytest tests in our ipython notebooks) to automate the tests that we constructed manually before and get the same errors and successes.  Now time to fix our code and write our own test!
 
-**Question 5: You Better Test Yourself before You Wreck Yourself!**
-
-Now it's time to fix `throw_a_coin` so that it passes the tests we've written above as well as add our own test to the mix!
-
 **5.1**. Write a new function called `throw_a_coin_properly` that will pass the tests that we saw above.  For your convenience we'll provide a new jupyter notebook cell with the tests rewritten for the new function.  All the tests should pass.  For a positive floating point input, we want `throw_a_coin_properly` to treat the input as if it were rounded down to the nearest integer.  For a any negative number input, we want `throw_a_coin_properly` to treat the input as if it were 0.
 
-**5.2**. Write a new test for `throw_a_coin_properly` that verifies that all the elements of the resultant arrays are 'H' or 'T'.
-
-**Answers**
-
-**5.1**
 
 
 
@@ -906,7 +784,6 @@ def throw_a_coin_properly(n_trials):
     n = int(n_trials)    
     if n < 0: n = 0       
     return np.random.choice(['H', 'T'], size=n)
-    
 ```
 
 
@@ -918,8 +795,7 @@ ipytest.clean_tests("test_throw_a_coin*")
 def test_throw_a_coin_properly_length_positive():
     for n in range(1,20):
         assert len(throw_a_coin_properly(n)) == n
-        
-
+    
 def test_throw_a_coin_properly_length_zero():
     ## should be the empty array
     assert len(throw_a_coin_properly(0)) == 0
@@ -930,13 +806,10 @@ def test_throw_a_coin_properly_float():
     for n in np.random.exponential(7, size=5):
         assert len(throw_a_coin_properly(n)) == np.floor(n)
         
-
 def test_throw_a_coin_properly_negative():
-    
     for n in range(-7, 0):
         assert len(throw_a_coin_properly(n)) == 0
 
-        
 ipytest.run_tests()
 ```
 
@@ -947,12 +820,12 @@ ipytest.run_tests()
     unittest.case.FunctionTestCase (test_throw_a_coin_properly_negative) ... ok
     
     ----------------------------------------------------------------------
-    Ran 4 tests in 0.004s
+    Ran 4 tests in 0.005s
     
     OK
 
 
-**5.2** 
+**5.2**. Write a new test for `throw_a_coin_properly` that verifies that all the elements of the resultant arrays are 'H' or 'T'.
 
 
 
@@ -961,15 +834,11 @@ ipytest.clean_tests("test_throw_a_coin*")
 
 ## write a test that verifies you don't have any other elements except H's and T's
 def test_throw_a_coin_properly_verify_H_T():
-    
-    # your code here
-    
-    #randomly generate throws
+    ## randomly generate throws
     throws = 25 * np.random.randn(10)
     
     for throw in throws:
         assert np.all(np.isin(throw_a_coin_properly(throw), ['H', 'T']))
-        
         
 ipytest.run_tests()
 ```
@@ -978,7 +847,7 @@ ipytest.run_tests()
     unittest.case.FunctionTestCase (test_throw_a_coin_properly_verify_H_T) ... ok
     
     ----------------------------------------------------------------------
-    Ran 1 test in 0.003s
+    Ran 1 test in 0.002s
     
     OK
 
