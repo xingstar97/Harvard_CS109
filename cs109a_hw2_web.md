@@ -11,6 +11,7 @@ nav_include: 4
 
 
 
+
 ```python
 import requests
 from IPython.core.display import HTML
@@ -106,44 +107,19 @@ from statsmodels.api import OLS
 
 ## Predicting Taxi Pickups in NYC
 
-In this homework, we will explore k-nearest neighbor and linear regression methods for predicting a quantitative variable. Specifically, we will build regression models that can predict the number of taxi pickups in New York city at any given time of the day. These prediction models will be useful, for example, in monitoring traffic in the city.
-
-The data set for this problem is given in the file `dataset_1.csv`.  You will need to separate it into training and test sets. The first column contains the time of a day in minutes, and the second column contains the number of pickups observed at that time. The data set covers taxi pickups recorded in NYC during Jan 2015.
-
-We will fit regression models that use the time of the day (in minutes) as a predictor and predict the average number of taxi pickups at that time. The models will be fitted to the training set and  evaluated on the test set. The performance of the models will be evaluated using the $R^2$ metric.
-
-<div class="exercise"> <b> Question 1  [25 pts]</b> </div>
+In this homework, we will explore k-nearest neighbor and linear regression methods for predicting a quantitative variable. **Specifically, we will build regression models that can predict the number of taxi pickups in New York city at any given time of the day.** These prediction models will be useful, for example, in monitoring traffic in the city.
 
 **1.1**. Use pandas to load the dataset from the csv file `dataset_1.csv` into a pandas data frame.  Use the `train_test_split` method from `sklearn` with a `random_state` of 42 and a `test_size` of 0.2 to split the dataset into training and test sets.  Store your train set dataframe in the variable `train_data`.  Store your test set dataframe in the variable `test_data`.
-
-
-**1.2**. Generate a scatter plot of the training data points with clear labels on the x and y axes. The time of the day on the x-axis and the number of taxi pickups on the y-axis.  Make sure to title your plot.
-
-**1.3**. Does the pattern of taxi pickups make intuitive sense to you? 
-
-
-**1.1 Use pandas to load the dataset from the csv file ...**
 
 
 
 ```python
 data = pd.read_csv("data/dataset_1.csv")
 train_data, test_data = train_test_split(data, test_size=0.2, random_state=42)
-
-print("Shape of full dataset is: {}".format(df.shape))
-print("Shape of training dataset is: {}".format(train_data.shape))
-print("Shape of test dataset is: {}".format(test_data.shape))
-print("Test size / total size: {}".format(test_data.shape[0]/data.shape[0]))
 ```
 
 
-    Shape of full dataset is: (1250, 2)
-    Shape of training dataset is: (1000, 2)
-    Shape of test dataset is: (250, 2)
-    Test size / total size: 0.2
-
-
-**1.2 Generate a scatter plot of the training data points**
+**1.2**. Generate a scatter plot of the training data points with clear labels on the x and y axes. The time of the day on the x-axis and the number of taxi pickups on the y-axis.  Make sure to title your plot.
 
 
 
@@ -155,60 +131,22 @@ ax.scatter(train_data['TimeMin'], train_data['PickupCount'], c='b', alpha=0.5, l
 ax.set_title(r'Training Set - Taxi Pickups in NYC')
 ax.set_xlabel(r'Time of the Day (Min)')
 ax.set_ylabel(r'Number of Taxi Pickups')
-ax.legend(loc='upper right')
+ax.legend(loc='upper right');
 ```
 
 
 
+![png](cs109a_hw2_web_files/cs109a_hw2_web_7_0.png)
 
 
-    <matplotlib.legend.Legend at 0x286d4b54e10>
+**1.3**. Does the pattern of taxi pickups make intuitive sense to you? 
+
+**Answer:** The pattern of pickups seems to bear out the social patterns you'd expect in a major urban metropolis like New York.  We see instances of very high pickup counts between midnight and 5 a.m, when people take cabs home as bars close (in a city that never sleeps as opposed to a quiet academic town like Boston). Then you see a linear trend of pickups starting at a low point in the early morning (just after 5 a.m.) during the beginning of the morning commute when you'd expect very little social going on and steadily increasing to the common social hours in the evening at night when you'd expect people to congregate for dinner, shows, concerts, etc. There does appear to be a mid-morning surge around 8am to 10:30am, perhaps as some people travel to work via taxi.  
 
 
-
-
-![png](cs109a_hw2_web_files/cs109a_hw2_web_8_1.png)
-
-
-**1.3 Discuss your results. Does the pattern of taxi pickups make intuitive sense to you?**
-
-The pattern of pickups seems to bear out the social patterns you'd expect in a major urban metropolis like New York.  We see instances of very high pickup counts between midnight and 5 a.m. when people take cabs home as bars close (in a city that never sleeps as opposed to a quiet academic town like Boston).  Then you see a linear trend of pickups starting at a low point in the early morning (just after 5 a.m.) during the beginning of the morning commute when you'd expect very little social going on and steadily increasing to the common social hours in the evening at night when you'd expect people to congregate for dinner, shows, concerts, etc. There does appear to be a mid-morning surge around 8am to 10:30am, perhaps as some people travel to work via taxi.  
-
-
-<div class="exercise"> <b>Question 2 [25 pts]</b> </div>
-
-In lecture we've seen k-Nearest Neighbors (k-NN) Regression, a non-parametric regression technique.  In the following problems please use built in functionality from `sklearn` to run k-NN Regression. 
-
+## k-Nearest Neighbors
 
 **2.1**. Choose `TimeMin` as your feature variable and `PickupCount` as your response variable.  Create a dictionary of `KNeighborsRegressor` objects and call it `KNNModels`.  Let the key for your `KNNmodels` dictionary be the value of $k$ and the value be the corresponding `KNeighborsRegressor` object. For $k \in \{1, 10, 75, 250, 500, 750, 1000\}$, fit k-NN regressor models on the training set (`train_data`). 
-
-**2.2**.  For each $k$ on the training set, overlay a scatter plot of the actual values of `PickupCount` vs. `TimeMin` with a scatter plot of **predictions** for `PickupCount` vs  `TimeMin`.  Do the same for the test set.  You should have one figure with 2 x 7 total subplots; for each $k$ the figure should have two subplots, one subplot for the training set and one for the test set. 
-
-**Hints**:
-1. Each subplot should use different color and/or markers to distinguish k-NN regression prediction values from the actual data values.
-2. Each subplot must have appropriate axis labels, title, and legend.
-3. The overall figure should have a title.  
-
-
-**2.3**. Report the $R^2$ score for the fitted models on both the training and test sets for each $k$ (reporting the values in tabular form is encouraged).
-
-**2.4**. Plot, in a single figure, the $R^2$ values from the model on the training and test set as a function of $k$.  
-
-**Hints**:
-1. Again, the figure must have axis labels and a legend.
-2. Differentiate $R^2$ visualization on the training and test set by color and/or marker.
-3. Make sure the $k$ values are sorted before making your plot.
-
-**2.5**. Discuss the results:
-
-1. If $n$ is the number of observations in the training set, what can you say about a k-NN regression model that uses $k = n$?  
-2. What does an $R^2$ score of $0$ mean?  
-3. What would a negative $R^2$ score mean?  Are any of the calculated $R^2$ you observe negative?
-4. Do the training and test $R^2$ plots exhibit different trends?  Describe.  
-5. How does the value of $k$ affect the fitted model and in particular the training and test $R^2$ values?
-6. What is the best value of $k$ and what are the corresponding training/test set $R^2$ values?
-
-**2.1 Choose `TimeMin` as your feature variable and `PickupCount` as your response variable.  Create a dictionary ... **
 
 
 
@@ -222,7 +160,8 @@ for k in K:
 ```
 
 
-**2.2 For each $k$ on the training set, overlay a scatter plot ... **
+**2.2**.  For each $k$ on the training set, overlay a scatter plot of the actual values of `PickupCount` vs. `TimeMin` with a scatter plot of **predictions** for `PickupCount` vs  `TimeMin`.  Do the same for the test set.  You should have one figure with 2 x 7 total subplots; for each $k$ the figure should have two subplots, one subplot for the training set and one for the test set. 
+
 
 
 
@@ -253,10 +192,10 @@ f.subplots_adjust(top=0.85)
 
 
 
-![png](cs109a_hw2_web_files/cs109a_hw2_web_15_0.png)
+![png](cs109a_hw2_web_files/cs109a_hw2_web_13_0.png)
 
 
-**2.3 Report the $R^2$ score for the fitted models ... **
+**2.3**. Report the $R^2$ score for the fitted models on both the training and test sets for each $k$ (reporting the values in tabular form is encouraged).
 
 
 
@@ -270,86 +209,11 @@ for k in K:
     r2_test.append(KNNModels[k].score(test_data[['TimeMin']],test_data[['PickupCount']]))
     
 r2 = pd.DataFrame(np.transpose([K,r2_train,r2_test]), columns=['K', 'R2_Train', 'R2_Test'])
-r2
 ```
 
 
+**2.4**. Plot, in a single figure, the $R^2$ values from the model on the training and test set as a function of $k$.
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>K</th>
-      <th>R2_Train</th>
-      <th>R2_Test</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1.0</td>
-      <td>0.712336</td>
-      <td>-0.418932</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10.0</td>
-      <td>0.509825</td>
-      <td>0.272068</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>75.0</td>
-      <td>0.445392</td>
-      <td>0.390310</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>250.0</td>
-      <td>0.355314</td>
-      <td>0.340341</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>500.0</td>
-      <td>0.290327</td>
-      <td>0.270321</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>750.0</td>
-      <td>0.179434</td>
-      <td>0.164909</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>1000.0</td>
-      <td>0.000000</td>
-      <td>-0.000384</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-**2.4 Plot, in a single figure, the $R^2$ values from the model on the training and test set as a function of $k$**
 
 
 
@@ -365,7 +229,7 @@ plt.show()
 
 
 
-![png](cs109a_hw2_web_files/cs109a_hw2_web_19_0.png)
+![png](cs109a_hw2_web_files/cs109a_hw2_web_17_0.png)
 
 
 **2.5 Discuss the results**
@@ -399,39 +263,11 @@ plt.show()
 
     Based on test set $R^2$ scores, the best value of $k$ is 75 with a training set $R^2$ score of 0.445 and a test set score of 0.390. Note that *best* refers to performance on the test set, the set on which the model can be evaluated.
 
-<div class="exercise"> <b> Question 3 [25 pts] </b></div>
+## Simple Linear Regression
 
 We next consider simple linear regression, which we know from lecture is a parametric approach for regression that assumes that the response variable has a linear relationship with the predictor.  Use the `statsmodels` module for Linear Regression. This module has built-in functions to summarize the results of regression and to compute confidence intervals for estimated regression parameters.  
 
 **3.1**. Again choose `TimeMin` as your predictor and `PickupCount` as your response variable.  Create a `OLS` class instance and use it to fit a Linear Regression model on the training set (`train_data`).  Store your fitted model in the variable `OLSModel`.
-
-**3.2**. Re-create your plot from 2.2 using the predictions from `OLSModel` on the training and test set. You should have one figure with two subplots, one subplot for the training set and one for the test set.
-
-**Hints**:
-1. Each subplot should use different color and/or markers to distinguish Linear Regression prediction values from that of the actual data values.
-2. Each subplot must have appropriate axis labels, title, and legend.
-3. The overall figure should have a title.  
-
-
-**3.3**. Report the $R^2$ score for the fitted model on both the training and test sets.
-
-**3.4**. Report the slope and intercept values for the fitted linear model.  
-
-**3.5**. Report the $95\%$ confidence interval for the slope and intercept.
-
-**3.6**. Create a scatter plot of the residuals ($e = y - \hat{y}$) of the linear regression model on the training set as a function of the predictor variable (i.e. `TimeMin`). Place on your plot a horizontal line denoting the constant zero residual.  
-
-**3.7**. Discuss the results:
-
-1. How does the test $R^2$ score compare with the best test $R^2$ value obtained with k-NN regression?
-2. What does the sign of the slope of the fitted linear model convey about the data?  
-3. Based on the $95\%$ confidence interval, do you consider the estimates of the model parameters to be reliable?  
-4. Do you expect $99\%$ confidence intervals for the slope and intercept to be tighter or wider than the $95\%$ confidence intervals? Briefly explain your answer.  
-5. Based on the residuals plot that you made, discuss whether or not the assumption of linearity is valid for this data.
-6. Based on the data structure, what restriction on the model would you put at the endpoints (at $x\approx0$ and $x\approx1440$)?   What does this say about the linearity assumption?
-
-
-**3.1 Again choose `TimeMin` as your predictor and `PickupCount` as your response variable.  Create a `OLS` class instance ... **
 
 
 
@@ -457,8 +293,8 @@ print(texi_ols.summary())
     Dep. Variable:            PickupCount   R-squared:                       0.243
     Model:                            OLS   Adj. R-squared:                  0.242
     Method:                 Least Squares   F-statistic:                     320.4
-    Date:                Wed, 26 Sep 2018   Prob (F-statistic):           2.34e-62
-    Time:                        20:50:26   Log-Likelihood:                -4232.9
+    Date:                Sun, 08 Sep 2019   Prob (F-statistic):           2.34e-62
+    Time:                        09:54:44   Log-Likelihood:                -4232.9
     No. Observations:                1000   AIC:                             8470.
     Df Residuals:                     998   BIC:                             8480.
     Df Model:                           1                                         
@@ -481,7 +317,7 @@ print(texi_ols.summary())
     strong multicollinearity or other numerical problems.
 
 
-**3.2 Re-create your plot from 2.2 using the predictions from `OLSModel` on the training and test set ... **
+**3.2**. Re-create your plot from 2.2 using the predictions from `OLSModel` on the training and test set. You should have one figure with two subplots, one subplot for the training set and one for the test set.
 
 
 
@@ -504,53 +340,49 @@ ax[1].set_xlabel(r'Time of the Day (Min)')
 ax[1].set_ylabel(r'Number of Taxi Pickups')
 ax[1].legend(loc='upper right')
 
-fig.suptitle('Numer of taxi pickups during a day', fontsize=14)
+fig.suptitle('Numer of taxi pickups during a day', fontsize=14);
 ```
 
 
 
+![png](cs109a_hw2_web_files/cs109a_hw2_web_24_0.png)
 
 
-    Text(0.5,0.98,'Numer of taxi pickups during a day')
+**3.3**. Report the $R^2$ score for the fitted model on both the training and test sets.
 
-
-
-
-![png](cs109a_hw2_web_files/cs109a_hw2_web_26_1.png)
-
-
-**3.3 Report the $R^2$ score for the fitted model on both the training and test sets. **
 
 
 
 ```python
 X_test = sm.add_constant(x_test)
-print("R-squared for training set: %f" % texi_ols.rsquared)
-print("R-squared for testing set: %f" % r2_score(y_test, texi_ols.predict(X_test)))
+print("R-squared for training set: {:.3f}".format(texi_ols.rsquared))
+print("R-squared for testing set: {:.3f}".format(r2_score(y_test, texi_ols.predict(X_test))))
 ```
 
 
-    R-squared for training set: 0.243026
-    R-squared for testing set: 0.240662
+    R-squared for training set: 0.243
+    R-squared for testing set: 0.241
 
 
-**3.4 Report the slope and intercept values for the fitted linear model.  **
+**3.4**. Report the slope and intercept values for the fitted linear model.  
+
 
 
 
 ```python
 beta0 = texi_ols.params[0]
 beta1 = texi_ols.params[1]
-print("Intercept of the OLS: %f" % beta0)
-print("Slope of the OLS: %f" % beta1)
+print("Intercept of the OLS: {:.2f}".format(beta0))
+print("Slope of the OLS: {:.2f}".format(beta1))
 ```
 
 
-    Intercept of the OLS: 16.750601
-    Slope of the OLS: 0.023335
+    Intercept of the OLS: 16.75
+    Slope of the OLS: 0.02
 
 
-**3.5 Report the $95\%$ confidence interval for the slope and intercept.**
+**3.5**. Report the $95\%$ confidence interval for the slope and intercept.
+
 
 
 
@@ -604,7 +436,8 @@ intervals
 
 
 
-**3.6 Create a scatter plot of the residuals**
+**3.6**. Create a scatter plot of the residuals ($e = y - \hat{y}$) of the linear regression model on the training set as a function of the predictor variable (i.e. `TimeMin`). Place on your plot a horizontal line denoting the constant zero residual.  
+
 
 
 
@@ -623,7 +456,7 @@ plt.show()
 
 
 
-![png](cs109a_hw2_web_files/cs109a_hw2_web_34_0.png)
+![png](cs109a_hw2_web_files/cs109a_hw2_web_32_0.png)
 
 
 **3.7 Discuss the results:**
@@ -653,62 +486,23 @@ plt.show()
   The assumption of linearity does not seem to be perfectly justified, as the residuals are not scattered randomly around 0 and there is a clear structure! <br>
 <br>
 
-
 6. Based on the data structure, what restriction on the model would you put at the endpoints (at $x\approx0$ and $x\approx1440$)?   What does this say about the linearity assumption?
 
     Looking at x=0 and x=1440, y values should be same because it’s only a  minute difference in time. That’s not the case for y though. This invalidates the linearity assumption. This can be checked with the residual plots.
 
   
 
-<div class="theme"> Outliers </div>
-
-You may recall from lectures that OLS Linear Regression can be susceptible to outliers in the data.  We're going to look at a dataset that includes some outliers and get a sense for how that affects modeling data with Linear Regression.  **Note, this is an open-ended question, there is not one correct solution (or one correct definition of an outlier).**
-
-
-<div class="exercise"><b> Question 4 [25 pts] </b></div>
-
-
-
+## Outliers 
 
 **4.1**. We've provided you with two files `outliers_train.txt` and `outliers_test.txt` corresponding to training set and test set data.  What does a visual inspection of training set tell you about the existence of outliers in the data?
-
-**4.2**. Choose `X` as your feature variable and `Y` as your response variable.  Use `statsmodel` to create a Linear Regression model on the training set data.  Store your model in the variable `OutlierOLSModel`.
-
-**4.3**. You're given the knowledge ahead of time that there are 3 outliers in the training set data.  The test set data doesn't have any outliers.  You want to remove the 3 outliers in order to get the optimal intercept and slope.  In the case that you're sure of the existence and number (3) of outliers ahead of time, one potential brute force method to outlier detection might be to find the best Linear Regression model on all possible subsets of the training set data with 3 points removed.  Using this method, how many times will you have to calculate the Linear Regression coefficients on the training data?
-
-**4.4**  In CS109 we're strong believers that creating heuristic models is a great way to build intuition. In that spirit, construct an approximate algorithm to find the 3 outlier candidates in the training data by taking advantage of the Linear Regression residuals. Place your algorithm in the function `find_outliers_simple`.  It should take the parameters `dataset_x` and `dataset_y` representing your features and response variable values (make sure your response variable is stored as a numpy column vector).  The return value should be a list `outlier_indices` representing the indices of the 3 outliers in the original datasets you passed in.  Remove the outliers that your algorithm identified, use `statsmodels` to create a Linear Regression model on the remaining training set data, and store your model in the variable `OutlierFreeSimpleModel`.
-
-
-**4.5** Create a figure with two subplots: the first is a scatterplot where the color of the points denotes the outliers from the non-outliers in the training set, and include two regression lines on this scatterplot: one fitted with the outliers included and one fitted with the outlier removed (all on the training set).  The second plot should include a scatterplot of points from the test set with the same two regression lines fitted on the training set: with and without outliers.  Visually which model fits the test set data more closely?
-
-
-
-**4.6**. Calculate the $R^2$ score for the `OutlierOLSModel` and the `OutlierFreeSimpleModel` on the test set data.  Which model produces a better $R^2$ score?
-
-**4.7**. One potential problem with the brute force outlier detection approach in 4.3 and the heuristic algorithm you constructed 4.4 is that they assume prior knowledge of the number of outliers.  In general you can't expect to know ahead of time the number of outliers in your dataset.  Alter the algorithm you constructed in 4.4 to create a more general heuristic (i.e. one which doesn't presuppose the number of outliers) for finding outliers in your dataset.  Store your algorithm in the function `find_outliers_general`.  It should take the parameters `dataset_x` and `dataset_y` representing your features and response variable values (make sure your response variable is stored as a numpy column vector).  It can take additional parameters as long as they have default values set.  The return value should be the list `outlier_indices` representing the indices of the outliers in the original datasets you passed in (in the order of 'severity').  Remove the outliers that your algorithm identified, use `statsmodels` to create a Linear Regression model on the remaining training set data, and store your model in the variable `OutlierFreeGeneralModel`.
-
-**Hints**:
-   1. How many outliers should you try to identify in each step?
-   2. If you plotted an $R^2$ score for each step the algorithm, what might that plot tell you about stopping conditions?
-    
-**4.8**. Run your algorithm in 4.7 on the training set data.  
-1. What outliers does it identify?
-2. How do those outliers compare to the outliers you found in 4.4?
-3. How does the general outlier-free Linear Regression model you created in 4.7 perform compared to the simple one in 4.4?
-
-**4.1  We've provided you with two files `outliers_train.txt` and `outliers_test.txt` corresponding to training set and test set data.  What does a visual inspection of training set tell you about the existence of outliers in the data? ** 
+ 
 
 
 
 ```python
 outliers_train = pd.read_csv("data/outliers_train.csv")
 outliers_test = pd.read_csv("data/outliers_test.csv")
-```
 
-
-
-
-```python
 def scatterplot(x, y, title):
     fig, ax = plt.subplots(1, 1)
     ax.grid(True, lw=1.75, ls='--', alpha=0.15)
@@ -718,27 +512,15 @@ def scatterplot(x, y, title):
     ax.set_ylabel(r'$Y$')
     
     return ax
-```
 
-
-
-
-```python
 x_train, y_train = outliers_train['X'], outliers_train['Y']
 x_test, y_test = outliers_test['X'], outliers_test['Y']
-scatterplot(x_train, y_train, 'Scatter Plot of Y vs X')
+scatterplot(x_train, y_train, 'Scatter Plot of Y vs X');
 ```
 
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x1c183b8da0>
-
-
-
-
-![png](cs109a_hw2_web_files/cs109a_hw2_web_42_1.png)
+![png](cs109a_hw2_web_files/cs109a_hw2_web_37_0.png)
 
 
 Visual inspection of the training set tells me that some potential outliers are: 
@@ -746,17 +528,14 @@ Visual inspection of the training set tells me that some potential outliers are:
 - Top Left Cornor: two points around (-2.0, 300)
 - Bottom Right Cornor: one point around (2.0, -300)
 
-**4.2 Choose `X` as your feature variable and `Y` as your response variable.  Use `statsmodel` to create ... **
+**4.2**. Choose `X` as your feature variable and `Y` as your response variable.  Use `statsmodel` to create a Linear Regression model on the training set data.  Store your model in the variable `OutlierOLSModel`.
 
 
 
 ```python
 X_train = sm.add_constant(x_train)
-
 OutlierOLSModel = sm.OLS(y_train, X_train)
-
 results_sm = OutlierOLSModel.fit()
-
 print(results_sm.summary())
 ```
 
@@ -766,8 +545,8 @@ print(results_sm.summary())
     Dep. Variable:                      Y   R-squared:                       0.084
     Model:                            OLS   Adj. R-squared:                  0.066
     Method:                 Least Squares   F-statistic:                     4.689
-    Date:                Sun, 28 Jul 2019   Prob (F-statistic):             0.0351
-    Time:                        19:26:28   Log-Likelihood:                -343.59
+    Date:                Sun, 08 Sep 2019   Prob (F-statistic):             0.0351
+    Time:                        09:54:45   Log-Likelihood:                -343.59
     No. Observations:                  53   AIC:                             691.2
     Df Residuals:                      51   BIC:                             695.1
     Df Model:                           1                                         
@@ -788,25 +567,18 @@ print(results_sm.summary())
     [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
 
-**4.3 One potential brute force method to outlier detection might be to find the best Linear Regression model on all possible subsets of the training set data with 3 points removed.  Using this method, how many times will you have to calculate the Linear Regression coefficients on the training data?**
-  
-  
+**4.3**. You're given the knowledge ahead of time that there are 3 outliers in the training set data.  The test set data doesn't have any outliers.  You want to remove the 3 outliers in order to get the optimal intercept and slope.  In the case that you're sure of the existence and number (3) of outliers ahead of time, one potential brute force method to outlier detection might be to find the best Linear Regression model on all possible subsets of the training set data with 3 points removed.  Using this method, how many times will you have to calculate the Linear Regression coefficients on the training data?  
 
 Picking 3 out of 53 samples gives in total (53 x 52 x 51) / (3 x 2) = 23,426 combinations.
 
-**4.4 CS109 hack ... **
+**4.4**  In CS109 we're strong believers that creating heuristic models is a great way to build intuition. In that spirit, construct an approximate algorithm to find the 3 outlier candidates in the training data by taking advantage of the Linear Regression residuals. Place your algorithm in the function `find_outliers_simple`.  It should take the parameters `dataset_x` and `dataset_y` representing your features and response variable values (make sure your response variable is stored as a numpy column vector).  The return value should be a list `outlier_indices` representing the indices of the 3 outliers in the original datasets you passed in.  Remove the outliers that your algorithm identified, use `statsmodels` to create a Linear Regression model on the remaining training set data, and store your model in the variable `OutlierFreeSimpleModel`.
 
 
 
 ```python
 def find_outliers_simple(dataset_x, dataset_y):
-    ## create the X matrix by appending a column of ones to x_train
     X_train = sm.add_constant(dataset_x)
-
-    ## build the OLS model from the training data
     OutlierOLSModel = sm.OLS(dataset_y, X_train)
-
-    ## fit and save regression info 
     results_sm = OutlierOLSModel.fit()
     
     ## create a dataframe for labeling outliers
@@ -816,50 +588,21 @@ def find_outliers_simple(dataset_x, dataset_y):
                        'resid_abs': abs(results_sm.resid)
                       })
     
-    df.sort_values(by=['resid_abs'], ascending=False, inplace=True)
-    
+    df.sort_values(by=['resid_abs'], ascending=False, inplace=True)    
     outlier_indices = list(df.iloc[:3].index)
     
     return outlier_indices
-```
 
-
-
-
-```python
 ## get outliers
 outlier_indices = find_outliers_simple(x_train, y_train)
-print(outlier_indices)
-```
-
-
-    [50, 51, 52]
-
-
-
-
-```python
 outliers_train_clean = outliers_train.drop(outlier_indices)
-```
 
-
-
-
-```python
 ## calculate outlier model
 x_train_clean, y_train_clean = outliers_train_clean['X'], outliers_train_clean['Y']
-
-## create the X matrix by appending a column of ones to x_train
 X_train_clean = sm.add_constant(x_train_clean)
-
-## build the OLS model from the training data
 OutlierFreeSimpleModel = sm.OLS(y_train_clean, X_train_clean)
-
-## fit and save regression info 
 results_sm_clean = OutlierFreeSimpleModel.fit()
-
 print(results_sm_clean.summary())
-
 ```
 
 
@@ -868,8 +611,8 @@ print(results_sm_clean.summary())
     Dep. Variable:                      Y   R-squared:                       0.404
     Model:                            OLS   Adj. R-squared:                  0.391
     Method:                 Least Squares   F-statistic:                     32.50
-    Date:                Wed, 26 Sep 2018   Prob (F-statistic):           7.16e-07
-    Time:                        21:38:15   Log-Likelihood:                -309.21
+    Date:                Sun, 08 Sep 2019   Prob (F-statistic):           7.16e-07
+    Time:                        09:54:45   Log-Likelihood:                -309.21
     No. Observations:                  50   AIC:                             622.4
     Df Residuals:                      48   BIC:                             626.2
     Df Model:                           1                                         
@@ -890,7 +633,7 @@ print(results_sm_clean.summary())
     [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 
 
-**4.5 Create a figure with two subplots: the first is a scatterplot ... **
+**4.5** Create a figure with two subplots: the first is a scatterplot where the color of the points denotes the outliers from the non-outliers in the training set, and include two regression lines on this scatterplot: one fitted with the outliers included and one fitted with the outlier removed (all on the training set).  The second plot should include a scatterplot of points from the test set with the same two regression lines fitted on the training set: with and without outliers.  Visually which model fits the test set data more closely?
 
 
 
@@ -917,24 +660,17 @@ ax[1].plot(x_train_clean, results_sm_clean.fittedvalues, c='b', alpha=0.5, label
 ax[1].set_title(r'Testing Set')
 ax[1].set_xlabel(r'$X$')
 ax[1].set_ylabel(r'$Y$')
-ax[1].legend(loc='upper right')
+ax[1].legend(loc='upper right');
 ```
 
 
 
-
-
-    <matplotlib.legend.Legend at 0x286d8e6af60>
-
-
-
-
-![png](cs109a_hw2_web_files/cs109a_hw2_web_54_1.png)
+![png](cs109a_hw2_web_files/cs109a_hw2_web_46_0.png)
 
 
 Visually the regression line without outliers fit the test set data more closely.  
 
-**4.6  Calculate the $R^2$ score for the `OutlierOLSModel` and the `OutlierFreeSimpleModel` on the test set data.  Which model produces a better $R^2$ score?**
+**4.6**. Calculate the $R^2$ score for the `OutlierOLSModel` and the `OutlierFreeSimpleModel` on the test set data.  Which model produces a better $R^2$ score?
 
 
 
@@ -943,18 +679,19 @@ X_test = sm.add_constant(x_test)
 r2_raw = r2_score(y_test, results_sm.predict(X_test))
 r2_clean = r2_score(y_test, results_sm_clean.predict(X_test))
 
-print("OutlierOLSModel R-squared: %f" % r2_raw)
-print("OutlierFreeSimpleModel R-squared: %f" % r2_clean)
+print("OutlierOLSModel R-squared: {:.3f}".format(r2_raw))
+print("OutlierFreeSimpleModel R-squared: {:.3f}".format(r2_clean))
 ```
 
 
-    OutlierOLSModel R-squared: 0.340857
-    OutlierFreeSimpleModel R-squared: 0.452957
+    OutlierOLSModel R-squared: 0.341
+    OutlierFreeSimpleModel R-squared: 0.453
 
 
 Conclusion: OutlierFreeSimpleModel is better than OutlierOLSModel.
 
-**4.7 One potential problem with the brute force outlier detection approach in 4.3 and the heuristic algorithm you constructed 4.4 is that they assume prior knowledge of the number of outliers. **
+**4.7**. One potential problem with the brute force outlier detection approach in 4.3 and the heuristic algorithm you constructed 4.4 is that they assume prior knowledge of the number of outliers.  In general you can't expect to know ahead of time the number of outliers in your dataset.  Alter the algorithm you constructed in 4.4 to create a more general heuristic (i.e. one which doesn't presuppose the number of outliers) for finding outliers in your dataset.  Store your algorithm in the function `find_outliers_general`.  It should take the parameters `dataset_x` and `dataset_y` representing your features and response variable values (make sure your response variable is stored as a numpy column vector).  It can take additional parameters as long as they have default values set.  The return value should be the list `outlier_indices` representing the indices of the outliers in the original datasets you passed in (in the order of 'severity').  Remove the outliers that your algorithm identified, use `statsmodels` to create a Linear Regression model on the remaining training set data, and store your model in the variable `OutlierFreeGeneralModel`.
+
 
 
 
@@ -965,7 +702,7 @@ def find_outliers_general(dataset_x, dataset_y, n_trails):
     dataset_x_raw = dataset_x
     dataset_y_raw = dataset_y
     
-    r2_score = []
+    r2_value = []
     outliers = []
     
     for _ in range(n_trails):
@@ -973,11 +710,11 @@ def find_outliers_general(dataset_x, dataset_y, n_trails):
         OutlierOLSModel = sm.OLS(dataset_y, X_train)
         results_sm = OutlierOLSModel.fit()
         
-        # if r-squared starts to decrease, exit the function 
-        if r2_score and results_sm.rsquared < r2_score[-1]:
+        ## if r-squared starts to decrease, exit the function 
+        if r2_value and results_sm.rsquared < r2_value[-1]:
             break
     
-        r2_score.append(results_sm.rsquared)
+        r2_value.append(results_sm.rsquared)
         
         df = pd.DataFrame({'X': dataset_x, 
                            'Y': dataset_y, 
@@ -992,139 +729,31 @@ def find_outliers_general(dataset_x, dataset_y, n_trails):
         df.drop(outlier_indices, inplace=True)
         dataset_x, dataset_y = df['X'], df['Y']
     
-    return r2_score, outliers
+    return r2_value, outliers
 ```
 
 
-**4.8 Run your algorithm in 4.7 on the training set data **
+**4.8**. Run your algorithm in 4.7 on the training set data.  
+1. What outliers does it identify?
+2. How do those outliers compare to the outliers you found in 4.4?
+3. How does the general outlier-free Linear Regression model you created in 4.7 perform compared to the simple one in 4.4?
 
 
 
 ```python
-r2_score, outliers = find_outliers_general(x_train, y_train, x_train.shape[0])
-outliers_train.loc[outliers]
-```
+r2_value, outliers = find_outliers_general(x_train, y_train, x_train.shape[0])
 
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>X</th>
-      <th>Y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>50</th>
-      <td>-2.110000</td>
-      <td>320.000000</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>-1.991000</td>
-      <td>303.000000</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>1.931000</td>
-      <td>-297.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>-0.394034</td>
-      <td>-334.859357</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>-0.391668</td>
-      <td>-295.878637</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>0.502911</td>
-      <td>275.862982</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>-0.119129</td>
-      <td>-250.992560</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>-0.546692</td>
-      <td>-291.094951</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>0.716968</td>
-      <td>263.449637</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>-0.531202</td>
-      <td>-230.593281</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>1.085502</td>
-      <td>243.835916</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-
-```python
-print(outliers)
-```
-
-
-    [50, 51, 52, 1, 14, 28, 5, 35, 24, 20, 7]
-
-
-
-
-```python
 fig, ax = plt.subplots(1, 1, figsize=(8, 5))
-
 ax.grid(True, lw=1.75, ls='--', alpha=0.15)
-ax.plot(r2_score, c='b', alpha=0.5)
-ax.set_title(r'R Squared vs Number of Outliers droped')
-ax.set_xlabel(r'Number of Outliers droped')
-ax.set_ylabel(r'R Squared')
+ax.plot(r2_value, c='b', alpha=0.5)
+ax.set_title(r'R Squared vs Number of Outliers droped', fontsize=14)
+ax.set_xlabel(r'Number of Outliers droped', fontsize=14)
+ax.set_ylabel(r'R Squared', fontsize=14);
 ```
 
 
 
-
-
-    Text(0,0.5,'R Squared')
-
-
-
-
-![png](cs109a_hw2_web_files/cs109a_hw2_web_64_1.png)
+![png](cs109a_hw2_web_files/cs109a_hw2_web_54_0.png)
 
 
 
@@ -1132,19 +761,13 @@ ax.set_ylabel(r'R Squared')
 ```python
 outliers_x_gen = outliers_train.loc[outliers]['X']
 outliers_y_gen = outliers_train.loc[outliers]['Y']
-
 outliers_train_gen = outliers_train.drop(outliers)
 
 x_train_gen, y_train_gen = outliers_train_gen['X'], outliers_train_gen['Y']
-
 X = sm.add_constant(x_train_gen)
-
 OutlierFreeGeneralModel = sm.OLS(y_train_gen, X)
-
 results_sm_gen = OutlierFreeGeneralModel.fit()
-
 print(results_sm_gen.summary())
-
 ```
 
 
@@ -1153,8 +776,8 @@ print(results_sm_gen.summary())
     Dep. Variable:                      Y   R-squared:                       0.488
     Model:                            OLS   Adj. R-squared:                  0.475
     Method:                 Least Squares   F-statistic:                     38.14
-    Date:                Wed, 26 Sep 2018   Prob (F-statistic):           2.68e-07
-    Time:                        21:40:27   Log-Likelihood:                -245.20
+    Date:                Sun, 08 Sep 2019   Prob (F-statistic):           2.68e-07
+    Time:                        09:54:45   Log-Likelihood:                -245.20
     No. Observations:                  42   AIC:                             494.4
     Df Residuals:                      40   BIC:                             497.9
     Df Model:                           1                                         
@@ -1188,46 +811,39 @@ ax.plot(x_train_gen, results_sm_gen.fittedvalues, c='b', alpha=0.5, label='Regre
 ax.set_title(r'Training Set - Regression $Y = \beta_0 + \beta_1 X + \epsilon$')
 ax.set_xlabel(r'$X$')
 ax.set_ylabel(r'$Y$')
-ax.legend(loc='upper right')
+ax.legend(loc='upper right');
 ```
 
 
 
-
-
-    <matplotlib.legend.Legend at 0x286d8f69208>
-
-
-
-
-![png](cs109a_hw2_web_files/cs109a_hw2_web_66_1.png)
+![png](cs109a_hw2_web_files/cs109a_hw2_web_56_0.png)
 
 
 
 
 ```python
+## Output results
 X_test = sm.add_constant(x_test)
 r2_clean = r2_score(y_test, results_sm_clean.predict(X_test))
 r2_gen = r2_score(y_test, results_sm_gen.predict(X_test))
-
-print("OutlierFreeSimpleModel R-squared: %f" % r2_clean)
-print("OutlierFreeGeneralModel R-squared: %f" % r2_gen)
+print("OutlierFreeSimpleModel R-squared: {:.3f}".format(r2_clean))
+print("OutlierFreeGeneralModel R-squared: {:.3f}".format(r2_gen))
 ```
 
 
-    OutlierFreeSimpleModel R-squared: 0.452957
-    OutlierFreeGeneralModel R-squared: 0.453556
+    OutlierFreeSimpleModel R-squared: 0.453
+    OutlierFreeGeneralModel R-squared: 0.454
 
 
-**4.8.1 What outliers does it identify?**
+**4.8.1** What outliers does it identify?
 
 Answer: The following indices are identified as outliers: [50, 51, 52, 1, 14, 28, 5, 35, 24, 20, 7]
 
-**4.8.2 How do those outliers compare to the outliers you found in 4.4?**
+**4.8.2** How do those outliers compare to the outliers you found in 4.4?
 
 Answer: There are 10 outliers detected in the general method, because droping the 11th outliers will cause the r-squared to decrease, while 4.4 assumes that there are 3 outliers in total with the above scatter plot showing the distribution. 
 
-**4.8.3 How does the general outlier-free Linear Regression model you created in 4.7 perform compared to the simple one in 4.4?**
+**4.8.3** How does the general outlier-free Linear Regression model you created in 4.7 perform compared to the simple one in 4.4?
 
 Answer: General model in 4.7 is slightly better than the model in 4.4, with R-squared of 0.453556 vs 0.452957.
 
