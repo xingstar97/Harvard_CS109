@@ -11,6 +11,7 @@ nav_include: 9
 
 
 
+
 ```python
 import requests
 from IPython.core.display import HTML
@@ -140,87 +141,8 @@ For most of this problem set, we'll measure overall classification accuracy as t
 
 ```python
 df = pd.read_csv('data/dataset_hw7.csv')
-display(df.describe())
 display(df.head())
 ```
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Biomarker 1</th>
-      <th>Biomarker 2</th>
-      <th>Diagnosis</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>215.000000</td>
-      <td>215.000000</td>
-      <td>215.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>0.414441</td>
-      <td>0.303155</td>
-      <td>1.441860</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>0.888106</td>
-      <td>2.174369</td>
-      <td>0.726737</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>-2.302485</td>
-      <td>-11.512925</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>0.000010</td>
-      <td>-0.510809</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>0.262372</td>
-      <td>0.693152</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>0.530634</td>
-      <td>1.410989</td>
-      <td>2.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>4.032469</td>
-      <td>4.030695</td>
-      <td>3.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
 
 
 
@@ -299,6 +221,7 @@ display(pd.DataFrame(
 def hyper_hypo_ratio(df):
     class_counts = df['Diagnosis'].value_counts()
     return class_counts[2] / class_counts[3]
+
 overall_ratio = hyper_hypo_ratio(df)
 print(f'Overall hyper-to-hypo ratio is {overall_ratio:.2f}')
 ```
@@ -356,10 +279,6 @@ print(f'Overall hyper-to-hypo ratio is {overall_ratio:.2f}')
     Overall hyper-to-hypo ratio is 1.17
 
 
-**your answer here**
-
-The dataset is highly imbalanced: almost 70% is in the "normal" class.
-
 **1.2**: We're going to split this data into a 50% training set and a 50% test set. But since our dataset is small, we need to make sure we do it correctly. Let's see what happens when we *don't* split correctly: for each of 100 different random splits of the data into 50% train and 50% test, compute the hyper-to-hypo for the observations end up in the training set. Plot the distribution of the hyper-to-hypo ratio; on your plot, also mark the hyper-to-hypo ratio that you found in the full dataset. Discuss how representative the training and test sets are likely to be if we were to have selected one of these random splits.
 
 
@@ -369,6 +288,7 @@ ratios = []
 for random_state in range(100):
     data_train, data_test = train_test_split(df, test_size=.5, random_state=random_state)
     ratios.append(hyper_hypo_ratio(data_train))
+
 plt.boxplot(ratios, vert=False)
 plt.axvline(overall_ratio, color='k')
 plt.xlabel("Ratio of class 2 to class 3");
@@ -379,8 +299,6 @@ plt.xlabel("Ratio of class 2 to class 3");
 ![png](cs109a_hw7_web_files/cs109a_hw7_web_8_0.png)
 
 
-**your answer here**
-
 Without stratification, many splits will not have a representative hyper-to-hypo ratio. For example, even though hyperthyroidism (class 2) seems to be more common, about 25% of possible train-test splits would have class 3 (hypothyroidism) as more common. And not only that, but we could easily get unlucky and have a ratio as low as 0.6 or as high as 2.0 (and these extreme ratios would lead to the opposite extremes in the test set since they have to average to 1.167). Note that our dataset is itself small, so we can't say what is the "right" ratio, but at least we'd want it to be similar between training and test.
 
 **1.3** Now, we'll use the `stratify` option to split the data in such a way that the relative class frequencies are preserved (the code is provided). Make a table showing how many observations of each class ended up in your training and test sets. Verify that the hyper-hypo ratio is roughly the same in both sets.
@@ -389,18 +307,14 @@ Without stratification, many splits will not have a representative hyper-to-hypo
 
 ```python
 data_train, data_test = train_test_split(df, test_size=.5, stratify=df.Diagnosis, random_state=99)
-```
 
-
-
-
-```python
-pd.DataFrame({
+display(pd.DataFrame({
     'Instances in train': label_with_cls_names(data_train).Diagnosis.value_counts(),
-    'Instances in test': label_with_cls_names(data_test).Diagnosis.value_counts()}).rename_axis("Class")
+    'Instances in test': label_with_cls_names(data_test).Diagnosis.value_counts()}).rename_axis("Class"))
+
+print("Hyper-hypo ratio is {:.2f} in train, {:.2f} in test".format(
+    hyper_hypo_ratio(data_train), hyper_hypo_ratio(data_test)))
 ```
-
-
 
 
 
@@ -452,15 +366,6 @@ pd.DataFrame({
 </div>
 
 
-
-
-
-```python
-print("Hyper-hypo ratio is {:.2f} in train, {:.2f} in test".format(
-    hyper_hypo_ratio(data_train), hyper_hypo_ratio(data_test)))
-```
-
-
     Hyper-hypo ratio is 1.13 in train, 1.20 in test
 
 
@@ -494,7 +399,7 @@ plot_thyroid_data(ax, X, y)
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_15_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_13_0.png)
 
 
 **1.5**: When we first start working with a dataset or algorithm, it's typically a good idea to figure out what *baselines* we might compare our results to. For regression, we always compared against a baseline of predicting the mean (in computing $R^2$). For classification, a simple baseline is always predicting the *most common class*. What "baseline" accuracy can we achieve on the thyroid classification problem by always predicting the most common class? Assign the result to `baseline_accuracy` so we can use it later. (**note: don't look at the test set until instructed**)
@@ -502,7 +407,7 @@ plot_thyroid_data(ax, X, y)
 
 
 ```python
-most_likely_class = data_train.Diagnosis.value_counts().idxmax() # or: np.argmax(np.bincount(y))
+most_likely_class = data_train.Diagnosis.value_counts().idxmax() 
 baseline_accuracy = accuracy_score(y, np.array([most_likely_class] * len(y)))
 print(f"The most likely class is {class_names[most_likely_class]}.")
 print(f"Always predicting that class gets a training set accuracy of {baseline_accuracy:.2%}.")
@@ -512,10 +417,6 @@ print(f"Always predicting that class gets a training set accuracy of {baseline_a
     The most likely class is 1: normal.
     Always predicting that class gets a training set accuracy of 70.09%.
 
-
-**your answer here**
-
-This is a very high baseline accuracy, because the dataset is very imbalanced.
 
 **1.6** Make a decision function to separate these samples using no library functions; just write out your logic by hand. Your manual classifier doesn't need to be well-tuned (we'll be exploring algorithms to do that!); it only needs to (1) predict each class at least once, and (2) achieve an accuracy at least 10% greater accurate than predicting the most likely class. Use the `overlay_decision_boundaries` function provided above to overlay the decision boundaries of your function on the training set. (Note that the function modifies an existing plot, so call it after plotting your points.)
 
@@ -581,38 +482,37 @@ def overlay_decision_boundary(ax, model, colors=None, nx=200, ny=200, desaturate
         ax.contour(xx, yy, y, colors="black", linewidths=1, zorder=-1)
     else:
         print("Warning: only one class predicted, so not plotting contour lines.")
-```
-
-
-
-
-```python
+        
 def predict_manual_one_sample(x):
     return 0
-```
 
-
-
-
-```python
 def predict_manual_one_sample(x):
     if x[0] > 1.25:
         return 3
     elif x[1] < -1:
         return 2
     return 1
+
+def predict_manual(X):
+    return np.array([predict_manual_one_sample(x) for x in np.asarray(X)])
+
+def plot_decision_boundary(x, y, model, title, ax):
+    plot_thyroid_data(ax, x, y)
+    overlay_decision_boundary(ax, model, colors=class_colors)
+    ax.set_title(title)
 ```
 
 
 
 
 ```python
-def predict_manual(X):
-    return np.array([predict_manual_one_sample(x) for x in np.asarray(X)])
-
 manual_predictions = predict_manual(X)
 accuracy = accuracy_score(y, manual_predictions)
 print(f"Accuracy: {accuracy:.1%}")
+
+fig, ax = plt.subplots()
+plot_decision_boundary(X, y, predict_manual, 'Manual classification model on training set', ax)
+ax.legend(loc='lower right');
 ```
 
 
@@ -620,22 +520,7 @@ print(f"Accuracy: {accuracy:.1%}")
 
 
 
-
-```python
-def plot_decision_boundary(x, y, model, title, ax):
-    plot_thyroid_data(ax, x, y)
-    overlay_decision_boundary(ax, model, colors=class_colors)
-    ax.set_title(title)
-
-fig, ax = plt.subplots()
-plot_decision_boundary(X, y, predict_manual, 'Manual classification model on training set', ax)
-ax.legend(loc='lower right');
-
-```
-
-
-
-![png](cs109a_hw7_web_files/cs109a_hw7_web_24_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_18_1.png)
 
 
 
@@ -654,8 +539,6 @@ Since an initial manual exploration of axis-aligned linear classifiers resulted 
 
 For each model, make a plot of the training data with the decision boundaries overlayed.
 
-*Hint*: You should use `LogisticRegressionCV`. For the model with quadratic and interaction terms, you can use a Pipeline, like this:
-
 
 
 ```python
@@ -663,13 +546,17 @@ polynomial_logreg_estimator = make_pipeline(
     PolynomialFeatures(degree=2, include_bias=False),
     LogisticRegressionCV(multi_class="ovr"))
 
-#
+## Since this is a Pipeline, you can call `.fit` and `.predict` just as if it were any other estimator.
+##
+## Note that you can access the logistic regression classifier itself by
+## polynomial_logreg_estimator.named_steps['logisticregressioncv']
 ```
 
 
 
 
 ```python
+## Note that PolynomialFeatures makes both quadratic and interaction terms.
 print("PolynomialFeatures generates the following terms:")
 print(', '.join(PolynomialFeatures(degree=2, include_bias=False).fit(X).get_feature_names()))
 ```
@@ -724,15 +611,10 @@ for ax, (name, clf) in zip(axs, named_classifiers):
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_34_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_27_0.png)
 
 
 **2.2** Interpret the decision boundaries:
-- Do these decision boundaries make sense?
-- What does adding quadratic and interaction features do to the shape of the decision boundaries? Why?
-- How do the different models treat regions where there are few samples? How do they classify such samples?
-
-**Your answer here**
 
 * The decision boundaries do generally surround the corresponding training samples.
 * At a decision boundary, two classes give the same probability. If the probabilities are based on linear combinations of the classifier's features, the curves of equal probability must be composed of lines. With polynomial and interaction features, the curves of equal probability are still composed of lines in the high-dimensional space, but they can project to curves in the original feature space.
@@ -740,8 +622,6 @@ for ax, (name, clf) in zip(axs, named_classifiers):
 
 **2.3** Compare the performance of the two logistic regression models above using 5-fold cross-validation. Which model performs best? How confident are you about this conclusion? Does the inclusion of the polynomial terms in logistic regression yield better accuracy compared to the model with only linear terms? Why do you suspect it is better or worse?
 
-*Hint*: You may use the `cross_val_score` function for cross-validation.
-
 
 
 ```python
@@ -753,16 +633,7 @@ plt.boxplot(cv_scores);
 plt.xticks(np.arange(1, 4), [name for name, model in named_classifiers])
 plt.xlabel("Logistic Regression variant")
 plt.ylabel("Validation-Set Accuracy");
-```
 
-
-
-![png](cs109a_hw7_web_files/cs109a_hw7_web_38_0.png)
-
-
-
-
-```python
 print("Cross-validation accuracy:")
 pd.DataFrame(cv_scores, index=[name for name, model in named_classifiers]).T.aggregate(['mean', 'std']).T
 ```
@@ -814,77 +685,8 @@ pd.DataFrame(cv_scores, index=[name for name, model in named_classifiers]).T.agg
 
 
 
+![png](cs109a_hw7_web_files/cs109a_hw7_web_30_2.png)
 
-```python
-cv_scores = [
-    cross_val_score(model, X, y, cv=5)
-    for name, model in named_classifiers]
-
-plt.boxplot(cv_scores);
-plt.xticks(np.arange(1, 4), [name for name, model in named_classifiers])
-plt.xlabel("Logistic Regression variant")
-plt.ylabel("Validation-Set Accuracy");
-```
-
-
-
-![png](cs109a_hw7_web_files/cs109a_hw7_web_40_0.png)
-
-
-
-
-```python
-print("Cross-validation accuracy:")
-pd.DataFrame(cv_scores, index=[name for name, model in named_classifiers]).T.aggregate(['mean', 'std']).T
-```
-
-
-    Cross-validation accuracy:
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>mean</th>
-      <th>std</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Linear</th>
-      <td>0.916883</td>
-      <td>0.048607</td>
-    </tr>
-    <tr>
-      <th>Polynomial</th>
-      <td>0.906926</td>
-      <td>0.031441</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-**Your answer here**
 
 The linear classifier performs better on this sample, but the variance in the CV estimates is too high to have any confidence about which will generalize better.
 
@@ -913,39 +715,25 @@ plt.legend();
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_45_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_34_0.png)
 
 
 
 
 ```python
-np.cov(X_blobs.T)
-```
-
-
-
-
-
-    array([[  0.33906979,   0.89650992],
-           [  0.89650992, 224.13509768]])
-
-
-
-
-
-```python
+## True probabilies of test point under both classes
 import scipy.stats
 print(
-    "Class 0 true probability:",
-    scipy.stats.multivariate_normal(mean=[0., 0.,], cov=[[.4**2, 0.], [0., .1**2]]).pdf([.75, 0.]))
+    "Class 0 true probability: {:.4f}".format(
+    scipy.stats.multivariate_normal(mean=[0., 0.,], cov=[[.4**2, 0.], [0., .1**2]]).pdf([.75, 0.])))
 print(
-    "Class 1 true probability:",
-    scipy.stats.multivariate_normal(mean=[1., 0.,], cov=[[.1**2, 0.], [0., 20.**2]]).pdf([.75, 0.]))
+    "Class 1 true probability: {:.4f}".format(
+    scipy.stats.multivariate_normal(mean=[1., 0.,], cov=[[.1**2, 0.], [0., 20.**2]]).pdf([.75, 0.])))
 ```
 
 
-    Class 0 true probability: 0.6860438434655602
-    Class 1 true probability: 0.0034963900852328952
+    Class 0 true probability: 0.6860
+    Class 1 true probability: 0.0035
 
 
 **Your answer here**
@@ -974,7 +762,7 @@ for ax in axs:
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_49_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_37_0.png)
 
 
 **3.2** Now let's return to the thyroid dataset. Make a table of the total variance of each class for each biomarker.
@@ -1098,28 +886,6 @@ pd.DataFrame(
 
 
 
-
-
-```python
-np.array([
-    np.cov(X[y==idx].T) for idx, class_name in sorted(class_names.items())])
-```
-
-
-
-
-
-    array([[[ 1.34102641e-01,  3.92526148e-02],
-            [ 3.92526148e-02,  6.07021012e-01]],
-    
-           [[ 1.20058210e-01, -1.56209442e-02],
-            [-1.56209442e-02,  1.57349448e+01]],
-    
-           [[ 1.53789301e+00,  3.46039693e-01],
-            [ 3.46039693e-01,  9.63413407e-01]]])
-
-
-
 **3.3** Fit LDA and QDA on the thyroid data, and plot the decision boundaries. Comment on how the decision boundaries differ. How does the difference in decision boundaries relate to characteristics of the data, such as the table you computed above?
 
 
@@ -1134,10 +900,8 @@ plot_decision_boundary(X, y, qda, 'QDA', axs[1])
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_55_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_42_0.png)
 
-
-**Your answer here**
 
 We notice various differences between the decision boundaries:
 - The LDA boundaries have straight lines, vs QDA's are curved. You can think of QDA as squeezing in the space belonging to each class until its distribution looks Standard Normal / its ellipses actually become unit circles. Then it just picks out which class center the squeezed-in sample is closest to. For LDA, each class is squeezed in the same way, so the decision boundary is a scaled/rotated Voronoi diagram: which cluster center is closest? For QDA, each class gets squeezed independently, so the boundaries of which-is-closest can have interesting shapes.
@@ -1149,7 +913,6 @@ We notice various differences between the decision boundaries:
 
 We next try out decision trees for thyroid classification. For the following questions, you should use the *Gini* index as the splitting criterion while fitting the decision tree. 
 
-*Hint:* You should use the `DecisionTreeClassifier` class to fit a decision tree classifier and the `max_depth` attribute to set the tree depth.
 
 **4.1**. Fit a decision tree model to the thyroid data set with (maximum) tree depths 2, 3, ..., 10. Make plots of the accuracy as a function of the maximum tree depth, on the training set and the mean score on the validation sets for 5-fold CV. Is there a depth at which the fitted decision tree model achieves near-perfect classification on the training set? If so, what can you say about how this tree will generalize? Which hyperparameter setting gives the best cross-validation performance?
 
@@ -1174,12 +937,7 @@ def plot_cv(ax, hyperparameter, cv_scores):
     cv_stds = np.std(cv_scores, axis=1)
     handle, = ax.plot(hyperparameter, cv_means, '-*', label="Validation (mean)")
     plt.fill_between(hyperparameter, cv_means - 2.*cv_stds, cv_means + 2.*cv_stds, alpha=.3, color=handle.get_color())
-```
-
-
-
-
-```python
+    
 fig, ax = plt.subplots()
 ax.plot(depths, train_scores, '-+', label="Training")
 plot_cv(ax, depths, cv_scores)
@@ -1190,7 +948,7 @@ plt.legend();
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_61_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_47_0.png)
 
 
 
@@ -1203,16 +961,6 @@ plt.xlabel("Max tree depth")
 plt.ylabel("Validation-set accuracy")
 plt.legend(loc='lower right');
 
-```
-
-
-
-![png](cs109a_hw7_web_files/cs109a_hw7_web_62_0.png)
-
-
-
-
-```python
 cv_means = np.mean(cv_scores, axis=1)
 best_depth = depths[np.argmax(cv_means)]
 print(f"The best decision tree has maximum depth {best_depth}")
@@ -1224,7 +972,9 @@ best_decision_tree = DecisionTreeClassifier(max_depth=best_depth, random_state=0
     The best decision tree has maximum depth 2
 
 
-**your answer here**
+
+![png](cs109a_hw7_web_files/cs109a_hw7_web_48_1.png)
+
 
 Training accuracy hits nearly perfect at depth 7 and above. (It's not 1.0, maybe because there are two samples with identical predictors but different classes.)
 
@@ -1242,10 +992,8 @@ plot_decision_boundary(X, y, best_decision_tree, 'Decision tree boundary', plt.g
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_66_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_51_0.png)
 
-
-**Your answer here**
 
 All the boundary lines are axis-aligned, because each node in the decision tree depends on only a single feature. Other classifiers, even the linear ones, at least could have lines that were slanted relative to the axes.
 
@@ -1291,12 +1039,7 @@ def show_tree_structure(clf):
         else:
             print("{}node {}: if X[:, {}] <= {:.3f} then go to node {}, else go to node {}".format(
                 indent, i, feature[i], threshold[i], children_left[i], children_right[i]))
-```
-
-
-
-
-```python
+            
 show_tree_structure(best_decision_tree)
 print("\nReminder: the class names were:", class_names)
 ```
@@ -1322,8 +1065,6 @@ if False:
     export_graphviz(best_decision_tree, out_file='tree_viz.dot')
 ```
 
-
-**Your answer here**
 
 hypothyroidism is class 3. Our decision tree only predicts class 3 in node 6. We get to node 6 by
 - root: x1 > -.693
@@ -1360,20 +1101,13 @@ We have now seen six different ways of fitting a classification model: **linear 
 
 **5.1** Fit a k-NN classifier with uniform weighting to the training set. Use 5-fold CV to pick the best $k$.
 
-*Hint: Use `KNeighborsClassifier` and `cross_val_score`.*
-
 
 
 ```python
 k_vals = list(range(1, 20))
 train_scores = [KNeighborsClassifier(n_neighbors=k).fit(X, y).score(X, y) for k in k_vals]
 cv_scores = [cross_val_score(KNeighborsClassifier(n_neighbors=k), X, y, cv=5) for k in k_vals]
-```
 
-
-
-
-```python
 fig, ax = plt.subplots()
 ax.plot(k_vals, train_scores, '-+', label="Training")
 plot_cv(ax, k_vals, cv_scores)
@@ -1385,7 +1119,6 @@ best_k = k_vals[np.argmax(np.mean(cv_scores, axis=1))]
 print("Best k:", best_k)
 
 best_knn_clf = KNeighborsClassifier(n_neighbors=best_k).fit(X, y)
-
 ```
 
 
@@ -1393,7 +1126,7 @@ best_knn_clf = KNeighborsClassifier(n_neighbors=best_k).fit(X, y)
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_78_1.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_61_1.png)
 
 
 As an aside, let's try standardizing before kNN. This will affect the distance metric that kNN uses.
@@ -1405,12 +1138,7 @@ def make_standardized_knn(n_neighbors):
     return make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=n_neighbors))
 train_scores_standardized = [make_standardized_knn(k).fit(X, y).score(X, y) for k in k_vals]
 cv_scores_standardized = [cross_val_score(make_standardized_knn(n_neighbors=k), X, y, cv=5) for k in k_vals]
-```
 
-
-
-
-```python
 fig, ax = plt.subplots()
 ax.plot(k_vals, train_scores_standardized, '-+', label="Training")
 plot_cv(ax, k_vals, cv_scores_standardized)
@@ -1422,7 +1150,7 @@ plt.legend();
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_81_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_63_0.png)
 
 
 
@@ -1470,10 +1198,8 @@ for ax, (name, clf) in zip(axs.flatten(), named_classifiers):
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_85_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_67_0.png)
 
-
-**your answer here**
 
 * Both the linear logistic regression model and LDA have straight lines as decision boundaries. When looking at the boundaries for the LDA model, you can see that it is keeping the same covariance over each grouping of points, which in some cases is creating some error (e.g. the boundary separating Normal and Hyperthyroidism). As LDA is keeping the covariances the same, we can see that some of the regions, namely the Normal region in the middle, is being kept wider than it otherwise may be. That region is more narrow in the logistic regression model.
 
@@ -1488,8 +1214,6 @@ for ax, (name, clf) in zip(axs.flatten(), named_classifiers):
 - Quadratic Discriminant Analysis
 - k-Nearest-Neighbors Classifier
 - Decision Tree
-
-**Your answer here**
 
 - **One-vs-Rest Logistic Regression** computes the prob of the observation being in each class, then normalizes the probs to sum to 1. Each prob is computed as sigmoid of the dot product of the feature vector and the class coefficients.
 - **Quadratic Discriminant Analysis** computes the likelihood of observing the sample under a Normal distribution with mean and covariance estimated from the data in each class, and assigns the sample to the class that gives it the highest likelihood.
@@ -1506,27 +1230,13 @@ cv_scores = [
     cross_val_score(clf, X, y, cv=5, n_jobs=-1)
     for name, clf in named_classifiers
 ]
-```
 
-
-
-
-```python
 positions = np.arange(len(named_classifiers))
 plt.boxplot(cv_scores, vert=False, positions=positions);
 plt.yticks(positions, [name for name, model in named_classifiers])
 plt.ylabel("Classifier")
 plt.xlabel("Validation-Set Accuracy");
-```
 
-
-
-![png](cs109a_hw7_web_files/cs109a_hw7_web_91_0.png)
-
-
-
-
-```python
 performance_estimates = pd.DataFrame([
     [scores.mean(), scores.std()] for scores in cv_scores
 ], index=[name for name, model in named_classifiers], columns=["mean", "std"])
@@ -1597,7 +1307,9 @@ performance_estimates.sort_values('mean')
 
 
 
-**Your answer here**
+
+![png](cs109a_hw7_web_files/cs109a_hw7_web_72_1.png)
+
 
 The CV scores of linear logreg, DT, and kNN are very similar. Only LDA looks consistently worse.
 
@@ -1697,10 +1409,8 @@ fig.tight_layout()
 
 
 
-![png](cs109a_hw7_web_files/cs109a_hw7_web_96_0.png)
+![png](cs109a_hw7_web_files/cs109a_hw7_web_76_0.png)
 
-
-**your answer here**
 
 I'd favor linear logistic regression, since it's simple and performs well in cross-validation estimates. However, the differences between the models are almost all within the noise of the CV estimates, so I'm not too surprised to see that polynomial logistic regression worked best in this particular test set. I tried a different random seed and indeed the order changed (e.g., kNN did best, then Decision Trees, probably because the CV chose a lower tree depth.)
 
@@ -1711,8 +1421,6 @@ I'd favor linear logistic regression, since it's simple and performs well in cro
   - Interpretability
 
 If you were a clinician who had to use the classifier to diagnose thyroid disorders in patients, which among the six methods would you be most comfortable in using? Justify your choice in terms of at least 3 different aspects.
-
-**your answer here**
 
 - Classification performance: They were all quite similar, except for LDA (which misclassified the disease classes as Normal, as we saw earlier.
 
@@ -1747,24 +1455,21 @@ So our decision rule is if $5000 * (1 - \hat{p}_k) < 1000$, attempt a prediction
 
 
 ```python
-#we will take the convention that 0 is the abstain option
-
+## we will take the convention that 0 is the abstain option
 def cost(decisions, val):
     
-    #number of times abstained
+    # number of times abstained
     cost = 1000 * len(decisions[decisions == 0])
     
     true_vals = val[decisions != 0]
     predicted_vals = decisions[decisions !=0]
     
-    #number of incorrect predictions
+    # number of incorrect predictions
     cost += 5000* sum(true_vals != predicted_vals)
     
     return(cost)
 
-
-#for the first part of the question the decisions are just the predictions
-
+## for the first part of the question the decisions are just the predictions
 dec = logreg_ovr.predict(data_test.iloc[:,:-1].values) 
 vl = data_test.iloc[:,-1].values
 print("Cost incurred for OvR Logistic Regression Model: $", cost(dec,vl)/len(vl))
@@ -1781,7 +1486,7 @@ print("Cost incurred for OvR Logistic Regression Model: $", cost(dec,vl)/len(vl)
 
 
 ```python
-#new decision rule, for the second part of the problem 
+## new decision rule, for the second part of the problem 
 def decision_rule(lrm_mod,input_data):
     probs = lrm_mod.predict_proba(input_data)
     predicted_class = np.argmax(probs,axis = 1) + 1
