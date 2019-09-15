@@ -11,6 +11,7 @@ nav_include: 8
 
 
 
+
 ```python
 import requests
 from IPython.core.display import HTML
@@ -100,11 +101,8 @@ from scipy import stats
 import os
 import seaborn as sns
 sns.set(style="darkgrid")
-
 import json
-
 from sklearn.preprocessing import PolynomialFeatures
-
 from sklearn.linear_model import LogisticRegressionCV, LinearRegression
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score
@@ -117,17 +115,7 @@ from pandas.plotting import scatter_matrix
 ```
 
 
-<div class="theme"> Overview </div>
-
-In this homework, you are free to explore different ways of solving the problems -within the restrictions of the questions. Your solutions should read like a report with figures to support your statements. Please include your code cells as usual but augment your solutions with written answers. We will also check for code readability and efficiency as we feel you have some experience now. In particular, for Q1, we expect you to write appropriate functions, such as your code can be generalized beyond the specified network architectures of his homework.
-
-For this homework you may **not** use a machine learning library such as `keras` or `tensorflow` to build and fit the network. The objective is to build the network equations from scratch.
-
-- Q1 explores approximating a function using a **Multilayer Feedforward Network** with one input layer, one hidden layer, and one output layer. 
-
-- Q2 deals with missing data in a medical dataset.
-
-## Construct a feed forward neural network
+## Neural network as a function 
     
 In this part of the homework you are to construct three feed forward neural networks consisting of an input layer, one hidden layer with 1, 2 and 4 nodes respectively, and an output layer.  The hidden layer uses the sigmoid as the activation function and use a linear  output node. 
 You should code the equations from scratch. 
@@ -143,6 +131,7 @@ You are given three datasets containing ($x,y$) points where $y=f(x)$:
 
 
 ```python
+## Read the data
 step_df = pd.read_csv('data/step_df.csv')
 one_hump_df = pd.read_csv('data/one_hump_df.csv')
 two_hump_df = pd.read_csv('data/two_hump_df.csv')
@@ -150,61 +139,36 @@ two_hump_df = pd.read_csv('data/two_hump_df.csv')
 step_df = step_df.sort_values(by='x')
 one_hump_df = one_hump_df.sort_values(by='x')
 two_hump_df = two_hump_df.sort_values(by='x')
-```
 
-
-
-
-```python
-fig, ax = plt.subplots(1,3, figsize=(30,6)) # Create figure object
+## Plot the data
+fig, ax = plt.subplots(1,3, figsize=(30,6)) 
 
 ax[0].scatter(step_df.x,step_df.y)
-ax[0].set_xlabel('x')
-ax[0].set_ylabel('step_df y')
+ax[0].set_title('Step', fontsize=18)
 
 ax[1].scatter(one_hump_df.x, one_hump_df.y)
-ax[1].set_xlabel('x')
-ax[1].set_ylabel('one_hump_df y')
+ax[1].set_title('One hump', fontsize=18)
 
 ax[2].scatter(two_hump_df.x, two_hump_df.y)
-ax[2].set_xlabel('x')
-ax[2].set_ylabel('two_hump_df y')
+ax[2].set_title('Two humps', fontsize=18);
 ```
 
 
 
+![png](cs109a_hw6_web_files/cs109a_hw6_web_5_0.png)
 
 
-    <matplotlib.text.Text at 0x1a2350c470>
-
-
-
-
-![png](cs109a_hw6_web_files/cs109a_hw6_web_6_1.png)
-
+**1.2** Give values to the weights **manually**, perform a forward pass using the data for the **single step** function and a hidden layer of **one** node, and plot the output from the network, in the same plot as the true $y$ values. Adjust the weights (again manualy) until the plots match as closely as possible.
 
 
 
 ```python
+## sigmoid function
 def sigmoid(x: float) -> float :
-    """The sigmoid function 
-    """
-    pass
-
-    
-    # your code here
     return (1/(1 + np.exp(-x))) 
-```
 
-
-**1.2** Give values to the weights **manually**, perform a forward pass using the data for the **single step** function and a hidden layer of **one** node, and plot the output from the network, in the same plot as the true $y$ values. Adjust the weigths (again manualy) until the plots match as closely as possible.
-
-
-
-```python
-
-def forward_step(X_in: np.ndarray, WL_0: np.ndarray, 
-                 WL_1: np.ndarray, y_out: np.ndarray):
+## Forward pass - step
+def forward_step(X_in: np.ndarray, WL_0: np.ndarray, WL_1: np.ndarray, y_out: np.ndarray):
     """Network is 
         input layer X_in
         hidden layer z0 = activation(X_in _dot_ WL_0))
@@ -239,38 +203,28 @@ def forward_step(X_in: np.ndarray, WL_0: np.ndarray,
 
 
 ```python
-
+## ONE STEP - one node in hidden layer 
 X = step_df['x'].values.reshape(-1,1)
 y = step_df['y'].values
 
 c = 2
 b1 = 5
-b0 = -c*b1
-WL0 = np.array([b1,b0])
-WL1 = np.array([1,0]) # height of each step for linear output
+b0 = -c * b1
+WL0 = np.array([b1, b0])
+WL1 = np.array([1, 0]) 
 
+## forward pass
 z1, z0 = forward_step(X, WL0, WL1, y)
-```
 
-
-
-
-```python
-plt.plot(X, z1, label='NN W='+str(WL0))
+## Plot
+plt.plot(X, z1, label='NN W=' + str(WL0))
 plt.plot(step_df.x, step_df.y, label='step')
-plt.legend()
+plt.legend();
 ```
 
 
 
-
-
-    <matplotlib.legend.Legend at 0x1a25f9a978>
-
-
-
-
-![png](cs109a_hw6_web_files/cs109a_hw6_web_11_1.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_8_0.png)
 
 
 **1.3** Do the same for the **one hump** function data, this time using a hidden layer consisting of **two** nodes.
@@ -278,7 +232,7 @@ plt.legend()
 
 
 ```python
-
+## Forward pass - one hump
 def forward_onehump(X_in: np.ndarray, WL_0: np.ndarray, 
                     WL_1: np.ndarray, y_out: np.ndarray):
     
@@ -306,7 +260,6 @@ def forward_onehump(X_in: np.ndarray, WL_0: np.ndarray,
 
 
 ```python
-
 X = one_hump_df['x'].values.reshape(-1,1)
 Y = one_hump_df['y'].values
 
@@ -317,26 +270,21 @@ c2 = 6
 b21 = -5
 b20 = -c2*b21
 
-WL0 =np.array([[b11,b10], [b21,b20]])
+WL0 = np.array([[b11,b10], [b21,b20]])
 WL1 = np.array([[1, 1, -1]]) # height of each step
 
+## forward pass
 z1, z0 = forward_onehump(X, WL0, WL1, y)
 
-plt.plot(X,z1.T, label='NN W='+str(WL0))
+## plot
+plt.plot(X,z1.T, label='NN W=' + str(WL0))
 plt.plot(X, Y, label='step')
-plt.legend()
+plt.legend();
 ```
 
 
 
-
-
-    <matplotlib.legend.Legend at 0x1a2602dc18>
-
-
-
-
-![png](cs109a_hw6_web_files/cs109a_hw6_web_14_1.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_11_0.png)
 
 
 **1.4** Do the same for the **two hump** function data but this time increase the number of hidden nodes to **four**. 
@@ -344,24 +292,24 @@ plt.legend()
 
 
 ```python
-
+## Forward pass - two humps
 def forward_twohump(X_in: np.ndarray, WL_0: np.ndarray, 
                     WL_1: np.ndarray, y_out: np.ndarray):
     
-    #input layer
+    # input layer
     ones = np.ones((len(X_in),1))    
     L0 = X_in 
     L0 = np.append(L0, ones, axis=1)
 
-    #hidden layer
+    # hidden layer
     a0 = np.dot(WL_0, L0.T)
     z0 = sigmoid(a0)
 
-    #output layer 
+    # output layer 
     ones = np.ones((len(y_out),1))
     z0 = np.append(z0.T, ones,axis=1).T
 
-    #affine
+    # affine
     a1 = np.dot(WL_1, z0)
     z1 = a1 
     
@@ -372,7 +320,7 @@ def forward_twohump(X_in: np.ndarray, WL_0: np.ndarray,
 
 
 ```python
-
+## TWO HUMPS  - four nodes in hidden layer 
 X = two_hump_df['x'].values.reshape(-1,1)
 y = two_hump_df['y'].values
 
@@ -395,23 +343,18 @@ b40 = -c4*b41
 WL0 = np.array([[b11,b10], [b21,b20], [b31,b30], [b41,b40]])
 WL1 = np.array([[1, 1, 1, 1, -2]]) # height of each step
 
+## forward pass
 z1, z0 = forward_twohump(X, WL0, WL1, y)
 
-plt.plot(X,z1.T, label='NN W='+str(WL0))
+## plot
+plt.plot(X,z1.T, label='NN W=' + str(WL0))
 plt.plot(X, y, label='step')
-plt.legend()
+plt.legend();
 ```
 
 
 
-
-
-    <matplotlib.legend.Legend at 0x1a26175ef0>
-
-
-
-
-![png](cs109a_hw6_web_files/cs109a_hw6_web_17_1.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_14_0.png)
 
 
 **1.5** Calculate and report the loss from all three functions. Derive the gradient of the output layer's weights (WL_out) for all three cases (step, one hump and two humps). Perform gradient descent on the weights of this layer. What is the optimised weight value and loss you obtained? How many steps did you take to reach this value? What is the threshold value you used to stop?
@@ -419,6 +362,7 @@ plt.legend()
 
 
 ```python
+## Our loss function is MSE
 def L(y_pred, y):
     return np.mean(np.square(y_pred - y))
 
@@ -464,7 +408,6 @@ c = 2
 b1 = 5
 b0 = -c*b1
 WL0 = np.array([b1,b0])
-#WL1 = np.array([1,0]) # starting weights
 WL1 = np.array([1,20]) # starting weights
 
 l = 0.01 # learning rate
@@ -477,24 +420,17 @@ ax[0].plot(X, y)
 ax[0].plot(X, z1_new[0])
 ax[0].set_xlabel('X')
 ax[0].set_ylabel('y_pred')
-ax[1].set_title('NN with adjusted weights')
+ax[0].set_title('NN with adjusted weights')
 
 ax[1].plot(range(num_steps+1), errors)
 ax[1].set_xlabel('step')
 ax[1].set_ylabel('error')
-ax[1].set_title('Gradient Descent')
+ax[1].set_title('Gradient Descent');
 ```
 
 
 
-
-
-    <matplotlib.text.Text at 0x1a27f6fef0>
-
-
-
-
-![png](cs109a_hw6_web_files/cs109a_hw6_web_21_1.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_18_0.png)
 
 
 **b) one hump function NN (a hidden layer with two nodes)**
@@ -502,6 +438,7 @@ ax[1].set_title('Gradient Descent')
 
 
 ```python
+## ONE HUMP
 X = one_hump_df['x'].values.reshape(-1,1)
 y = one_hump_df['y'].values
 
@@ -525,24 +462,17 @@ ax[0].plot(X, y)
 ax[0].plot(X, z1_new[0])
 ax[0].set_xlabel('X')
 ax[0].set_ylabel('y_pred')
-ax[1].set_title('NN with adjusted weights')
+ax[0].set_title('NN with adjusted weights')
 
 ax[1].plot(range(num_steps+1), errors)
 ax[1].set_xlabel('step')
 ax[1].set_ylabel('error')
-ax[1].set_title('Gradient Descent')
+ax[1].set_title('Gradient Descent');
 ```
 
 
 
-
-
-    <matplotlib.text.Text at 0x1a28534518>
-
-
-
-
-![png](cs109a_hw6_web_files/cs109a_hw6_web_23_1.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_20_0.png)
 
 
 **c) two hump function NN (a hidden layer with 4 nodes)**
@@ -550,6 +480,7 @@ ax[1].set_title('Gradient Descent')
 
 
 ```python
+## TWO HUMPS
 X = two_hump_df['x'].values.reshape(-1,1)
 y = two_hump_df['y'].values
 
@@ -583,24 +514,17 @@ ax[0].plot(X, y)
 ax[0].plot(X, z1_new[0])
 ax[0].set_xlabel('X')
 ax[0].set_ylabel('y_pred')
-ax[1].set_title('NN with adjusted weights')
+ax[0].set_title('NN with adjusted weights')
 
 ax[1].plot(range(num_steps+1), errors)
 ax[1].set_xlabel('step')
 ax[1].set_ylabel('error')
-ax[1].set_title('Gradient Descent')
+ax[1].set_title('Gradient Descent');
 ```
 
 
 
-
-
-    <matplotlib.text.Text at 0x1a287fb9b0>
-
-
-
-
-![png](cs109a_hw6_web_files/cs109a_hw6_web_25_1.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_22_0.png)
 
 
 ## Working with missing data
@@ -728,7 +652,7 @@ pima_df.head()
 
 
 
-**1. Checking values and Removing unnecessary characters**
+**2.1.1. Checking values and Removing unnecessary characters**
 
 
 
@@ -905,14 +829,7 @@ pima_df.Outcome.unique()
 
 
 ```python
-pima_df = pima_df.replace(
-                {'Outcome': {'1': 1,
-                             '0': 0,
-                             '0\\': 0,
-                             '1\\': 1,
-                             '0}': 0,                             
-                            }})
-
+pima_df = pima_df.replace({'Outcome': {'1': 1, '0': 0, '0\\': 0, '1\\': 1, '0}': 0, }})
 pima_df.dtypes
 ```
 
@@ -932,6 +849,8 @@ pima_df.dtypes
     dtype: object
 
 
+
+**2.1.2. Checking for missing values**
 
 
 
@@ -956,9 +875,7 @@ pima_df.isnull().sum()
 
 
 
-**2. Checking for missing values**
-
-Upon first inspection we do not see any missing values. But if we look closer and without being doctors, we see that Glucose cannot be `0` so we assume that this is a missing value. Same goes for the other variables. [open to interpretation by students here]
+Upon first inspection we do not see any missing values. But if we look closer and without being doctors, we see that Glucose cannot be `0` so we assume that this is a missing value. Same goes for the other variables. 
 
 
 
@@ -1102,12 +1019,7 @@ pima_df.describe()
 
 
 
-*your answer here*
-
-From here, we can observe that Blood Pressure, Glucose, SkinThickness, Insulin, BMI - all have minimum values of 0, which does not make logical sense. Let's see how many data points contain disguised missing data, by seeing how any of these values are 0.
-
-
-Thus, we can observe that there are many missing values.
+From here, we can observe that Blood Pressure, Glucose, SkinThickness, Insulin, BMI - all have minimum values of 0, which does not make logical sense. Let's see how many data points contain disguised missing data, by seeing how many of these values are 0. Thus, we can observe that there are many missing values.
 
 
 
@@ -1142,11 +1054,12 @@ print('Total number of rows with all missing data =',
     Total number of rows with all missing data = 0 rows
 
 
-**3. Checking correlation of columns**
+**2.1.3. Checking correlation of columns**
 
 
 
 ```python
+## Plotting the correlation between columns
 df_wo_zeros = pima_df[~((pima_df.Glucose==0) | 
                   (pima_df.BloodPressure==0) | 
                   (pima_df.SkinThickness==0) | 
@@ -1161,20 +1074,22 @@ scatter_matrix(df_wo_zeros, figsize=(30,20));
 
 
 
-![png](cs109a_hw6_web_files/cs109a_hw6_web_42_1.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_39_1.png)
 
 
 We see from the above plot that BMI and Skin Thickness are correlated. We also see that Insulin and Glucose seem correlated. 
 There also is some weak correlations between Age and Pregnancies.
 
-**4. Separating dataset into clean and unclean (has missing values)**
+**2.1.4. Separating dataset into clean and unclean (has missing values)**
 
 
 
 ```python
+## cols with missing values
 missing_cols = ['SkinThickness', 'BloodPressure', 'Glucose', 'BMI', 'Insulin']
 target_col = ['Outcome']
 
+## dataset without any missing values; not normalised
 clean_data = pima_df[~((pima_df[missing_cols[0]]==0) | 
                   (pima_df[missing_cols[1]]==0) | 
                   (pima_df[missing_cols[2]]==0) |
@@ -1182,6 +1097,7 @@ clean_data = pima_df[~((pima_df[missing_cols[0]]==0) |
                   (pima_df[missing_cols[4]]==0) 
                   )]
 
+## dataset with missing values that need to be imputed; not normalised
 unclean_data = pima_df[((pima_df[missing_cols[0]]==0) | 
                   (pima_df[missing_cols[1]]==0) | 
                   (pima_df[missing_cols[2]]==0) |
@@ -1198,12 +1114,10 @@ print(clean_data.shape, unclean_data.shape)
 
 **2.2** Split the dataset into a 75-25 train-test split (use `random_state=9001`). Fit a logistic regression classifier to the training set and report the  accuracy of the classifier on the test set. You should use $L_2$ regularization in logistic regression, with the regularization parameter tuned using cross-validation (`LogisticRegressionCV`).  Report the overall classification rate.
 
-> We start with a copy of the original dataset, followed by splitting and normaising the data. Note that data contains all the disguised missing entries as well. 
-
 
 
 ```python
-pima_df_clean1 = pima_df.copy() # copy of original dataset, not normalised yet
+pima_df_clean1 = pima_df.copy() 
 print(pima_df_clean1.shape)
 pima_df_clean1.head()
 ```
@@ -1323,19 +1237,19 @@ def normalise_df(df, mins, maxs):
 
 
 ```python
+## split into X and Y
 X, Y = pima_df_clean1[pima_df_clean1.columns.difference([target_col[0]])], pima_df_clean1[target_col[0]]
 print(X.shape, Y.shape)
 
+## splitting data into train-test
 x_train1, x_test1, y_train1, y_test1 = train_test_split(X, Y, test_size=0.25, random_state=9001)
 print(x_train1.shape, x_test1.shape, y_train1.shape, y_test1.shape)
 
+## normalising the data
 mins = x_train1.min()
 maxs = x_train1.max()
 x_train1 = normalise_df(x_train1, mins, maxs)
 x_test1 = normalise_df(x_test1, mins, maxs)
-
-display(x_train1.describe())
-display(x_test1.describe())
 ```
 
 
@@ -1344,254 +1258,9 @@ display(x_test1.describe())
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Age</th>
-      <th>BMI</th>
-      <th>BloodPressure</th>
-      <th>DiabetesPedigreeFunction</th>
-      <th>Glucose</th>
-      <th>Insulin</th>
-      <th>Pregnancies</th>
-      <th>SkinThickness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>573.000000</td>
-      <td>573.000000</td>
-      <td>573.000000</td>
-      <td>573.000000</td>
-      <td>573.000000</td>
-      <td>573.000000</td>
-      <td>573.000000</td>
-      <td>573.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>0.200058</td>
-      <td>0.556926</td>
-      <td>0.559165</td>
-      <td>0.172031</td>
-      <td>0.608291</td>
-      <td>0.092741</td>
-      <td>0.275118</td>
-      <td>0.204647</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>0.192837</td>
-      <td>0.134552</td>
-      <td>0.163934</td>
-      <td>0.142594</td>
-      <td>0.164152</td>
-      <td>0.136056</td>
-      <td>0.239120</td>
-      <td>0.160190</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>0.050000</td>
-      <td>0.478185</td>
-      <td>0.508197</td>
-      <td>0.071080</td>
-      <td>0.500000</td>
-      <td>0.000000</td>
-      <td>0.071429</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>0.133333</td>
-      <td>0.558464</td>
-      <td>0.573770</td>
-      <td>0.131497</td>
-      <td>0.580808</td>
-      <td>0.021277</td>
-      <td>0.214286</td>
-      <td>0.232323</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>0.316667</td>
-      <td>0.633508</td>
-      <td>0.655738</td>
-      <td>0.243447</td>
-      <td>0.707071</td>
-      <td>0.148936</td>
-      <td>0.428571</td>
-      <td>0.323232</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Age</th>
-      <th>BMI</th>
-      <th>BloodPressure</th>
-      <th>DiabetesPedigreeFunction</th>
-      <th>Glucose</th>
-      <th>Insulin</th>
-      <th>Pregnancies</th>
-      <th>SkinThickness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>191.000000</td>
-      <td>191.000000</td>
-      <td>191.000000</td>
-      <td>191.000000</td>
-      <td>191.000000</td>
-      <td>191.000000</td>
-      <td>191.000000</td>
-      <td>191.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>0.216405</td>
-      <td>0.562969</td>
-      <td>0.588447</td>
-      <td>0.185304</td>
-      <td>0.618013</td>
-      <td>0.100361</td>
-      <td>0.275617</td>
-      <td>0.215876</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>0.205988</td>
-      <td>0.147630</td>
-      <td>0.141517</td>
-      <td>0.161248</td>
-      <td>0.154793</td>
-      <td>0.137800</td>
-      <td>0.247283</td>
-      <td>0.164786</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.007996</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>0.058333</td>
-      <td>0.459860</td>
-      <td>0.532787</td>
-      <td>0.077743</td>
-      <td>0.505051</td>
-      <td>0.000000</td>
-      <td>0.071429</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>0.133333</td>
-      <td>0.572426</td>
-      <td>0.606557</td>
-      <td>0.136384</td>
-      <td>0.606061</td>
-      <td>0.060284</td>
-      <td>0.214286</td>
-      <td>0.252525</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>0.333333</td>
-      <td>0.655323</td>
-      <td>0.672131</td>
-      <td>0.247668</td>
-      <td>0.719697</td>
-      <td>0.162530</td>
-      <td>0.428571</td>
-      <td>0.333333</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>0.800000</td>
-      <td>1.171030</td>
-      <td>0.901639</td>
-      <td>1.040426</td>
-      <td>1.005051</td>
-      <td>0.684397</td>
-      <td>1.214286</td>
-      <td>0.636364</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 
 ```python
+## logostic regression CV
 def fit_logreg(xtrain, xtest, ytrain, ytest):
     logreg = LogisticRegressionCV(fit_intercept=True, cv=5, penalty='l2') 
     logreg.fit(xtrain, ytrain)
@@ -1602,20 +1271,14 @@ def fit_logreg(xtrain, xtest, ytrain, ytest):
     return logreg, acc
 
 logreg1, acc1 = fit_logreg(x_train1, x_test1, y_train1, y_test1)
-print('Classification accuracy of fitted model on test set =', acc1)
-```
+print('Classification accuracy of fitted model on test set = {:.2f}'.format(acc1))
 
-
-    Classification accuracy of fitted model on test set = 0.7801047120418848
-
-
-
-
-```python
+## Comparing number of cases for each diabetes type
 print(y_train1[y_train1==0].shape, y_train1[y_train1==1].shape)
 ```
 
 
+    Classification accuracy of fitted model on test set = 0.78
     (364,) (209,)
 
 
@@ -1626,177 +1289,17 @@ print(y_train1[y_train1==0].shape, y_train1[y_train1==1].shape)
 
 
 ```python
+## finding mean values
 pima_df_clean2 = unclean_data.copy() # making copy of unclean dataset
 means = clean_data.mean() # finding means from dataset previously cleaned
-display(means)
-print(pima_df_clean2.shape)
-```
 
-
-
-    Pregnancies                   3.296675
-    Glucose                     122.631714
-    BloodPressure                70.659847
-    SkinThickness                29.161125
-    Insulin                     156.168798
-    BMI                          33.103836
-    DiabetesPedigreeFunction      0.523757
-    Age                          30.867008
-    Outcome                       0.332481
-    dtype: float64
-
-
-    (373, 9)
-
-
-
-
-```python
+## imputing missing data in pima_df_clean2 using mean values
 for i in range(len(missing_cols)):
     pima_df_clean2 = pima_df_clean2.replace({missing_cols[i]: {0: means[missing_cols[i]]}})
 
+## merge clean dataset and pima_df_clean2
 pima_df_clean2 = pima_df_clean2.append(clean_data)
-print(pima_df_clean2.shape)
-pima_df_clean2.describe()
 ```
-
-
-    (764, 9)
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Pregnancies</th>
-      <th>Glucose</th>
-      <th>BloodPressure</th>
-      <th>SkinThickness</th>
-      <th>Insulin</th>
-      <th>BMI</th>
-      <th>DiabetesPedigreeFunction</th>
-      <th>Age</th>
-      <th>Outcome</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>764.000000</td>
-      <td>764.000000</td>
-      <td>764.000000</td>
-      <td>764.000000</td>
-      <td>764.000000</td>
-      <td>764.000000</td>
-      <td>764.000000</td>
-      <td>764.000000</td>
-      <td>764.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>3.853403</td>
-      <td>121.725338</td>
-      <td>72.348291</td>
-      <td>29.164155</td>
-      <td>155.906576</td>
-      <td>32.475055</td>
-      <td>0.472712</td>
-      <td>33.248691</td>
-      <td>0.349476</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>3.374327</td>
-      <td>30.497607</td>
-      <td>12.124690</td>
-      <td>8.810535</td>
-      <td>85.229441</td>
-      <td>6.887115</td>
-      <td>0.331981</td>
-      <td>11.771901</td>
-      <td>0.477117</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>0.000000</td>
-      <td>44.000000</td>
-      <td>24.000000</td>
-      <td>7.000000</td>
-      <td>14.000000</td>
-      <td>18.200000</td>
-      <td>0.078000</td>
-      <td>21.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>1.000000</td>
-      <td>99.750000</td>
-      <td>64.000000</td>
-      <td>25.000000</td>
-      <td>121.500000</td>
-      <td>27.500000</td>
-      <td>0.242500</td>
-      <td>24.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>3.000000</td>
-      <td>117.000000</td>
-      <td>72.000000</td>
-      <td>29.161125</td>
-      <td>156.168798</td>
-      <td>32.400000</td>
-      <td>0.375500</td>
-      <td>29.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>6.000000</td>
-      <td>141.000000</td>
-      <td>80.000000</td>
-      <td>32.000000</td>
-      <td>156.168798</td>
-      <td>36.600000</td>
-      <td>0.627500</td>
-      <td>41.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>17.000000</td>
-      <td>199.000000</td>
-      <td>122.000000</td>
-      <td>99.000000</td>
-      <td>846.000000</td>
-      <td>67.100000</td>
-      <td>2.420000</td>
-      <td>81.000000</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
 
 
 > We can also note here that mean values after imputation are close to the mean values of only clean dataset.
@@ -1804,26 +1307,24 @@ pima_df_clean2.describe()
 
 
 ```python
+## split into X and Y
 X, Y = pima_df_clean2[pima_df_clean2.columns.difference([target_col[0]])], pima_df_clean2[target_col[0]]
 
+## splitting data into train-test
 x_train2, x_test2, y_train2, y_test2 = train_test_split(X, Y, test_size=0.25, random_state=9001)
 
+## normalising the data
 mins = x_train2.min()
 maxs = x_train2.max()
 x_train2 = normalise_df(x_train2, mins, maxs)
 x_test2 = normalise_df(x_test2, mins, maxs)
-```
 
-
-
-
-```python
 logreg2, acc2 = fit_logreg(x_train2, x_test2, y_train2, y_test2)
-print('Classification accuracy of fitted model on test set =', acc2)
+print('Classification accuracy of fitted model on test set = {:.2f}'.format(acc2))
 ```
 
 
-    Classification accuracy of fitted model on test set = 0.7591623036649214
+    Classification accuracy of fitted model on test set = 0.76
 
 
 **2.4** Again restart with a fresh copy of the whole dataset and impute the missing data via a model-based imputation method. Once again split the data 75-25 (same `random_state=9001`) and fit the regularized logistic regression model.  Report the overall classification rate.
@@ -1839,6 +1340,7 @@ target_col = ['Outcome']
 pima_df_clean3 = unclean_data.copy() # making fresh copy of unclean dataset
 train_data = pima_df.copy() # start with original dataset
 
+## running for 20 iterations for robustness
 for it in range(20):
     # finding missing values to be imputed using multiple linear regression model
     for col in missing_cols:
@@ -1846,14 +1348,12 @@ for it in range(20):
         sub_test = unclean_data[unclean_data[col] == 0] # subset of unclean data with missing values in given column
 
         sub_xtrain, sub_ytrain = sub_train[sub_train.columns.difference([col]+target_col)], sub_train[col]
-        sub_xtest, sub_ytest = sub_test[sub_test.columns.difference([col]+target_col)], sub_test[col] # sub_ytest is zeros
+        sub_xtest, sub_ytest = sub_test[sub_test.columns.difference([col]+target_col)], sub_test[col] 
 
         # normalising the train and test predictors
         sub_mins, sub_maxs = sub_xtrain.min(), sub_xtrain.max()
         sub_xtrain = normalise_df(sub_xtrain, sub_mins, sub_maxs)
         sub_xtest = normalise_df(sub_xtest, sub_mins, sub_maxs)    
-
-        # print(col, ':', sub_xtrain.shape, sub_ytrain.shape, sub_xtest.shape, sub_ytest.shape)
 
         linreg = LinearRegression(fit_intercept=True)
         linreg.fit(sub_xtrain, sub_ytrain)
@@ -2008,6 +1508,7 @@ pima_df_clean3.describe()
 
 
 ```python
+## merging cleaned data with original clean data
 pima_df_clean3 = pima_df_clean3.append(clean_data)
 print(pima_df_clean3.shape)
 pima_df_clean3.describe()
@@ -2155,13 +1656,15 @@ pima_df_clean3.describe()
 
 
 ```python
-
+## split into X and Y
 X, Y = pima_df_clean3[pima_df_clean3.columns.difference([target_col[0]])], pima_df_clean3[target_col[0]]
 print(X.shape, Y.shape)
 
+## splitting data into train-test
 x_train3, x_test3, y_train3, y_test3 = train_test_split(X, Y, test_size=0.25, random_state=9001)
 print(x_train3.shape, x_test3.shape, y_train3.shape, y_test3.shape)
 
+## normalising the data
 mins = x_train3.min()
 maxs = x_train3.max()
 x_train3 = normalise_df(x_train3, mins, maxs)
@@ -2185,7 +1688,7 @@ scatter_matrix(pima_df_clean3, figsize=(30,20));
 
 
 
-![png](cs109a_hw6_web_files/cs109a_hw6_web_65_0.png)
+![png](cs109a_hw6_web_files/cs109a_hw6_web_58_0.png)
 
 
 
@@ -2214,6 +1717,7 @@ logreg3.coef_
 
 
 ```python
+## Adding parameters and accuracy of the three models in a dataframe
 df = pd.DataFrame(data = logreg1.coef_, columns=x_train1.columns)
 df.loc[1] = logreg2.coef_[0]
 df.loc[2] = logreg3.coef_[0]
@@ -2328,6 +1832,7 @@ Thus, we can use the model imputation method for our classification.
 
 
 ```python
+## Finding percentage change between models 2 and 3
 change = (logreg3.coef_ - logreg2.coef_)*100/logreg2.coef_
 change = list(change[0])
 df.loc[3] = ['(logreg3-logreg2) % change'] + change + [0]
