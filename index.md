@@ -37,6 +37,7 @@ nav_include: 1
 
 **Homework 13**: Recurrent Neural Network (RNN)
 
+**Homework 14**: Clustering + Reinforcement Learning (RL)
 
 
 
