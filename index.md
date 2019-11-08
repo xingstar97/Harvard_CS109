@@ -39,7 +39,7 @@ nav_include: 1
 
 **Homework 14**: Reinforcement Learning (RL)
 
-
+**Homework 15**: Latent Dirichlet Allocation (LDA)
 
 
 
