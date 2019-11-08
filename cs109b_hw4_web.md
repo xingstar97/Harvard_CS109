@@ -610,11 +610,10 @@ This model is provided to you. Please pay attention to the architecture of this 
 
 (2) Explain why the Param # of Embedding layer is 1758950 (as shown in ```print(model.summary())```).
 
-### Hyperparameters shared with other NN models
-
 
 
 ```python
+## Hyperparameters shared with other NN models
 n_units = 100
 drop_rate = .1
 dim_embed = 50
@@ -716,7 +715,7 @@ plot_training_history(history)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_44_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_43_0.png)
 
 
 In addition to the final result, we also want to see the intermediate results from hidden layers. Below is an example showing how to get outputs from a hidden layer, and visualize them on the reduced dimension of 2D by PCA. (**Please note that these codes and parameters cannot be simply copied and pasted for other questions; some adjustments need to be made**) 
@@ -785,7 +784,7 @@ visualize_hidden_features(pca_result)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_47_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_46_0.png)
 
 
 (1) Explain what is embedding layer and why we need it here.
@@ -903,7 +902,7 @@ plot_training_history(history)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_54_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_53_0.png)
 
 
 
@@ -973,7 +972,7 @@ visualize_hidden_features(pca_result)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_56_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_55_0.png)
 
 
 Comment on the patterns you observed:
@@ -1084,7 +1083,7 @@ plot_training_history(history)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_63_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_62_0.png)
 
 
 
@@ -1154,7 +1153,7 @@ visualize_hidden_features(pca_result)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_65_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_64_0.png)
 
 
 Briefly explain what is GRU and how it is different from simple RNN
@@ -1267,7 +1266,7 @@ plot_training_history(history)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_72_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_71_0.png)
 
 
 
@@ -1337,7 +1336,7 @@ visualize_hidden_features(pca_result)
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_74_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_73_0.png)
 
 
 Explain what is Bidirectional GRU and how it is different from GRU model above.
@@ -1420,7 +1419,7 @@ for m in models:
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_80_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_79_0.png)
 
 
 
@@ -1432,7 +1431,7 @@ plt.show()
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_81_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_80_0.png)
 
 
 
@@ -2035,7 +2034,7 @@ print(results.mean())
 
 
 
-![png](cs109b_hw4_web_files/cs109b_hw4_web_105_0.png)
+![png](cs109b_hw4_web_files/cs109b_hw4_web_104_0.png)
 
 
 Explain why you choose to change certain elements of the model and how effective those adjustments are.
