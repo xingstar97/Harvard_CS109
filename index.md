@@ -33,6 +33,9 @@ nav_include: 1
 
 **Homework 11**: Optimizers
 
+**Homework 12**: Convolutional Neural Networks
+
+
 
 
 
