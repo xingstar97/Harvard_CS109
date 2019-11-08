@@ -41,5 +41,6 @@ nav_include: 1
 
 **Homework 15**: Latent Dirichlet Allocation (LDA)
 
+**Homework 16**: Generative Adversarial Network (GAN)
 
 
