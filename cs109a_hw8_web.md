@@ -1,13 +1,14 @@
 ---
 title: H8
 notebook: cs109a_hw8_web.ipynb
-nav_include: 10
+nav_include: 9
 ---
 
 ## Contents
 {:.no_toc}
 *  
 {: toc}
+
 
 
 
@@ -112,7 +113,7 @@ from IPython.display import display
 ```
 
 
-<div class="theme"> Overview: Higgs Boson Discovery </div>
+## Overview: Higgs Boson Discovery
 
 The discovery of the Higgs boson in July 2012 marked a fundamental breakthrough in particle physics. The Higgs boson particle was discovered through experiments at the Large Hadron Collider at CERN, by colliding beams of protons at high energy. A key challenge in analyzing the results of these experiments is to differentiate between collisions that produce Higgs bosons and collisions that produce only background noise. We shall explore the use of ensemble methods for this classification task.
 
@@ -123,26 +124,9 @@ The data set provided to you is a small subset of the HIGGS data set in the UCI 
 
 
 ```python
-data_train = pd.read_csv('Higgs_train.csv')
-data_test = pd.read_csv('Higgs_test.csv')
-
-print(f"{len(data_train)} training samples, {len(data_test)} test samples")
-print("\nColumns:")
-print(', '.join(data_train.columns))
-```
-
-
-    5000 training samples, 5000 test samples
-    
-    Columns:
-    lepton pT, lepton eta, lepton phi, missing energy magnitude, missing energy phi, jet 1 pt, jet 1 eta, jet 1 phi, jet 1 b-tag, jet 2 pt, jet 2 eta, jet 2 phi, jet 2 b-tag, jet 3 pt, jet 3 eta, jet 3 phi, jet 3 b-tag, jet 4 pt, jet 4 eta, jet 4 phi, jet 4 b-tag, m_jj, m_jjj, m_lv, m_jlv, m_bb, m_wbb, m_wwbb, class
-
-
-
-
-```python
+data_train = pd.read_csv('data/Higgs_train.csv')
+data_test = pd.read_csv('data/Higgs_test.csv')
 display(data_train.head())
-display(data_train.describe())
 ```
 
 
@@ -363,320 +347,9 @@ display(data_train.describe())
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>lepton pT</th>
-      <th>lepton eta</th>
-      <th>lepton phi</th>
-      <th>missing energy magnitude</th>
-      <th>missing energy phi</th>
-      <th>jet 1 pt</th>
-      <th>jet 1 eta</th>
-      <th>jet 1 phi</th>
-      <th>jet 1 b-tag</th>
-      <th>jet 2 pt</th>
-      <th>jet 2 eta</th>
-      <th>jet 2 phi</th>
-      <th>jet 2 b-tag</th>
-      <th>jet 3 pt</th>
-      <th>jet 3 eta</th>
-      <th>jet 3 phi</th>
-      <th>jet 3 b-tag</th>
-      <th>jet 4 pt</th>
-      <th>jet 4 eta</th>
-      <th>jet 4 phi</th>
-      <th>jet 4 b-tag</th>
-      <th>m_jj</th>
-      <th>m_jjj</th>
-      <th>m_lv</th>
-      <th>m_jlv</th>
-      <th>m_bb</th>
-      <th>m_wbb</th>
-      <th>m_wwbb</th>
-      <th>class</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-      <td>5000.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>0.978645</td>
-      <td>-0.014280</td>
-      <td>-0.018956</td>
-      <td>1.005793</td>
-      <td>0.002528</td>
-      <td>0.980390</td>
-      <td>0.025014</td>
-      <td>-0.007104</td>
-      <td>0.993678</td>
-      <td>0.988659</td>
-      <td>-0.010310</td>
-      <td>-0.006926</td>
-      <td>1.006922</td>
-      <td>0.997004</td>
-      <td>0.018817</td>
-      <td>0.003952</td>
-      <td>1.011994</td>
-      <td>0.982806</td>
-      <td>0.005201</td>
-      <td>0.003349</td>
-      <td>1.007810</td>
-      <td>1.038431</td>
-      <td>1.027201</td>
-      <td>1.054719</td>
-      <td>1.023094</td>
-      <td>0.958464</td>
-      <td>1.033432</td>
-      <td>0.960494</td>
-      <td>0.524600</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>0.547025</td>
-      <td>1.011927</td>
-      <td>0.997945</td>
-      <td>0.591907</td>
-      <td>1.003337</td>
-      <td>0.463677</td>
-      <td>1.002018</td>
-      <td>1.014559</td>
-      <td>1.028920</td>
-      <td>0.476462</td>
-      <td>1.007983</td>
-      <td>1.002177</td>
-      <td>1.045206</td>
-      <td>0.471681</td>
-      <td>1.007824</td>
-      <td>0.999656</td>
-      <td>1.200416</td>
-      <td>0.497681</td>
-      <td>1.007999</td>
-      <td>1.008904</td>
-      <td>1.400846</td>
-      <td>0.619460</td>
-      <td>0.353984</td>
-      <td>0.173243</td>
-      <td>0.427141</td>
-      <td>0.495720</td>
-      <td>0.352966</td>
-      <td>0.306057</td>
-      <td>0.499444</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>0.275000</td>
-      <td>-2.410000</td>
-      <td>-1.740000</td>
-      <td>0.010000</td>
-      <td>-1.740000</td>
-      <td>0.170000</td>
-      <td>-2.920000</td>
-      <td>-1.740000</td>
-      <td>0.000000</td>
-      <td>0.198000</td>
-      <td>-2.910000</td>
-      <td>-1.740000</td>
-      <td>0.000000</td>
-      <td>0.265000</td>
-      <td>-2.720000</td>
-      <td>-1.740000</td>
-      <td>0.000000</td>
-      <td>0.366000</td>
-      <td>-2.500000</td>
-      <td>-1.740000</td>
-      <td>0.000000</td>
-      <td>0.151000</td>
-      <td>0.443000</td>
-      <td>0.339000</td>
-      <td>0.371000</td>
-      <td>0.079500</td>
-      <td>0.413000</td>
-      <td>0.452000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>0.587000</td>
-      <td>-0.764250</td>
-      <td>-0.877500</td>
-      <td>0.581000</td>
-      <td>-0.870000</td>
-      <td>0.676000</td>
-      <td>-0.659250</td>
-      <td>-0.885000</td>
-      <td>0.000000</td>
-      <td>0.666000</td>
-      <td>-0.699000</td>
-      <td>-0.859500</td>
-      <td>0.000000</td>
-      <td>0.664750</td>
-      <td>-0.679250</td>
-      <td>-0.858000</td>
-      <td>0.000000</td>
-      <td>0.619000</td>
-      <td>-0.707250</td>
-      <td>-0.869250</td>
-      <td>0.000000</td>
-      <td>0.798750</td>
-      <td>0.850000</td>
-      <td>0.986000</td>
-      <td>0.768000</td>
-      <td>0.672000</td>
-      <td>0.826000</td>
-      <td>0.772750</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>0.846000</td>
-      <td>-0.009305</td>
-      <td>-0.016050</td>
-      <td>0.903500</td>
-      <td>0.001300</td>
-      <td>0.891000</td>
-      <td>0.049500</td>
-      <td>-0.023500</td>
-      <td>1.090000</td>
-      <td>0.891000</td>
-      <td>-0.004800</td>
-      <td>-0.030700</td>
-      <td>1.110000</td>
-      <td>0.899500</td>
-      <td>0.045700</td>
-      <td>0.018800</td>
-      <td>0.000000</td>
-      <td>0.877000</td>
-      <td>0.012900</td>
-      <td>-0.004700</td>
-      <td>0.000000</td>
-      <td>0.898000</td>
-      <td>0.957000</td>
-      <td>0.990000</td>
-      <td>0.922000</td>
-      <td>0.868000</td>
-      <td>0.952000</td>
-      <td>0.877500</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>1.220000</td>
-      <td>0.725500</td>
-      <td>0.837000</td>
-      <td>1.300000</td>
-      <td>0.866000</td>
-      <td>1.160000</td>
-      <td>0.716000</td>
-      <td>0.894000</td>
-      <td>2.170000</td>
-      <td>1.192500</td>
-      <td>0.692250</td>
-      <td>0.855500</td>
-      <td>2.210000</td>
-      <td>1.232500</td>
-      <td>0.717000</td>
-      <td>0.855000</td>
-      <td>2.550000</td>
-      <td>1.220000</td>
-      <td>0.719000</td>
-      <td>0.859000</td>
-      <td>3.100000</td>
-      <td>1.030000</td>
-      <td>1.090000</td>
-      <td>1.030000</td>
-      <td>1.160000</td>
-      <td>1.120000</td>
-      <td>1.140000</td>
-      <td>1.060000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>5.330000</td>
-      <td>2.430000</td>
-      <td>1.740000</td>
-      <td>6.260000</td>
-      <td>1.740000</td>
-      <td>4.190000</td>
-      <td>2.960000</td>
-      <td>1.740000</td>
-      <td>2.170000</td>
-      <td>4.800000</td>
-      <td>2.910000</td>
-      <td>1.740000</td>
-      <td>2.210000</td>
-      <td>4.630000</td>
-      <td>2.730000</td>
-      <td>1.740000</td>
-      <td>2.550000</td>
-      <td>5.770000</td>
-      <td>2.490000</td>
-      <td>1.740000</td>
-      <td>3.100000</td>
-      <td>10.600000</td>
-      <td>5.740000</td>
-      <td>3.940000</td>
-      <td>6.220000</td>
-      <td>5.080000</td>
-      <td>4.320000</td>
-      <td>3.500000</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 
 ```python
+## Split into NumPy arrays
 X_train = data_train.iloc[:, data_train.columns != 'class'].values
 y_train = data_train['class'].values
 X_test = data_test.iloc[:, data_test.columns != 'class'].values
@@ -702,12 +375,7 @@ for max_depth in range(1, 21):
     dt = DecisionTreeClassifier(max_depth=max_depth)
     cv = cross_val_score(estimator=dt, X=X_train, y=y_train, cv=5, n_jobs=-1)
     result.append([max_depth, cv.mean(), cv.std()])
-```
-
-
-
-
-```python
+    
 result_array = np.array(result)
 fig, ax = plt.subplots(1, 1, figsize=(11, 7))
 ax.plot(result_array[:,0], result_array[:,1], 'r*-')
@@ -721,7 +389,7 @@ plt.show()
 
 
 
-![png](cs109a_hw8_web_files/cs109a_hw8_web_9_0.png)
+![png](cs109a_hw8_web_files/cs109a_hw8_web_8_0.png)
 
 
 **1.2** Select an appropriate depth and justify your choice. Using your cross-validation estimates, report the mean +/- 2 stdev. Then report the classification accuracy on the test set. (Store the training and test accuracies in variables to refer to in a later question.)
@@ -739,9 +407,9 @@ print("Mean Accuracy + 2*Std = {:.2%}".format(result_array[index,1] + 2* result_
 
 
     Best depth = 5.0
-    Mean Accuracy = 64.28%
-    Mean Accuracy - 2*Std = 62.51%
-    Mean Accuracy + 2*Std = 66.05%
+    Mean Accuracy = 64.24%
+    Mean Accuracy - 2*Std = 62.73%
+    Mean Accuracy + 2*Std = 65.75%
 
 
 
@@ -761,8 +429,6 @@ print("Single Tree on test set = {:.2%}".format(dt_single_test_score))
     Single Tree on test set = 64.78%
 
 
-**Your answer here**
-
 We decided to use 5 as the max depth of the tree because it gives the highest cross validation accuracy with reasonable two standard deviation intervals. 
 
 Although depth 5 has the highest CV score, there isn't enough evidence in the cross validation to distinguish it from depths of 4, 6, or even 7. You could justifiably pick any of these values, reasoning that 4 will give a simpler model that's less likely to overfit, or that the full model will be trained on 20% more data than the CV models and might support a greater depth. We'll pick depth=5.
@@ -772,10 +438,6 @@ Although depth 5 has the highest CV score, there isn't enough evidence in the cr
 The bias-variance dilemma is very signinficant. The bias of a model quantifies how precise a model is across training sets. The variance quantifies how sensitive the model is to small changes in the training set. A robust model is not overly sensitive to small changes. The dilemma involves minimizing both bias and variance; we want a precise and robust model. Simpler models tend to be less accurate but more robust. Complex models tend to be more accurate but less robust.
 
 In Decision trees, limiting the depth will limit the ability of the model to explore the crevaces of the problem and make extremely sharp cuts around the datapoints of the training set for classification. This increases generalizability of the model and prevents overfitting. However, the limitation is clear, it prevents the model from achieving maximum accuracy.
-
-**For students :**
-
-Consider the following example, in face recognition algorithms, such as that on the iPhone X, a too-accurate model would be unable to identity someone who styled their hair differently that day. The reason is that our model may learn irrelevant features in the training data. On the contrary, an insufficiently trained model would not generalize well either. For example, it was recently reported that a face mask could sufficiently fool the iPhone X.
 
 ## Bagging
 
@@ -806,7 +468,7 @@ print("Overfitted Single Tree on test set = {:.2%} ".format(dt_single_ovf_test_s
 
     Overfitted Depth = 20
     Overfitted Single Tree on training set = 100.00% 
-    Overfitted Single Tree on test set = 59.78% 
+    Overfitted Single Tree on test set = 59.26% 
 
 
 We believe depth = 20 will overfit the training set, because the training accuracy is 100%, while the test accuracy is only 60%. Another evidence is that cross-validation accuracy peaks at depth of 5, and then decreases after it, which is a sign of overfitting. Depth of 20 will definitely overfit the model.
@@ -837,14 +499,17 @@ Store these results as `bagging_train` and `bagging_test`. Don't worry about vis
 
 
 ```python
+## Creating model
 np.random.seed(0)
 dt_bagging = DecisionTreeClassifier(max_depth=depth_ovf)
 
+## Initializing variables
 n_trees = 45
 bagging_train = np.zeros((data_train.shape[0], n_trees))
 bagging_test = np.zeros((data_test.shape[0], n_trees))
 bagging_fn = []
 
+## Conduct bootstraping iterations
 for i in range(n_trees):
     X_train_resample, y_train_resample = resample(X_train, y_train, replace=True)
     
@@ -855,6 +520,7 @@ for i in range(n_trees):
     # First node
     bagging_fn.append(dt_bagging.tree_.feature[0])
 
+## Make Predictions Dataframe
 columns = ["Bagging-Model_"+str(i+1) for i in range(n_trees)]
 bagging_train = pd.DataFrame(bagging_train, columns=columns)
 bagging_test = pd.DataFrame(bagging_test, columns=columns)
@@ -1519,7 +1185,7 @@ for (ax, label, predictions, y) in [
 
 
 
-![png](cs109a_hw8_web_files/cs109a_hw8_web_25_0.png)
+![png](cs109a_hw8_web_files/cs109a_hw8_web_24_0.png)
 
 
 **2.3** _Aggregate_ all 45 _bootstrapped_ models to get a combined prediction for each training and test point: predict a 1 if and only if a majority of the models predict that example to be from class 1. What accuracy does this *bagging* model achieve on the test set? Write an assertion that verifies that this test-set accuracy is at least as good as the accuracy for the model you fit in Question 1.
@@ -1527,6 +1193,7 @@ for (ax, label, predictions, y) in [
 
 
 ```python
+## Function to ensemble the prediction of each bagged decision tree model
 def get_prediction(df, count=-1):
     count = df.shape[1] if count==-1 else count
     temp = df.iloc[:,0:count]
@@ -1609,7 +1276,7 @@ plt.show()
 
 
 
-![png](cs109a_hw8_web_files/cs109a_hw8_web_30_0.png)
+![png](cs109a_hw8_web_files/cs109a_hw8_web_29_0.png)
 
 
 **2.5** Referring to your graph from 2.4, compare the performance of bagging against the baseline of a single tree with the depth you picked in 2.1. Explain the differences you see.
@@ -1642,9 +1309,11 @@ Random Forests are closely related to the bagging model we built by hand in ques
 print("Number of trees = {}".format(n_trees))
 print("Depth of the trees = {}".format(depth_ovf))
 
+## Training
 dt_rf = RandomForestClassifier(n_estimators=n_trees, max_depth=depth_ovf, n_jobs=-1, random_state=1234)
 dt_rf.fit(X_train, y_train)
 
+## Perfromance Evaluation
 rf_train_score = accuracy_score(y_train, dt_rf.predict(X_train))
 rf_test_score = accuracy_score(y_test, dt_rf.predict(X_test))
 
@@ -1766,7 +1435,7 @@ plt.show()
 
 
 
-![png](cs109a_hw8_web_files/cs109a_hw8_web_46_0.png)
+![png](cs109a_hw8_web_files/cs109a_hw8_web_45_0.png)
 
 
 ## Boosting 
@@ -1814,7 +1483,7 @@ for i in range(len(axs)):
 
 
 
-![png](cs109a_hw8_web_files/cs109a_hw8_web_50_0.png)
+![png](cs109a_hw8_web_files/cs109a_hw8_web_49_0.png)
 
 
 **your answer here**
@@ -1967,9 +1636,11 @@ My simplified boosting accuracy on training set is actually lower than the singl
 
 
 ```python
+## Training
 dt_ab = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=3), n_estimators=800, learning_rate=0.05)
 dt_ab.fit(X_train, y_train)
 
+## Perfromance Evaluation
 dt_ab_train_score = accuracy_score(y_train, dt_ab.predict(X_train))
 dt_ab_test_score = accuracy_score(y_test, dt_ab.predict(X_test))
 
@@ -2001,7 +1672,7 @@ plt.show()
 
 
 
-![png](cs109a_hw8_web_files/cs109a_hw8_web_60_0.png)
+![png](cs109a_hw8_web_files/cs109a_hw8_web_59_0.png)
 
 
 **4.4** Repeat the plot above for a base learner with depth of (1, 2, 3, 4). What trends do you see in the training and test accuracy?
@@ -2056,7 +1727,7 @@ plt.show()
 
 
 
-![png](cs109a_hw8_web_files/cs109a_hw8_web_63_0.png)
+![png](cs109a_hw8_web_files/cs109a_hw8_web_62_0.png)
 
 
 **Your answer here**
