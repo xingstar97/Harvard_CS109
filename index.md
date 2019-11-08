@@ -33,7 +33,9 @@ nav_include: 1
 
 **Homework 11**: Optimizers
 
-**Homework 12**: Convolutional Neural Networks
+**Homework 12**: Convolutional Neural Network (CNN)
+
+**Homework 13**: Recurrent Neural Network (RNN)
 
 
 
