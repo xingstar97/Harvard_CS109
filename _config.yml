@@ -1,9 +1,0 @@
-theme: jekyll-theme-primer
-title: Overview
-description: Harvard University CS109A
-baseurl:
-markdown: kramdown
-kramdown:
-    math_engine: mathjax
-    input: GFM
-    syntax_highlighter: rouge
